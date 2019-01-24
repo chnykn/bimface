@@ -46,29 +46,29 @@ func (o *SupportFileService) supportFileURL() string {
 
 //GetSupportWithAccessToken ***
 func (o *SupportFileService) GetSupportWithAccessToken(token string) (*response.SupportFile, *utils.Error) {
-	/*
-		headers := http.NewHeaders()
-		headers.AddOAuth2Header(token)
 
-		resp := o.ServiceClient.Get(o.supportFileURL(), headers.Header)
+	headers := http.NewHeaders()
+	headers.AddOAuth2Header(token)
 
-		result := response.NewSupportFile()
-		err := http.RespToBean(resp, result)
+	resp := o.ServiceClient.Get(o.supportFileURL(), headers.Header)
 
-		return result, err
-	*/
-	return defSupportFile, nil
+	result := response.NewSupportFile()
+	err := http.RespToBean(resp, result)
+
+	return result, err
+
+	//return defSupportFile, nil
 }
 
 //GetSupport ***
 func (o *SupportFileService) GetSupport() (*response.SupportFile, *utils.Error) {
-	/*
-		accessToken, err := o.AccessTokenService.Get()
-		if err != nil {
-			return nil, err
-		}
 
-		return o.GetSupportWithAccessToken(accessToken.Token)
-	*/
-	return defSupportFile, nil
+	accessToken, err := o.AccessTokenService.Get()
+	if err != nil {
+		return nil, err
+	}
+
+	return o.GetSupportWithAccessToken(accessToken.Token)
+
+	//return defSupportFile, nil
 }
