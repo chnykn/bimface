@@ -1,11 +1,15 @@
+// Copyright 2019 chnykn@gmail.com All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
 package service
 
 import (
-	"bimface/bean"
-	"bimface/bean/response"
-	"bimface/config"
-	"bimface/http"
-	"bimface/utils"
+	"github.com/chnykn/bimface/bean"
+	"github.com/chnykn/bimface/bean/response"
+	"github.com/chnykn/bimface/config"
+	"github.com/chnykn/bimface/http"
+	"github.com/chnykn/bimface/utils"
 	"fmt"
 	"strconv"
 )

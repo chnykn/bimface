@@ -1,8 +1,12 @@
+// Copyright 2019 chnykn@gmail.com All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
 package http
 
 import (
-	"bimface/bean"
-	"bimface/utils"
+	"github.com/chnykn/bimface/bean"
+	"github.com/chnykn/bimface/utils"
 	"reflect"
 
 	"github.com/goinggo/mapstructure"

@@ -1,7 +1,11 @@
+// Copyright 2019 chnykn@gmail.com All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
 package request
 
 import (
-	"bimface/http"
+	"github.com/chnykn/bimface/http"
 	"os"
 	"path"
 )

@@ -1,10 +1,14 @@
+// Copyright 2019 chnykn@gmail.com All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
 package bimface
 
 import (
-	"bimface/config"
-	"bimface/consts"
-	"bimface/http"
-	"bimface/service"
+	"github.com/chnykn/bimface/config"
+	"github.com/chnykn/bimface/consts"
+	"github.com/chnykn/bimface/http"
+	"github.com/chnykn/bimface/service"
 )
 
 // Client for binface SDK
