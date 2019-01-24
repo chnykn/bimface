@@ -7,7 +7,6 @@ package service
 import (
 	"fmt"
 
-	"github.com/chnykn/bimface/bean"
 	"github.com/chnykn/bimface/config"
 	"github.com/chnykn/bimface/http"
 	"github.com/chnykn/bimface/utils"
@@ -80,16 +79,12 @@ func (o *ViewTokenService) grantViewTokenByID(xxID int64, kind int) (string, *ut
 	headers := http.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
-	resp := o.ServiceClient.Get(url, headers)
+	resp := o.ServiceClient.Get(url, headers.Header)
 
-	var result *bean.GeneralResponse
-	result, err = http.RespToGeneralResponse(resp)
+	result := new(string)
+	err = http.RespToBean(resp, result)
 
-	if err == nil {
-		return result.Code, nil
-	}
-
-	return "", err
+	return *result, err
 }
 
 //GrantViewTokenByFileID 根据fileId获取viewToke，然后把viewToken传入JavaScript组件提供的接口中，即可显示工程文件。
