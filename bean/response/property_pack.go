@@ -5,8 +5,9 @@
 package response
 
 import (
-	"github.com/chnykn/bimface/bean/common"
 	"fmt"
+
+	"github.com/chnykn/bimface/bean/common"
 )
 
 //PropertyItem PropertyItem

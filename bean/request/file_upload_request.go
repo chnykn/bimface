@@ -5,9 +5,10 @@
 package request
 
 import (
-	"github.com/chnykn/bimface/http"
 	"os"
 	"path"
+
+	"github.com/chnykn/bimface/http"
 )
 
 //FileUploadRequest ***

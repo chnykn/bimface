@@ -5,8 +5,9 @@
 package config
 
 import (
-	"github.com/chnykn/bimface/bean/response"
 	"time"
+
+	"github.com/chnykn/bimface/bean/response"
 )
 
 //AccessTokenStorage ***

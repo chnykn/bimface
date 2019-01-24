@@ -5,9 +5,10 @@
 package http
 
 import (
+	"reflect"
+
 	"github.com/chnykn/bimface/bean"
 	"github.com/chnykn/bimface/utils"
-	"reflect"
 
 	"github.com/goinggo/mapstructure"
 	"github.com/imroc/req"

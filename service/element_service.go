@@ -5,11 +5,12 @@
 package service
 
 import (
+	"fmt"
+
 	"github.com/chnykn/bimface/bean/response"
 	"github.com/chnykn/bimface/config"
 	"github.com/chnykn/bimface/http"
 	"github.com/chnykn/bimface/utils"
-	"fmt"
 
 	"github.com/imroc/req"
 )
