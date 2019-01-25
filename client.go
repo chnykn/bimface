@@ -24,6 +24,7 @@ type Client struct {
 	CategoryTreeService   *service.CategoryTreeService
 	CompareService        *service.CompareService
 	DownloadService       *service.DownloadService
+	DrawingSheetsService  *service.DrawingSheetsService
 	ElementService        *service.ElementService
 	ElevService           *service.ElevService
 	IntegrateService      *service.IntegrateService
@@ -47,7 +48,6 @@ func NewClient(appKey string, appSecret string, endpoint *config.Endpoint) *Clie
 		serviceClient: http.NewServiceClient(),
 	}
 	o.AccessTokenService = service.NewAccessTokenService(o.serviceClient, o.endpoint, o.credential)
-	o.AccessTokenService = service.NewAccessTokenService(o.serviceClient, o.endpoint, o.credential)
 	o.SupportFileService = service.NewSupportFileService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
 
 	o.AppendFileService = service.NewAppendFileService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService, o.SupportFileService)
@@ -55,6 +55,7 @@ func NewClient(appKey string, appSecret string, endpoint *config.Endpoint) *Clie
 	o.CompareService = service.NewCompareService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
 	o.DownloadService = service.NewDownloadService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
 	o.ElementService = service.NewElementService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
+	o.DrawingSheetsService = service.NewDrawingSheetsService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
 	o.ElevService = service.NewElevService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
 	o.IntegrateService = service.NewIntegrateService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
 	o.OfflineDatabagService = service.NewOfflineDatabagService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
