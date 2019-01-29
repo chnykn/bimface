@@ -66,7 +66,7 @@ config		Json Object	N	转换引擎自定义参数，config参数跟转换引擎�
 							例如转换时添加内置材质，则添加参数值{“texture”:true}，
 							添加外部材质时参考“使用模型外置材质场景”请求报文{“texture”:true}等
 ***/
-func (o *TranslateService) Translate(request *request.TranslateRequest) (*response.TranslateStatus, *utils.Error) {
+func (o *TranslateService) Translate(transRequest *request.TranslateRequest) (*response.TranslateStatus, *utils.Error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
@@ -75,7 +75,7 @@ func (o *TranslateService) Translate(request *request.TranslateRequest) (*respon
 	headers := http.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
-	body := req.BodyJSON(request)
+	body := req.BodyJSON(transRequest)
 	resp := o.ServiceClient.Put(o.translateURL(), body, headers.Header)
 
 	result := response.NewTranslateStatus()
