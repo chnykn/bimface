@@ -7,6 +7,8 @@ package service
 import (
 	"fmt"
 
+	"github.com/imroc/req"
+
 	"github.com/chnykn/bimface/bean/response"
 	"github.com/chnykn/bimface/config"
 	"github.com/chnykn/bimface/http"
@@ -48,11 +50,10 @@ func (o *ElevService) getIntegrationElevsURL(integrationID int64) string {
 	return fmt.Sprintf(o.Endpoint.APIHost+getIntegrationElevsURI, integrationID)
 }
 
-//---------------------------------------------------------------------
+//-----------------------------------------------------------------------------------
 
-//GetElevs 获取文件转换的楼层信息
-//http://static.bimface.com/book/restful/articles/api/translate/get-floors.html
-func (o *ElevService) GetElevs(fileID int64) ([]response.Elev, *utils.Error) {
+//GetElevsResp ***
+func (o *ElevService) GetElevsResp(fileID int64) (*req.Resp, *utils.Error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
@@ -62,14 +63,25 @@ func (o *ElevService) GetElevs(fileID int64) ([]response.Elev, *utils.Error) {
 	headers.AddOAuth2Header(accessToken.Token)
 
 	resp := o.ServiceClient.Get(o.getElevsURL(fileID), headers.Header)
+	return resp, nil
+}
+
+//GetElevs 获取文件转换的楼层信息
+//http://static.bimface.com/book/restful/articles/api/translate/get-floors.html
+func (o *ElevService) GetElevs(fileID int64) ([]response.Elev, *utils.Error) {
+	resp, err := o.GetElevsResp(fileID)
+	if err != nil {
+		return nil, err
+	}
 
 	result, err := http.RespToBeans(resp, &response.Elev{})
 	return result.([]response.Elev), nil
 }
 
-//GetIntegrationElevs 获取集成模型楼层信息
-//http://static.bimface.com/book/restful/articles/api/integrate/get-integrate-floors.html
-func (o *ElevService) GetIntegrationElevs(integrateID int64) ([]response.Elev, *utils.Error) {
+//-----------------------------------------------------------------------------------
+
+//GetIntegrationElevsResp ***
+func (o *ElevService) GetIntegrationElevsResp(integrateID int64) (*req.Resp, *utils.Error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
@@ -79,6 +91,16 @@ func (o *ElevService) GetIntegrationElevs(integrateID int64) ([]response.Elev, *
 	headers.AddOAuth2Header(accessToken.Token)
 
 	resp := o.ServiceClient.Get(o.getIntegrationElevsURL(integrateID), headers.Header)
+	return resp, nil
+}
+
+//GetIntegrationElevs 获取集成模型楼层信息
+//http://static.bimface.com/book/restful/articles/api/integrate/get-integrate-floors.html
+func (o *ElevService) GetIntegrationElevs(integrateID int64) ([]response.Elev, *utils.Error) {
+	resp, err := o.GetIntegrationElevsResp(integrateID)
+	if err != nil {
+		return nil, err
+	}
 
 	result, err := http.RespToBeans(resp, &response.Elev{})
 	return result.([]response.Elev), nil

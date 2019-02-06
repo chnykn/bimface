@@ -33,7 +33,7 @@ type IntegrateRequest struct {
 	Name     string // 必填
 	Priority byte   // [1,2,3]  数字越大，优先级越低
 	Callback string
-	SourceID string
+	SourceID string             //TODO: shoud be *string type
 	Sources  []*IntegrateSource //必填
 }
 

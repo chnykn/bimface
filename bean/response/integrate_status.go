@@ -4,8 +4,8 @@
 
 package response
 
-//Integration ***
-type Integration struct {
+//IntegrateStatus ***
+type IntegrateStatus struct {
 	IntegrateID int64
 	Name        string
 	Priority    int64
@@ -15,9 +15,9 @@ type Integration struct {
 	CreateTime  string
 }
 
-//NewIntegration ***
-func NewIntegration() *Integration { //id int64, name string
-	o := &Integration{
+//NewIntegrateStatus ***
+func NewIntegrateStatus() *IntegrateStatus { //id int64, name string
+	o := &IntegrateStatus{
 		// ID:   id,
 		// Name: name,
 		Thumbnail: make([]string, 0),

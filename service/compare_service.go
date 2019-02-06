@@ -67,7 +67,7 @@ func (o *CompareService) compareElementDataURL(compareID int64) string {
 	return fmt.Sprintf(o.Endpoint.APIHost+compareElementDataURI, compareID)
 }
 
-//---------------------------------------------------------------------
+//-----------------------------------------------------------------------------------
 
 //Compare 发起模型对比
 //http://static.bimface.com/book/restful/articles/api/compare/post-compare.html
@@ -99,13 +99,10 @@ func (o *CompareService) Compare(compareRequst *request.CompareRequest) (*respon
 	return result, err
 }
 
-//GetCompare 获取模型对比状态
-//http://static.bimface.com/book/restful/articles/api/compare/get-compare.html
-/***
-字段		类型	必填	描述
-compareId	Number	Y	模型对比ID
-***/
-func (o *CompareService) GetCompare(compareID int64) (*response.CompareStatus, *utils.Error) {
+//-----------------------------------------------------------------------------------
+
+//GetCompareStatusResp ***
+func (o *CompareService) GetCompareStatusResp(compareID int64) (*req.Resp, *utils.Error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
@@ -115,6 +112,20 @@ func (o *CompareService) GetCompare(compareID int64) (*response.CompareStatus, *
 	headers.AddOAuth2Header(accessToken.Token)
 
 	resp := o.ServiceClient.Get(o.getCompareURL(compareID), headers.Header)
+	return resp, err
+}
+
+//GetCompareStatus 获取模型对比状态
+//http://static.bimface.com/book/restful/articles/api/compare/get-compare.html
+/***
+字段		类型	必填	描述
+compareId	Number	Y	模型对比ID
+***/
+func (o *CompareService) GetCompareStatus(compareID int64) (*response.CompareStatus, *utils.Error) {
+	resp, err := o.GetCompareStatusResp(compareID)
+	if err != nil {
+		return nil, err
+	}
 
 	result := response.NewCompareStatus()
 	err = http.RespToBean(resp, result)
@@ -122,18 +133,10 @@ func (o *CompareService) GetCompare(compareID int64) (*response.CompareStatus, *
 	return result, err
 }
 
-//GetCompareStatus same to GetCompare
-func (o *CompareService) GetCompareStatus(compareID int64) (*response.CompareStatus, *utils.Error) {
-	return o.GetCompare(compareID)
-}
+//-----------------------------------------------------------------------------------
 
-//GetCompareData 获取模型对比结果
-//http://static.bimface.com/book/restful/articles/api/compare/get-compare-rst.html
-/***
-字段		类型	必填	描述
-compareId	Number	Y	模型对比Id
-***/
-func (o *CompareService) GetCompareData(compareID int64) ([]response.CompareData, *utils.Error) {
+//GetCompareDataResp ***
+func (o *CompareService) GetCompareDataResp(compareID int64) (*req.Resp, *utils.Error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
@@ -143,14 +146,29 @@ func (o *CompareService) GetCompareData(compareID int64) ([]response.CompareData
 	headers.AddOAuth2Header(accessToken.Token)
 
 	resp := o.ServiceClient.Get(o.compareDataURL(compareID), headers.Header)
+	return resp, nil
+}
+
+//GetCompareData 获取模型对比结果
+//http://static.bimface.com/book/restful/articles/api/compare/get-compare-rst.html
+/***
+字段		类型	必填	描述
+compareId	Number	Y	模型对比Id
+***/
+func (o *CompareService) GetCompareData(compareID int64) ([]response.CompareData, *utils.Error) {
+	resp, err := o.GetCompareDataResp(compareID)
+	if err != nil {
+		return nil, err
+	}
 
 	result, err := http.RespToBeans(resp, &response.CompareData{})
 	return result.([]response.CompareData), nil
 }
 
-//GetCompareElementDiffWithParams 获取修改构件属性差异
-//http://static.bimface.com/book/restful/articles/api/compare/get-compare-ele-diff.html
-func (o *CompareService) GetCompareElementDiffWithParams(compareID int64, params req.QueryParam) (*response.ElementDiff, *utils.Error) {
+//-----------------------------------------------------------------------------------
+
+//GetCompareElementResp ***
+func (o *CompareService) GetCompareElementResp(compareID int64, params req.QueryParam) (*req.Resp, *utils.Error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
@@ -160,6 +178,16 @@ func (o *CompareService) GetCompareElementDiffWithParams(compareID int64, params
 	headers.AddOAuth2Header(accessToken.Token)
 
 	resp := o.ServiceClient.Get(o.compareElementDataURL(compareID), params, headers.Header)
+	return resp, err
+}
+
+//GetCompareElementDiffWithParams 获取修改构件属性差异
+//http://static.bimface.com/book/restful/articles/api/compare/get-compare-ele-diff.html
+func (o *CompareService) GetCompareElementDiffWithParams(compareID int64, params req.QueryParam) (*response.ElementDiff, *utils.Error) {
+	resp, err := o.GetCompareElementResp(compareID, params)
+	if err != nil {
+		return nil, err
+	}
 
 	result := response.NewElementDiff()
 	err = http.RespToBean(resp, result)

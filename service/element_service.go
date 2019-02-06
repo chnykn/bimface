@@ -53,11 +53,10 @@ func (o *ElementService) integrateElementURL(integrateID int64) string {
 	return fmt.Sprintf(o.Endpoint.APIHost+integrateElementURI, integrateID)
 }
 
-//---------------------------------------------------------------------
+//-----------------------------------------------------------------------------------
 
-//GetElementsWithParams 文件转换相关: 获取文件转换的构件列表
-//必填参数: fileID
-func (o *ElementService) GetElementsWithParams(fileID int64, params req.QueryParam) ([]string, *utils.Error) {
+//GetElementsResp ***
+func (o *ElementService) GetElementsResp(fileID int64, params req.QueryParam) (*req.Resp, *utils.Error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
@@ -67,6 +66,16 @@ func (o *ElementService) GetElementsWithParams(fileID int64, params req.QueryPar
 	headers.AddOAuth2Header(accessToken.Token)
 
 	resp := o.ServiceClient.Get(o.elementURL(fileID), params, headers.Header)
+	return resp, nil
+}
+
+//GetElementsWithParams 文件转换相关: 获取文件转换的构件列表
+//必填参数: fileID
+func (o *ElementService) GetElementsWithParams(fileID int64, params req.QueryParam) ([]string, *utils.Error) {
+	resp, err := o.GetElementsResp(fileID, params)
+	if err != nil {
+		return nil, err
+	}
 
 	result, err := http.RespToBeans(resp, new(string))
 	if err != nil {
@@ -110,11 +119,10 @@ func (o *ElementService) GetElements(fileID int64, floor, specialty, categoryID,
 	return o.GetElementsWithParams(fileID, params)
 }
 
-//---------------------------------------------------------------------
+//-----------------------------------------------------------------------------------
 
-//GetIntegrationElementsWithParams ***
-func (o *ElementService) GetIntegrationElementsWithParams(integrateID int64,
-	params req.QueryParam) (*response.Elements, *utils.Error) {
+//GetIntegrationElementsResp ***
+func (o *ElementService) GetIntegrationElementsResp(integrateID int64, params req.QueryParam) (*req.Resp, *utils.Error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
@@ -124,6 +132,15 @@ func (o *ElementService) GetIntegrationElementsWithParams(integrateID int64,
 	headers.AddOAuth2Header(accessToken.Token)
 
 	resp := o.ServiceClient.Get(o.integrateElementURL(integrateID), params, headers.Header)
+	return resp, nil
+}
+
+//GetIntegrationElementsWithParams ***
+func (o *ElementService) GetIntegrationElementsWithParams(integrateID int64, params req.QueryParam) (*response.Elements, *utils.Error) {
+	resp, err := o.GetIntegrationElementsResp(integrateID, params)
+	if err != nil {
+		return nil, err
+	}
 
 	result := response.NewElements()
 	err = http.RespToBean(resp, result)

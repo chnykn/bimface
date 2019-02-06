@@ -51,7 +51,7 @@ func (o *TranslateService) getTranslateURL(fileID int64) string {
 	return fmt.Sprintf(o.Endpoint.APIHost+getTranslateURI, fileID)
 }
 
-//---------------------------------------------------------------------
+//-----------------------------------------------------------------------------------
 
 //Translate 文件转换相关: 发起文件转换
 //http://static.bimface.com/book/restful/articles/api/translate/put-translate.html
@@ -84,9 +84,10 @@ func (o *TranslateService) Translate(transRequest *request.TranslateRequest) (*r
 	return result, err
 }
 
-//GetTranslate 文件转换相关: 获取转换状态
-//http://static.bimface.com/book/restful/articles/api/translate/get-translate.html
-func (o *TranslateService) GetTranslate(fileID int64) (*response.TranslateStatus, *utils.Error) {
+//-----------------------------------------------------------------------------------
+
+//GetTranslateStatusResp ***
+func (o *TranslateService) GetTranslateStatusResp(fileID int64) (*req.Resp, *utils.Error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
@@ -96,14 +97,19 @@ func (o *TranslateService) GetTranslate(fileID int64) (*response.TranslateStatus
 	headers.AddOAuth2Header(accessToken.Token)
 
 	resp := o.ServiceClient.Get(o.getTranslateURL(fileID), headers.Header)
+	return resp, err
+}
+
+//GetTranslateStatus 文件转换相关: 获取转换状态
+//http://static.bimface.com/book/restful/articles/api/translate/get-translate.html
+func (o *TranslateService) GetTranslateStatus(fileID int64) (*response.TranslateStatus, *utils.Error) {
+	resp, err := o.GetTranslateStatusResp(fileID)
+	if err != nil {
+		return nil, err
+	}
 
 	result := response.NewTranslateStatus()
 	err = http.RespToBean(resp, result)
 
 	return result, err
-}
-
-//GetTranslateStatus same to GetTranslate
-func (o *TranslateService) GetTranslateStatus(fileID int64) (*response.TranslateStatus, *utils.Error) {
-	return o.GetTranslate(fileID)
 }

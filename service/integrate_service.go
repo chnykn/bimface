@@ -62,7 +62,7 @@ func (o *IntegrateService) deleteIntegrateURL(integrateID int64) string {
 	return fmt.Sprintf(o.Endpoint.APIHost+deleteIntegrateURI, integrateID)
 }
 
-//---------------------------------------------------------------------
+//-----------------------------------------------------------------------------------
 
 //Integrate 模型集成相关: 发起模型集成
 //http://doc.bimface.com/book/restful/articles/api/integrate/put-integrate.html
@@ -79,7 +79,7 @@ name					String		N	调用方设置的名称
 priority				Number		Y	优先级，数字越大，优先级越低	1, 2, 3
 callback				String		N	Callback地址，待集成完毕以后，BIMFACE会回调该地址
 ***/
-func (o *IntegrateService) Integrate(integrateRequest *request.IntegrateRequest) (*response.Integration, *utils.Error) {
+func (o *IntegrateService) Integrate(integrateRequest *request.IntegrateRequest) (*response.IntegrateStatus, *utils.Error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
@@ -91,15 +91,16 @@ func (o *IntegrateService) Integrate(integrateRequest *request.IntegrateRequest)
 	body := req.BodyJSON(integrateRequest)
 	resp := o.ServiceClient.Put(o.integrateURL(), headers.Header, body)
 
-	result := response.NewIntegration()
+	result := response.NewIntegrateStatus()
 	err = http.RespToBean(resp, result)
 
 	return result, err
 }
 
-//GetIntegrateStatus 模型集成相关: 获取集成状态
-//http://doc.bimface.com/book/restful/articles/api/integrate/get-integrate.html
-func (o *IntegrateService) GetIntegrateStatus(integrateID int64) (*response.Integration, *utils.Error) {
+//-----------------------------------------------------------------------------------
+
+//GetIntegrateStatusResp ***
+func (o *IntegrateService) GetIntegrateStatusResp(integrateID int64) (*req.Resp, *utils.Error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
@@ -109,17 +110,24 @@ func (o *IntegrateService) GetIntegrateStatus(integrateID int64) (*response.Inte
 	headers.AddOAuth2Header(accessToken.Token)
 
 	resp := o.ServiceClient.Get(o.getIntegrateURL(integrateID), headers.Header)
+	return resp, err
+}
 
-	result := response.NewIntegration()
+//GetIntegrateStatus 模型集成相关: 获取集成状态
+//http://doc.bimface.com/book/restful/articles/api/integrate/get-integrate.html
+func (o *IntegrateService) GetIntegrateStatus(integrateID int64) (*response.IntegrateStatus, *utils.Error) {
+	resp, err := o.GetIntegrateStatusResp(integrateID)
+	if err != nil {
+		return nil, err
+	}
+
+	result := response.NewIntegrateStatus()
 	err = http.RespToBean(resp, result)
 
 	return result, err
 }
 
-//GetIntegrate same to GetIntegrateStatus
-func (o *IntegrateService) GetIntegrate(integrateID int64) (*response.Integration, *utils.Error) {
-	return o.GetIntegrateStatus(integrateID)
-}
+//-----------------------------------------------------------------------------------
 
 //DeleteIntegrate 模型集成相关: 删除集成模型
 //http://doc.bimface.com/book/restful/articles/api/integrate/delete-integrate.html
