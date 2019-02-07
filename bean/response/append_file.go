@@ -6,13 +6,13 @@ package response
 
 //AppendFile ***
 type AppendFile struct {
-	AppendFileID int64
-	Name         string
-	Length       int64
-	Position     int64
-	Status       string
-	CreateTime   string
-	File         FileBean
+	ID         int64  `json:"appendFileId"`
+	Name       string `json:"name"`
+	Length     int64  `json:"length"`
+	Position   int64  `json:"position"`
+	Status     string `json:"status"`
+	CreateTime string `json:"createTime"`
+	File       FileBean
 }
 
 //NewAppendFile ***

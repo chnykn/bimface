@@ -10,7 +10,6 @@ import (
 	"github.com/chnykn/bimface/bean/request"
 	"github.com/chnykn/bimface/bean/response"
 	"github.com/chnykn/bimface/config"
-	"github.com/chnykn/bimface/http"
 	"github.com/chnykn/bimface/utils"
 )
 
@@ -43,12 +42,12 @@ type OfflineDatabagService struct {
 }
 
 //NewOfflineDatabagService ***
-func NewOfflineDatabagService(serviceClient *http.ServiceClient, endpoint *config.Endpoint,
+func NewOfflineDatabagService(serviceClient *utils.ServiceClient, endpoint *config.Endpoint,
 	credential *config.Credential, accessTokenService *AccessTokenService) *OfflineDatabagService {
 	o := &OfflineDatabagService{
 		AbstractService: AbstractService{
 			Endpoint:      endpoint,
-			ServiceClient: serviceClient, //http.NewServiceClient(),
+			ServiceClient: serviceClient, //utils.NewServiceClient(),
 		},
 		AccessTokenService: accessTokenService,
 	}
@@ -61,7 +60,7 @@ func NewOfflineDatabagService(serviceClient *http.ServiceClient, endpoint *confi
 func (o *OfflineDatabagService) createOfflineDatabagURL(kind string, xxID int64, callback string) string {
 	result := fmt.Sprintf(o.Endpoint.APIHost+createOfflineDatabagURI, kind, xxID)
 	if callback != "" {
-		result = result + "?callback=" + http.EncodeURI(callback)
+		result = result + "?callback=" + utils.EncodeURI(callback)
 	}
 	return result
 }
@@ -90,7 +89,7 @@ integrateId	Number	Y	通过集成模型ID创建离线数据包时必填
 compareId	Number	Y	通过模型对比ID创建离线数据包时必填
 callback	String	N	回调url
 ***/
-func (o *OfflineDatabagService) CreateOfflineDatabag(databagRequest *request.OfflineDatabagRequest) (*response.OfflineDatabag, *utils.Error) {
+func (o *OfflineDatabagService) CreateOfflineDatabag(databagRequest *request.OfflineDatabagRequest) (*response.OfflineDatabag, error) {
 
 	var url string
 	if databagRequest.FileID != nil {
@@ -101,7 +100,7 @@ func (o *OfflineDatabagService) CreateOfflineDatabag(databagRequest *request.Off
 		url = o.createOfflineDatabagURL("comparisions", *databagRequest.IntegrateID, databagRequest.Callback)
 	}
 	if url == "" {
-		return nil, utils.NewError("url is null", "url = '' @ OfflineDatabagService.createOfflineDatabag")
+		return nil, fmt.Errorf("url is null @ OfflineDatabagService.createOfflineDatabag")
 	}
 
 	accessToken, err := o.AccessTokenService.Get()
@@ -109,13 +108,13 @@ func (o *OfflineDatabagService) CreateOfflineDatabag(databagRequest *request.Off
 		return nil, err
 	}
 
-	headers := http.NewHeaders()
+	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
 	resp := o.ServiceClient.Put(url, headers.Header)
 
 	result := response.NewOfflineDatabag()
-	err = http.RespToBean(resp, result)
+	err = utils.RespToBean(resp, result)
 
 	return result, err
 }
@@ -130,7 +129,7 @@ fileId		Number	Y	通过文件转换ID创建离线数据包时必填
 integrateId	Number	Y	通过集成模型ID创建离线数据包时必填
 compareId	Number	Y	通过模型对比ID创建离线数据包时必填
 ***/
-func (o *OfflineDatabagService) QueryOfflineDatabag(databagRequest *request.OfflineDatabagRequest) ([]response.OfflineDatabag, *utils.Error) {
+func (o *OfflineDatabagService) QueryOfflineDatabag(databagRequest *request.OfflineDatabagRequest) ([]response.OfflineDatabag, error) {
 
 	var url string
 	if databagRequest.FileID != nil {
@@ -141,7 +140,7 @@ func (o *OfflineDatabagService) QueryOfflineDatabag(databagRequest *request.Offl
 		url = o.queryOfflineDatabagURL("comparisions", *databagRequest.IntegrateID)
 	}
 	if url == "" {
-		return nil, utils.NewError("url is null", "url = '' @ OfflineDatabagService.queryOfflineDatabag")
+		return nil, fmt.Errorf("url is null @ OfflineDatabagService.queryOfflineDatabag")
 	}
 
 	accessToken, err := o.AccessTokenService.Get()
@@ -149,13 +148,18 @@ func (o *OfflineDatabagService) QueryOfflineDatabag(databagRequest *request.Offl
 		return nil, err
 	}
 
-	headers := http.NewHeaders()
+	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
 	resp := o.ServiceClient.Get(url, headers.Header)
 
-	result, err := http.RespToBeans(resp, &response.OfflineDatabag{})
-	return result.([]response.OfflineDatabag), nil
+	result := make([]response.OfflineDatabag, 0)
+	err = utils.RespToBean(resp, &result)
+	if err != nil {
+		return nil, err
+	}
+
+	return result, nil
 }
 
 //-------------------------------------------------------------------------------
@@ -170,7 +174,7 @@ compareId		Number	Y	通过模型对比ID获取离线数据包下载地址时必�
 type			String	Y	值必须是“offline”
 databagVersion	String	N	数据包版本，如果只有一个，则下载唯一的数据包，如果多个，则必须指定数据包版本, 例如 3.0
 ***/
-func (o *OfflineDatabagService) GetOfflineDatabagDownloadURL(databagRequest *request.OfflineDatabagRequest) (string, *utils.Error) {
+func (o *OfflineDatabagService) GetOfflineDatabagDownloadURL(databagRequest *request.OfflineDatabagRequest) (string, error) {
 
 	var url string
 	if databagRequest.FileID != nil {
@@ -181,7 +185,7 @@ func (o *OfflineDatabagService) GetOfflineDatabagDownloadURL(databagRequest *req
 		url = o.downloadOfflineDatabagURL("comapreId", *databagRequest.IntegrateID, databagRequest.DatabagVersion)
 	}
 	if url == "" {
-		return "", utils.NewError("url is null", "url = '' @ OfflineDatabagService.queryOfflineDatabag")
+		return "", fmt.Errorf("url is null @ OfflineDatabagService.queryOfflineDatabag")
 	}
 
 	accessToken, err := o.AccessTokenService.Get()
@@ -189,13 +193,13 @@ func (o *OfflineDatabagService) GetOfflineDatabagDownloadURL(databagRequest *req
 		return "", err
 	}
 
-	headers := http.NewHeaders()
+	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
 	resp := o.ServiceClient.Get(url, headers.Header)
 
 	result := new(string)
-	err = http.RespToBean(resp, result)
+	err = utils.RespToBean(resp, result)
 
 	if err != nil {
 		return "", err

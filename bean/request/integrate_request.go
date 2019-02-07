@@ -6,11 +6,11 @@ package request
 
 //IntegrateSource ***
 type IntegrateSource struct {
-	FileID        int64 //必填
-	Specialty     string
-	SpecialtySort float64
-	Floor         string
-	FloorSort     float64
+	FileID        int64   `json:"fileId"` //必填
+	Specialty     string  `json:"specialty"`
+	SpecialtySort float64 `json:"specialtySort,omitempty"`
+	Floor         string  `json:"floor,omitempty"`
+	FloorSort     float64 `json:"floorSort,omitempty"`
 }
 
 //NewIntegrateSource ***
@@ -30,11 +30,11 @@ const (
 
 //IntegrateRequest ***
 type IntegrateRequest struct {
-	Name     string // 必填
-	Priority byte   // [1,2,3]  数字越大，优先级越低
-	Callback string
-	SourceID string             //TODO: shoud be *string type
-	Sources  []*IntegrateSource //必填
+	Name     string             `json:"name"`     // 必填
+	Priority byte               `json:"priority"` // [1,2,3]  数字越大，优先级越低
+	Callback string             `json:"callback,omitempty"`
+	SourceID string             `json:"sourceID,omitempty"`
+	Sources  []*IntegrateSource `json:"sources"` //必填
 }
 
 //NewIntegrateRequest ***

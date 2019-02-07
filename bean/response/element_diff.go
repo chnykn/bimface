@@ -6,9 +6,9 @@ package response
 
 //ElementAttr ***
 type ElementAttr struct {
-	Key   string //属性名
-	Value string //属性值
-	Unit  string //单位
+	Key   string `json:"key"`            //属性名
+	Value string `json:"value"`          //属性值
+	Unit  string `json:"unit,omitempty"` //单位
 }
 
 //ChangeAttrs ***
@@ -19,11 +19,11 @@ type ChangeAttrs struct {
 
 // ElementQty ***
 type ElementQty struct {
-	Code string  //工程量编码(用于运算)
-	Desc string  //工程量描述
-	Name string  //工程量名称(用于显示)
-	Unit string  //单位
-	Qty  float64 //数值
+	Name string  `json:"name"` //工程量名称(用于显示)
+	Code string  `json:"code"` //工程量编码(用于运算)
+	Desc string  `json:"des"`  //工程量描述
+	Unit string  `json:"unit"` //单位
+	Qty  float64 `json:"qty"`  //数值
 }
 
 //ChangeQtys ***
@@ -37,13 +37,13 @@ type ElementDiff struct {
 	A string //变化图元前一个版本的ID
 	B string //变化图元后一个版本的ID
 
-	NewAttributes    []ElementAttr
-	DeleteAttributes []ElementAttr
-	ChangeAttributes []ChangeAttrs
+	NewAttributes    []ElementAttr `json:"newAttributes"`
+	DeleteAttributes []ElementAttr `json:"deleteAttributes"`
+	ChangeAttributes []ChangeAttrs `json:"changeAttributes"`
 
-	NewQuantities    []ElementQty
-	DeleteQuantities []ElementQty
-	ChangeQuantities []ChangeQtys
+	NewQuantities    []ElementQty `json:"newQuantities"`
+	DeleteQuantities []ElementQty `json:"deleteQuantities"`
+	ChangeQuantities []ChangeQtys `json:"changeQuantities"`
 }
 
 //NewElementDiff ***

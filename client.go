@@ -7,8 +7,8 @@ package bimface
 import (
 	"github.com/chnykn/bimface/config"
 	"github.com/chnykn/bimface/consts"
-	"github.com/chnykn/bimface/http"
 	"github.com/chnykn/bimface/service"
+	"github.com/chnykn/bimface/utils"
 )
 
 // Client for binface SDK
@@ -16,7 +16,7 @@ type Client struct {
 	credential *config.Credential
 	endpoint   *config.Endpoint
 
-	serviceClient      *http.ServiceClient
+	serviceClient      *utils.ServiceClient
 	AccessTokenService *service.AccessTokenService
 	SupportFileService *service.SupportFileService
 
@@ -45,7 +45,7 @@ func NewClient(appKey string, appSecret string, endpoint *config.Endpoint) *Clie
 	o := &Client{
 		credential:    config.NewCredential(appKey, appSecret),
 		endpoint:      endpoint,
-		serviceClient: http.NewServiceClient(),
+		serviceClient: utils.NewServiceClient(),
 	}
 	o.AccessTokenService = service.NewAccessTokenService(o.serviceClient, o.endpoint, o.credential)
 	o.SupportFileService = service.NewSupportFileService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)

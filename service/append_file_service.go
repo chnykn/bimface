@@ -10,7 +10,6 @@ import (
 
 	"github.com/chnykn/bimface/bean/response"
 	"github.com/chnykn/bimface/config"
-	"github.com/chnykn/bimface/http"
 	"github.com/chnykn/bimface/utils"
 )
 
@@ -28,13 +27,13 @@ type AppendFileService struct {
 }
 
 //NewAppendFileService ***
-func NewAppendFileService(serviceClient *http.ServiceClient, endpoint *config.Endpoint,
+func NewAppendFileService(serviceClient *utils.ServiceClient, endpoint *config.Endpoint,
 	credential *config.Credential, accessTokenService *AccessTokenService,
 	supportFileService *SupportFileService) *AppendFileService {
 	o := &AppendFileService{
 		AbstractService: AbstractService{
 			Endpoint:      endpoint,
-			ServiceClient: serviceClient, //http.NewServiceClient(),
+			ServiceClient: serviceClient, //utils.NewServiceClient(),
 		},
 		AccessTokenService: accessTokenService,
 		SupportFileService: supportFileService,
@@ -71,7 +70,7 @@ name		String	Y	文件的全名，使用URL编码（UTF-8），最多256个字符
 sourceId	String	N	调用方的文件源ID，不能重复
 length		Number	Y	上传文件长度
 ***/
-func (o *AppendFileService) createAppendFile(fileName string, length int64, sourceID string) (*response.AppendFile, *utils.Error) {
+func (o *AppendFileService) createAppendFile(fileName string, length int64, sourceID string) (*response.AppendFile, error) {
 
 	err := utils.CheckFileName(fileName)
 	if err != nil {
@@ -95,13 +94,13 @@ func (o *AppendFileService) createAppendFile(fileName string, length int64, sour
 		return nil, err
 	}
 
-	headers := http.NewHeaders()
+	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
 	resp := o.ServiceClient.Post(o.createAppendFileURL(fileName, length, sourceID), headers.Header)
 
 	result := response.NewAppendFile()
-	err = http.RespToBean(resp, result)
+	err = utils.RespToBean(resp, result)
 
 	return result, err
 }
@@ -112,14 +111,14 @@ func (o *AppendFileService) createAppendFile(fileName string, length int64, sour
 字段			类型	必填	描述
 appendFileId	Number	Y	append file id
 ***/
-func (o *AppendFileService) QueryAppendFileWithAccessToken(appendFileID int64, token string) (*response.AppendFile, *utils.Error) {
-	headers := http.NewHeaders()
+func (o *AppendFileService) QueryAppendFileWithAccessToken(appendFileID int64, token string) (*response.AppendFile, error) {
+	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(token)
 
 	resp := o.ServiceClient.Get(o.queryAppendFileURL(appendFileID), headers.Header)
 
 	result := response.NewAppendFile()
-	err := http.RespToBean(resp, result)
+	err := utils.RespToBean(resp, result)
 
 	return result, err
 }
@@ -129,7 +128,7 @@ func (o *AppendFileService) QueryAppendFileWithAccessToken(appendFileID int64, t
 字段			类型	必填	描述
 appendFileId	Number	Y	append file id
 ***/
-func (o *AppendFileService) QueryAppendFile(appendFileID int64) (*response.AppendFile, *utils.Error) {
+func (o *AppendFileService) QueryAppendFile(appendFileID int64) (*response.AppendFile, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
@@ -145,7 +144,7 @@ func (o *AppendFileService) QueryAppendFile(appendFileID int64) (*response.Appen
 appendFileId	Number	Y	追加文件id
 position		Number	N	追加上传开始位置，默认为0
 ***/
-func (o *AppendFileService) UploadAppendFile(file *multipart.FileHeader, appendFileID int64) (*response.AppendFile, *utils.Error) {
+func (o *AppendFileService) UploadAppendFile(file *multipart.FileHeader, appendFileID int64) (*response.AppendFile, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
@@ -161,7 +160,7 @@ func (o *AppendFileService) UploadAppendFile(file *multipart.FileHeader, appendF
 
 	data, ferr := file.Open()
 	if ferr != nil {
-		return nil, utils.NewError(ferr.Error(), "file.Open() @ AppendFileService.uploadAppendFile")
+		return nil, ferr
 	}
 	defer data.Close()
 
@@ -171,13 +170,13 @@ func (o *AppendFileService) UploadAppendFile(file *multipart.FileHeader, appendF
 
 	//------------------------------
 
-	headers := http.NewHeaders()
+	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
 	resp := o.ServiceClient.Post(o.uploadAppendFileURL(appendFileID, appendFile.Position), headers.Header, buf)
 
 	result := response.NewAppendFile()
-	err = http.RespToBean(resp, result)
+	err = utils.RespToBean(resp, result)
 
 	return result, err
 }

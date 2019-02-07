@@ -10,7 +10,6 @@ import (
 	"github.com/chnykn/bimface/bean/request"
 	"github.com/chnykn/bimface/bean/response"
 	"github.com/chnykn/bimface/config"
-	"github.com/chnykn/bimface/http"
 	"github.com/chnykn/bimface/utils"
 
 	"github.com/imroc/req"
@@ -28,12 +27,12 @@ type TranslateService struct {
 }
 
 //NewTranslateService ***
-func NewTranslateService(serviceClient *http.ServiceClient, endpoint *config.Endpoint,
+func NewTranslateService(serviceClient *utils.ServiceClient, endpoint *config.Endpoint,
 	credential *config.Credential, accessTokenService *AccessTokenService) *TranslateService {
 	o := &TranslateService{
 		AbstractService: AbstractService{
 			Endpoint:      endpoint,
-			ServiceClient: serviceClient, //http.NewServiceClient(),
+			ServiceClient: serviceClient, //utils.NewServiceClient(),
 		},
 		AccessTokenService: accessTokenService,
 	}
@@ -66,20 +65,20 @@ config		Json Object	N	转换引擎自定义参数，config参数跟转换引擎�
 							例如转换时添加内置材质，则添加参数值{“texture”:true}，
 							添加外部材质时参考“使用模型外置材质场景”请求报文{“texture”:true}等
 ***/
-func (o *TranslateService) Translate(transRequest *request.TranslateRequest) (*response.TranslateStatus, *utils.Error) {
+func (o *TranslateService) Translate(transRequest *request.TranslateRequest) (*response.TranslateStatus, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
 	}
 
-	headers := http.NewHeaders()
+	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
 	body := req.BodyJSON(transRequest)
 	resp := o.ServiceClient.Put(o.translateURL(), body, headers.Header)
 
 	result := response.NewTranslateStatus()
-	err = http.RespToBean(resp, result)
+	err = utils.RespToBean(resp, result)
 
 	return result, err
 }
@@ -87,13 +86,13 @@ func (o *TranslateService) Translate(transRequest *request.TranslateRequest) (*r
 //-----------------------------------------------------------------------------------
 
 //GetTranslateStatusResp ***
-func (o *TranslateService) GetTranslateStatusResp(fileID int64) (*req.Resp, *utils.Error) {
+func (o *TranslateService) GetTranslateStatusResp(fileID int64) (*req.Resp, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
 	}
 
-	headers := http.NewHeaders()
+	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
 	resp := o.ServiceClient.Get(o.getTranslateURL(fileID), headers.Header)
@@ -102,14 +101,14 @@ func (o *TranslateService) GetTranslateStatusResp(fileID int64) (*req.Resp, *uti
 
 //GetTranslateStatus 文件转换相关: 获取转换状态
 //http://static.bimface.com/book/restful/articles/api/translate/get-translate.html
-func (o *TranslateService) GetTranslateStatus(fileID int64) (*response.TranslateStatus, *utils.Error) {
+func (o *TranslateService) GetTranslateStatus(fileID int64) (*response.TranslateStatus, error) {
 	resp, err := o.GetTranslateStatusResp(fileID)
 	if err != nil {
 		return nil, err
 	}
 
 	result := response.NewTranslateStatus()
-	err = http.RespToBean(resp, result)
+	err = utils.RespToBean(resp, result)
 
 	return result, err
 }

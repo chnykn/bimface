@@ -7,9 +7,7 @@ package service
 import (
 	"fmt"
 
-	"github.com/chnykn/bimface/bean"
 	"github.com/chnykn/bimface/config"
-	"github.com/chnykn/bimface/http"
 	"github.com/chnykn/bimface/utils"
 )
 
@@ -22,12 +20,12 @@ type DrawingSheetsService struct {
 }
 
 //NewDrawingSheetsService ***
-func NewDrawingSheetsService(serviceClient *http.ServiceClient, endpoint *config.Endpoint,
+func NewDrawingSheetsService(serviceClient *utils.ServiceClient, endpoint *config.Endpoint,
 	credential *config.Credential, accessTokenService *AccessTokenService) *DrawingSheetsService {
 	o := &DrawingSheetsService{
 		AbstractService: AbstractService{
 			Endpoint:      endpoint,
-			ServiceClient: serviceClient, //http.NewServiceClient(),
+			ServiceClient: serviceClient, //utils.NewServiceClient(),
 		},
 		AccessTokenService: accessTokenService,
 	}
@@ -106,23 +104,22 @@ func (o *DrawingSheetsService) getDrawingSheetsURI(fileID int64) string {
 	{...same as above ...}
 ]
 */
-func (o *DrawingSheetsService) GetDrawingSheets(fileID int64) (*map[string]interface{}, *utils.Error) {
+func (o *DrawingSheetsService) GetDrawingSheets(fileID int64) (map[string]interface{}, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
 	}
 
-	headers := http.NewHeaders()
+	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
 	resp := o.ServiceClient.Get(o.getDrawingSheetsURI(fileID), headers.Header)
 
-	var result *bean.GeneralResponse
-	result, err = http.RespToGeneralResponse(resp)
-
-	if err == nil {
-		return result.Data.(*map[string]interface{}), nil
+	result := make(map[string]interface{})
+	err = utils.RespToBean(resp, &result)
+	if err != nil {
+		return nil, err
 	}
 
-	return nil, err
+	return result, nil
 }

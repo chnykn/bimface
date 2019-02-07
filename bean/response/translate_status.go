@@ -6,13 +6,13 @@ package response
 
 //TranslateStatus ***
 type TranslateStatus struct {
-	FileID     int64
-	Name       string
-	Priority   int64
-	Status     string
-	Thumbnail  []string // thumbnail http links
-	Reason     string
-	CreateTime string
+	FileID     int64    `json:"fileId"`
+	Name       string   `json:"name"`
+	Priority   int64    `json:"priority"`
+	Status     string   `json:"status"`
+	Thumbnail  []string `json:"thumbnail"` // thumbnail http links
+	Reason     string   `json:"reason"`
+	CreateTime string   `json:"createTime"`
 }
 
 //NewTranslateStatus ***

@@ -6,13 +6,13 @@ package response
 
 //IntegrateStatus ***
 type IntegrateStatus struct {
-	IntegrateID int64
-	Name        string
-	Priority    int64
-	Status      string
-	Thumbnail   []string
-	Reason      string
-	CreateTime  string
+	ID         int64    `json:"integrateId"`
+	Name       string   `json:"name"`
+	Priority   int64    `json:"priority"`
+	Status     string   `json:"status"`
+	Thumbnail  []string `json:"thumbnail"`
+	Reason     string   `json:"reason"`
+	CreateTime string   `json:"createTime"`
 }
 
 //NewIntegrateStatus ***

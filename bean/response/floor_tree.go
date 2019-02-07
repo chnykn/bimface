@@ -6,8 +6,8 @@ package response
 
 //FloorSpecialty Specialty in floor
 type FloorSpecialty struct {
-	Specialty  string
-	Categories []Category
+	Specialty  string     `json:"specialty"`
+	Categories []Category `json:"categories"`
 }
 
 //NewFloorSpecialty ***
@@ -23,14 +23,14 @@ func NewFloorSpecialty(specialty string) *FloorSpecialty {
 
 //Floor ***
 type Floor struct {
-	Floor       string
-	Specialties []FloorSpecialty
+	Name        string           `json:"floor"`
+	Specialties []FloorSpecialty `json:"specialties"`
 }
 
 //NewFloor ***
-func NewFloor(floor string) *Floor {
+func NewFloor(name string) *Floor {
 	o := &Floor{
-		Floor:       floor,
+		Name:        name,
 		Specialties: make([]FloorSpecialty, 0),
 	}
 	return o
@@ -40,8 +40,8 @@ func NewFloor(floor string) *Floor {
 
 //FloorTree ***
 type FloorTree struct {
-	TreeType int64
-	Tree     []Floor
+	TreeType int64   `json:"treeType"`
+	Tree     []Floor `json:"tree"`
 }
 
 //NewFloorTree ***

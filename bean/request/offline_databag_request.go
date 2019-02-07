@@ -6,11 +6,11 @@ package request
 
 //OfflineDatabagRequest ***
 type OfflineDatabagRequest struct {
-	FileID         *int64 // FileID IntegrateID CompareID 三者只能有一个填写
-	IntegrateID    *int64
-	CompareID      *int64
-	Callback       string
-	DatabagVersion string
+	FileID         *int64 `json:"fileId,omitempty"` // FileID IntegrateID CompareID 三者只能有一个填写
+	IntegrateID    *int64 `json:"integrateId,omitempty"`
+	CompareID      *int64 `json:"compareId,omitempty"`
+	Callback       string `json:"callback,omitempty"`
+	DatabagVersion string `json:"databagVersion,omitempty"`
 }
 
 //NewOfflineDatabagRequest ***

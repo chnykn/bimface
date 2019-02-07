@@ -8,8 +8,8 @@ import "fmt"
 
 //ShareLink ***
 type ShareLink struct {
-	URL        string
-	ExpireTime string
+	URL        string `json:"url"`
+	ExpireTime string `json:"expireTime"`
 }
 
 //NewShareLink ***

@@ -8,7 +8,6 @@ import (
 	"fmt"
 
 	"github.com/chnykn/bimface/config"
-	"github.com/chnykn/bimface/http"
 	"github.com/chnykn/bimface/utils"
 
 	"github.com/imroc/req"
@@ -24,12 +23,12 @@ type DownloadService struct {
 }
 
 //NewDownloadService ***
-func NewDownloadService(serviceClient *http.ServiceClient, endpoint *config.Endpoint,
+func NewDownloadService(serviceClient *utils.ServiceClient, endpoint *config.Endpoint,
 	credential *config.Credential, accessTokenService *AccessTokenService) *DownloadService {
 	o := &DownloadService{
 		AbstractService: AbstractService{
 			Endpoint:      endpoint,
-			ServiceClient: serviceClient, //http.NewServiceClient(),
+			ServiceClient: serviceClient, //utils.NewServiceClient(),
 		},
 		AccessTokenService: accessTokenService,
 	}
@@ -56,19 +55,19 @@ func (o *DownloadService) downloadURL(fileID int64, fileName string) string {
 fileId	Number	Y	文件Id
 name	String	N	自定义文件下载名
 ***/
-func (o *DownloadService) GetDownloadURL(fileID int64, fileName string) (string, *utils.Error) {
+func (o *DownloadService) GetDownloadURL(fileID int64, fileName string) (string, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return "", err
 	}
 
-	headers := http.NewHeaders()
+	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
 	resp := o.ServiceClient.Get(o.downloadURL(fileID, fileName), headers.Header)
 
 	result := new(string)
-	err = http.RespToBean(resp, result)
+	err = utils.RespToBean(resp, result)
 
 	return *result, err
 }
@@ -79,7 +78,7 @@ func (o *DownloadService) GetDownloadURL(fileID int64, fileName string) (string,
 fileId	Number	Y	文件Id
 name	String	N	自定义文件下载名
 ***/
-func (o *DownloadService) GetDownloadResp(fileID int64, fileName string) (*req.Resp, *utils.Error) {
+func (o *DownloadService) GetDownloadResp(fileID int64, fileName string) (*req.Resp, error) {
 	fileURL, err := o.GetDownloadURL(fileID, fileName)
 
 	if err == nil {

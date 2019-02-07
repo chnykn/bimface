@@ -5,6 +5,7 @@
 package utils
 
 import (
+	"fmt"
 	"path"
 	"strings"
 )
@@ -32,34 +33,34 @@ func getSuffix(fileName string) string {
 }
 
 //CheckFileName ***
-func CheckFileName(fileName string) *Error {
+func CheckFileName(fileName string) error {
 	if fileName == "" {
-		return NewError("invalid.filename", "File name must not be empty.")
+		return fmt.Errorf("file name must not be empty")
 	}
 
 	if len(fileName) > 256 {
-		return NewError("invalid.filename", "File name too long, no more than 256 characters.")
+		return fmt.Errorf("file name too long, no more than 256 characters")
 	}
 
 	suffix := getSuffix(fileName)
 	if suffix == "" {
-		return NewError("invalid.filename", "File name has no suffix.")
+		return fmt.Errorf("file name has no suffix")
 	}
 
 	if containsIllegalChar(fileName) {
-		return NewError("invalid.filename", "File name contains illegal character.")
+		return fmt.Errorf("file name contains illegal character")
 	}
 
 	return nil
 }
 
 //CheckFileType ***
-func CheckFileType(allSupportedType []string, fileName string) *Error {
+func CheckFileType(allSupportedType []string, fileName string) error {
 	suffix := strings.ToLower(getSuffix(fileName))
 
 	for _, typ := range allSupportedType {
 		if suffix == strings.ToLower(typ) {
-			return NewError("invalid.filetype", "File type not supported.")
+			return fmt.Errorf("file type not supported")
 		}
 	}
 

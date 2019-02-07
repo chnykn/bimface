@@ -8,7 +8,7 @@ import (
 	"os"
 	"path"
 
-	"github.com/chnykn/bimface/http"
+	"github.com/chnykn/bimface/utils"
 )
 
 //FileUploadRequest ***
@@ -48,7 +48,7 @@ func NewFileUploadRequest(localFile string) *FileUploadRequest {
 	}
 
 	o := &FileUploadRequest{
-		Name:          http.EncodeURI(fileName),
+		Name:          utils.EncodeURI(fileName),
 		ContentLength: fileLen,
 		InputStream:   fileBuf,
 	}

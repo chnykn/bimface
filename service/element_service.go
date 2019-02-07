@@ -9,7 +9,6 @@ import (
 
 	"github.com/chnykn/bimface/bean/response"
 	"github.com/chnykn/bimface/config"
-	"github.com/chnykn/bimface/http"
 	"github.com/chnykn/bimface/utils"
 
 	"github.com/imroc/req"
@@ -30,12 +29,12 @@ type ElementService struct {
 }
 
 //NewElementService ***
-func NewElementService(serviceClient *http.ServiceClient, endpoint *config.Endpoint,
+func NewElementService(serviceClient *utils.ServiceClient, endpoint *config.Endpoint,
 	credential *config.Credential, accessTokenService *AccessTokenService) *ElementService {
 	o := &ElementService{
 		AbstractService: AbstractService{
 			Endpoint:      endpoint,
-			ServiceClient: serviceClient, //http.NewServiceClient(),
+			ServiceClient: serviceClient, //utils.NewServiceClient(),
 		},
 		AccessTokenService: accessTokenService,
 	}
@@ -56,13 +55,13 @@ func (o *ElementService) integrateElementURL(integrateID int64) string {
 //-----------------------------------------------------------------------------------
 
 //GetElementsResp ***
-func (o *ElementService) GetElementsResp(fileID int64, params req.QueryParam) (*req.Resp, *utils.Error) {
+func (o *ElementService) GetElementsResp(fileID int64, params req.QueryParam) (*req.Resp, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
 	}
 
-	headers := http.NewHeaders()
+	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
 	resp := o.ServiceClient.Get(o.elementURL(fileID), params, headers.Header)
@@ -71,25 +70,26 @@ func (o *ElementService) GetElementsResp(fileID int64, params req.QueryParam) (*
 
 //GetElementsWithParams 文件转换相关: 获取文件转换的构件列表
 //必填参数: fileID
-func (o *ElementService) GetElementsWithParams(fileID int64, params req.QueryParam) ([]string, *utils.Error) {
+func (o *ElementService) GetElementsWithParams(fileID int64, params req.QueryParam) ([]string, error) {
 	resp, err := o.GetElementsResp(fileID, params)
 	if err != nil {
 		return nil, err
 	}
 
-	result, err := http.RespToBeans(resp, new(string))
+	result := make([]string, 0)
+	err = utils.RespToBean(resp, &result)
 	if err != nil {
 		return nil, err
 	}
 
-	return result.([]string), nil
+	return result, nil
 }
 
 //GetElements 文件转换相关: 获取文件转换的构件列表
-//http://doc.bimface.com/book/restful/articles/api/integrate/get-integrate-element.html
+//http://doc.bimface.com/book/restful/articles/api/translate/get-ele-ids.html
 /***
 字段		类型	必填	描述
-integrateId	Number	Y	集成ID
+fileId		Number	Y	文件ID
 specialty	String	N	专业
 floor		String	N	楼层
 categoryId	String	N	构件分类ID
@@ -97,7 +97,7 @@ family		String	N	族
 familyType	String	N	族类型
 ***/
 func (o *ElementService) GetElements(fileID int64, floor, specialty, categoryID,
-	family, familyType string) ([]string, *utils.Error) {
+	family, familyType string) ([]string, error) {
 
 	params := make(req.QueryParam)
 	if floor != "" {
@@ -122,13 +122,13 @@ func (o *ElementService) GetElements(fileID int64, floor, specialty, categoryID,
 //-----------------------------------------------------------------------------------
 
 //GetIntegrationElementsResp ***
-func (o *ElementService) GetIntegrationElementsResp(integrateID int64, params req.QueryParam) (*req.Resp, *utils.Error) {
+func (o *ElementService) GetIntegrationElementsResp(integrateID int64, params req.QueryParam) (*req.Resp, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
 	}
 
-	headers := http.NewHeaders()
+	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
 	resp := o.ServiceClient.Get(o.integrateElementURL(integrateID), params, headers.Header)
@@ -136,23 +136,23 @@ func (o *ElementService) GetIntegrationElementsResp(integrateID int64, params re
 }
 
 //GetIntegrationElementsWithParams ***
-func (o *ElementService) GetIntegrationElementsWithParams(integrateID int64, params req.QueryParam) (*response.Elements, *utils.Error) {
+func (o *ElementService) GetIntegrationElementsWithParams(integrateID int64, params req.QueryParam) (*response.Elements, error) {
 	resp, err := o.GetIntegrationElementsResp(integrateID, params)
 	if err != nil {
 		return nil, err
 	}
 
 	result := response.NewElements()
-	err = http.RespToBean(resp, result)
+	err = utils.RespToBean(resp, result)
 
 	return result, err
 }
 
 //GetIntegrationElements 模型集成相关: 获取集成的构件列表
-//http://doc.bimface.com/book/restful/articles/api/translate/get-ele-ids.html
+//http://doc.bimface.com/book/restful/articles/api/integrate/get-integrate-element.html
 /***
 字段		类型	必填	描述
-fileId		Number	Y	文件ID
+integrateId	Number	Y	集成ID
 specialty	String	N	专业
 floor		String	N	楼层
 categoryId	String	N	构件分类ID
@@ -160,7 +160,7 @@ family		String	N	族
 familyType	String	N	族类型
 ***/
 func (o *ElementService) GetIntegrationElements(fileID int64, floor, specialty, categoryID,
-	family, familyType string) (*response.Elements, *utils.Error) {
+	family, familyType string) (*response.Elements, error) {
 
 	params := make(req.QueryParam)
 	if floor != "" {

@@ -8,8 +8,8 @@ import "fmt"
 
 //SupportFile ***
 type SupportFile struct {
-	Length int64
-	Types  []string
+	Length int64    `json:"length"`
+	Types  []string `json:"types"`
 }
 
 //NewSupportFile ***

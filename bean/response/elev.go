@@ -18,15 +18,15 @@ package response
 
 //Elev ***
 type Elev struct {
-	ID         string
-	Name       string
-	ArchElev   int64
-	StructElev int64
-	Elevation  int64
-	Areas      string
-	Height     string
-	MiniMap    string //minimap picture httplink
-	Rooms      string
+	ID         string  `json:"id"`
+	Name       string  `json:"name"`
+	Elevation  float64 `json:"elevation"`
+	ArchElev   float64 `json:"archElev"`
+	StructElev float64 `json:"structElev"`
+	MiniMap    string  `json:"miniMap"`
+	Areas      string  `json:"areas,omitempty"`
+	Height     string  `json:"height,omitempty"`
+	Rooms      string  `json:"rooms,omitempty"`
 }
 
 //NewElev ***

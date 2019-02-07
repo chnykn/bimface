@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package http
+package utils
 
 import (
 	"github.com/imroc/req"
@@ -26,11 +26,11 @@ type ServiceClient struct {
 }
 
 // the v ...interface{} params can be
-// Headers : req.Header, http.Header
+// Headers : req.Header, utils.Header
 // Params  : req.Param, req.QueryParam, url.Values
 // Body    : *req.bodyJson, *req.bodyXml, string, []byte, bytes.Buffer
 // Files   : req.FileUpload, []FileUpload
-// Cookie  : http.Cookie
+// Cookie  : utils.Cookie
 // Callback: req.UploadProgress, req.DownloadProgress
 
 //Get ***

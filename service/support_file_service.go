@@ -7,7 +7,6 @@ package service
 import (
 	"github.com/chnykn/bimface/bean/response"
 	"github.com/chnykn/bimface/config"
-	"github.com/chnykn/bimface/http"
 	"github.com/chnykn/bimface/utils"
 )
 
@@ -25,12 +24,12 @@ type SupportFileService struct {
 }
 
 //NewSupportFileService ***
-func NewSupportFileService(serviceClient *http.ServiceClient, endpoint *config.Endpoint,
+func NewSupportFileService(serviceClient *utils.ServiceClient, endpoint *config.Endpoint,
 	credential *config.Credential, accessTokenService *AccessTokenService) *SupportFileService {
 	o := &SupportFileService{
 		AbstractService: AbstractService{
 			Endpoint:      endpoint,
-			ServiceClient: serviceClient, //http.NewServiceClient(),
+			ServiceClient: serviceClient, //utils.NewServiceClient(),
 		},
 		AccessTokenService: accessTokenService,
 	}
@@ -45,15 +44,15 @@ func (o *SupportFileService) supportFileURL() string {
 }
 
 //GetSupportWithAccessToken ***
-func (o *SupportFileService) GetSupportWithAccessToken(token string) (*response.SupportFile, *utils.Error) {
+func (o *SupportFileService) GetSupportWithAccessToken(token string) (*response.SupportFile, error) {
 
-	headers := http.NewHeaders()
+	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(token)
 
 	resp := o.ServiceClient.Get(o.supportFileURL(), headers.Header)
 
 	result := response.NewSupportFile()
-	err := http.RespToBean(resp, result)
+	err := utils.RespToBean(resp, result)
 
 	return result, err
 
@@ -61,7 +60,7 @@ func (o *SupportFileService) GetSupportWithAccessToken(token string) (*response.
 }
 
 //GetSupport ***
-func (o *SupportFileService) GetSupport() (*response.SupportFile, *utils.Error) {
+func (o *SupportFileService) GetSupport() (*response.SupportFile, error) {
 
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {

@@ -6,11 +6,11 @@ package service
 
 import (
 	"github.com/chnykn/bimface/config"
-	"github.com/chnykn/bimface/http"
+	"github.com/chnykn/bimface/utils"
 )
 
 //AbstractService ***
 type AbstractService struct {
 	Endpoint      *config.Endpoint
-	ServiceClient *http.ServiceClient
+	ServiceClient *utils.ServiceClient
 }

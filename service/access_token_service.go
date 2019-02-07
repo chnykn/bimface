@@ -7,7 +7,6 @@ package service
 import (
 	"github.com/chnykn/bimface/bean/response"
 	"github.com/chnykn/bimface/config"
-	"github.com/chnykn/bimface/http"
 	"github.com/chnykn/bimface/utils"
 )
 
@@ -24,12 +23,12 @@ type AccessTokenService struct {
 
 //NewAccessTokenService 获取AccessToken
 //http://static.bimface.com/book/restful/articles/api/accesstoken.html
-func NewAccessTokenService(serviceClient *http.ServiceClient,
+func NewAccessTokenService(serviceClient *utils.ServiceClient,
 	endpoint *config.Endpoint, credential *config.Credential) *AccessTokenService {
 	o := &AccessTokenService{
 		AbstractService: AbstractService{
 			Endpoint:      endpoint,
-			ServiceClient: serviceClient, //http.NewServiceClient(),
+			ServiceClient: serviceClient, //utils.NewServiceClient(),
 		},
 		Credential:         credential,
 		AccessTokenStorage: config.NewAccessTokenStorage(),
@@ -45,9 +44,9 @@ func (o *AccessTokenService) accessTokenURL() string {
 }
 
 //Get ***
-func (o *AccessTokenService) Get() (*response.AccessToken, *utils.Error) {
+func (o *AccessTokenService) Get() (*response.AccessToken, error) {
 	accessToken := o.AccessTokenStorage.Get()
-	var err *utils.Error
+	var err error
 
 	if accessToken == nil {
 		accessToken, err = o.Grant()
@@ -59,13 +58,13 @@ func (o *AccessTokenService) Get() (*response.AccessToken, *utils.Error) {
 }
 
 //Grant ***
-func (o *AccessTokenService) Grant() (*response.AccessToken, *utils.Error) {
-	headers := http.NewHeaders()
+func (o *AccessTokenService) Grant() (*response.AccessToken, error) {
+	headers := utils.NewHeaders()
 	headers.AddBasicAuthHeader(o.Credential.AppKey, o.Credential.AppSecret)
 	resp := o.ServiceClient.Post(o.accessTokenURL(), headers.Header)
 
 	result := response.NewAccessToken("", "")
-	err := http.RespToBean(resp, result)
+	err := utils.RespToBean(resp, result)
 
 	return result, err
 }

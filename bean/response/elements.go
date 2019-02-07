@@ -8,8 +8,8 @@ import "github.com/chnykn/bimface/bean/common"
 
 //Element ***
 type Element struct {
-	FileID    string
-	ElementID string
+	FileID    string `json:"fileId"`
+	ElementID string `json:"elementId"`
 }
 
 //NewElement ***
@@ -25,8 +25,8 @@ func NewElement(fileID string, elementID string) *Element {
 
 //Elements ***
 type Elements struct {
-	Elements    []Element
-	BoundingBox common.BoundingBox
+	Elements    []Element          `json:"elements"`
+	BoundingBox common.BoundingBox `json:"boundingBox"`
 }
 
 //NewElements ***

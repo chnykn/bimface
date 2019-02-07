@@ -6,10 +6,10 @@ package response
 
 //OfflineDatabag ***
 type OfflineDatabag struct {
-	DatabagVersion string
-	Status         string
-	Reason         string
-	CreateTime     string
+	DatabagVersion string `json:"databagVersion"`
+	Status         string `json:"status"`
+	Reason         string `json:"reason"`
+	CreateTime     string `json:"createTime"`
 }
 
 //NewOfflineDatabag ***

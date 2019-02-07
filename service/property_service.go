@@ -9,7 +9,6 @@ import (
 
 	"github.com/chnykn/bimface/bean/response"
 	"github.com/chnykn/bimface/config"
-	"github.com/chnykn/bimface/http"
 	"github.com/chnykn/bimface/utils"
 	"github.com/imroc/req"
 )
@@ -28,12 +27,12 @@ type PropertyService struct {
 }
 
 //NewPropertyService ***
-func NewPropertyService(serviceClient *http.ServiceClient, endpoint *config.Endpoint,
+func NewPropertyService(serviceClient *utils.ServiceClient, endpoint *config.Endpoint,
 	credential *config.Credential, accessTokenService *AccessTokenService) *PropertyService {
 	o := &PropertyService{
 		AbstractService: AbstractService{
 			Endpoint:      endpoint,
-			ServiceClient: serviceClient, //http.NewServiceClient(),
+			ServiceClient: serviceClient, //utils.NewServiceClient(),
 		},
 		AccessTokenService: accessTokenService,
 	}
@@ -54,13 +53,13 @@ func (o *PropertyService) integratePropertyURL(integrateID, fileID int64, elemen
 //-----------------------------------------------------------------------------------
 
 //GetElementPropertyResp ***
-func (o *PropertyService) GetElementPropertyResp(fileID int64, elementID string) (*req.Resp, *utils.Error) {
+func (o *PropertyService) GetElementPropertyResp(fileID int64, elementID string) (*req.Resp, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
 	}
 
-	headers := http.NewHeaders()
+	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
 	resp := o.ServiceClient.Get(o.propertyURL(fileID, elementID), headers.Header)
@@ -74,14 +73,14 @@ func (o *PropertyService) GetElementPropertyResp(fileID int64, elementID string)
 fileId		Number	Y	文件ID
 elementId	String	Y	构件ID
 ***/
-func (o *PropertyService) GetElementProperty(fileID int64, elementID string) (*response.PropertyPack, *utils.Error) {
+func (o *PropertyService) GetElementProperty(fileID int64, elementID string) (*response.PropertyPack, error) {
 	resp, err := o.GetElementPropertyResp(fileID, elementID)
 	if err != nil {
 		return nil, err
 	}
 
 	result := response.NewPropertyPack(elementID)
-	err = http.RespToBean(resp, result)
+	err = utils.RespToBean(resp, result)
 
 	return result, err
 }
@@ -89,13 +88,13 @@ func (o *PropertyService) GetElementProperty(fileID int64, elementID string) (*r
 //-----------------------------------------------------------------------------------
 
 //GetIntegrateElementPropertyResp ***
-func (o *PropertyService) GetIntegrateElementPropertyResp(integrateID, fileID int64, elementID string) (*req.Resp, *utils.Error) {
+func (o *PropertyService) GetIntegrateElementPropertyResp(integrateID, fileID int64, elementID string) (*req.Resp, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
 	}
 
-	headers := http.NewHeaders()
+	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
 	resp := o.ServiceClient.Get(o.integratePropertyURL(integrateID, fileID, elementID), headers.Header)
@@ -109,14 +108,14 @@ func (o *PropertyService) GetIntegrateElementPropertyResp(integrateID, fileID in
 fileId		Number	Y	文件ID
 elementId	String	Y	构件ID
 ***/
-func (o *PropertyService) GetIntegrateElementProperty(integrateID, fileID int64, elementID string) (*response.PropertyPack, *utils.Error) {
+func (o *PropertyService) GetIntegrateElementProperty(integrateID, fileID int64, elementID string) (*response.PropertyPack, error) {
 	resp, err := o.GetIntegrateElementPropertyResp(integrateID, fileID, elementID)
 	if err != nil {
 		return nil, err
 	}
 
 	result := response.NewPropertyPack(elementID)
-	err = http.RespToBean(resp, result)
+	err = utils.RespToBean(resp, result)
 
 	return result, err
 }

@@ -8,11 +8,9 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/chnykn/bimface/bean"
 	"github.com/chnykn/bimface/bean/request"
 	"github.com/chnykn/bimface/bean/response"
 	"github.com/chnykn/bimface/config"
-	"github.com/chnykn/bimface/http"
 	"github.com/chnykn/bimface/utils"
 )
 
@@ -34,12 +32,12 @@ type UploadService struct {
 }
 
 //NewUploadService ***
-func NewUploadService(serviceClient *http.ServiceClient, endpoint *config.Endpoint,
+func NewUploadService(serviceClient *utils.ServiceClient, endpoint *config.Endpoint,
 	credential *config.Credential, accessTokenService *AccessTokenService) *UploadService {
 	o := &UploadService{
 		AbstractService: AbstractService{
 			Endpoint:      endpoint,
-			ServiceClient: serviceClient, //http.NewServiceClient(),
+			ServiceClient: serviceClient, //utils.NewServiceClient(),
 		},
 		AccessTokenService: accessTokenService,
 	}
@@ -52,7 +50,7 @@ func NewUploadService(serviceClient *http.ServiceClient, endpoint *config.Endpoi
 func (o *UploadService) uploadURL(fileName string, sourceID string) string {
 	result := fmt.Sprintf(o.Endpoint.FileHost+uploadURI, fileName)
 	if sourceID != "" {
-		result = result + "&sourceId=" + http.EncodeURI(sourceID)
+		result = result + "&sourceId=" + utils.EncodeURI(sourceID)
 	}
 	return result
 }
@@ -60,7 +58,7 @@ func (o *UploadService) uploadURL(fileName string, sourceID string) string {
 func (o *UploadService) uploadByURL(fileName, url string, sourceID string) string {
 	result := fmt.Sprintf(o.Endpoint.FileHost+uploadByURLURI, fileName, url)
 	if sourceID != "" {
-		result = result + "&sourceId=" + http.EncodeURI(sourceID)
+		result = result + "&sourceId=" + utils.EncodeURI(sourceID)
 	}
 	return result
 }
@@ -68,7 +66,7 @@ func (o *UploadService) uploadByURL(fileName, url string, sourceID string) strin
 func (o *UploadService) uploadByOssURL(fileName, bucket, objectKey string, sourceID string) string {
 	result := fmt.Sprintf(o.Endpoint.FileHost+uploadByOssURI, fileName, bucket, objectKey)
 	if sourceID != "" {
-		result = result + "&sourceId=" + http.EncodeURI(sourceID)
+		result = result + "&sourceId=" + utils.EncodeURI(sourceID)
 	}
 	return result
 }
@@ -89,33 +87,33 @@ func (o *UploadService) getFileMetadataURL(fileID int64) string {
 
 //------------------------------------------------------------------------------------
 
-func (o *UploadService) doUploadByURL(fileUploadRequest *request.FileUploadRequest, token string) (*response.FileBean, *utils.Error) {
-	headers := http.NewHeaders()
+func (o *UploadService) doUploadByURL(fileUploadRequest *request.FileUploadRequest, token string) (*response.FileBean, error) {
+	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(token)
 
 	resp := o.ServiceClient.Put(o.uploadByURL(fileUploadRequest.Name, fileUploadRequest.URL,
 		fileUploadRequest.SourceID), headers.Header)
 
 	result := response.NewFileBean()
-	err := http.RespToBean(resp, result)
+	err := utils.RespToBean(resp, result)
 
 	return result, err
 }
 
-func (o *UploadService) doUploadByOSS(fileUploadRequest *request.FileUploadRequest, token string) (*response.FileBean, *utils.Error) {
-	headers := http.NewHeaders()
+func (o *UploadService) doUploadByOSS(fileUploadRequest *request.FileUploadRequest, token string) (*response.FileBean, error) {
+	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(token)
 
 	resp := o.ServiceClient.Put(o.uploadByOssURL(fileUploadRequest.Name, fileUploadRequest.Bucket,
 		fileUploadRequest.ObjectKey, fileUploadRequest.SourceID), headers.Header)
 
 	result := response.NewFileBean()
-	err := http.RespToBean(resp, result)
+	err := utils.RespToBean(resp, result)
 
 	return result, err
 }
 
-func (o *UploadService) doUploadBody(fileUploadRequest *request.FileUploadRequest, token string) (*response.FileBean, *utils.Error) {
+func (o *UploadService) doUploadBody(fileUploadRequest *request.FileUploadRequest, token string) (*response.FileBean, error) {
 
 	/***
 	data, ferr := fileUploadRequest.InputFile.Open()
@@ -130,7 +128,7 @@ func (o *UploadService) doUploadBody(fileUploadRequest *request.FileUploadReques
 
 	//------------------------------------
 
-	headers := http.NewHeaders()
+	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(token)
 	headers.Header["Content-Length"] = strconv.FormatInt(fileUploadRequest.ContentLength, 10)
 
@@ -138,7 +136,7 @@ func (o *UploadService) doUploadBody(fileUploadRequest *request.FileUploadReques
 		headers.Header, fileUploadRequest.InputStream)
 
 	result := response.NewFileBean()
-	err := http.RespToBean(resp, result)
+	err := utils.RespToBean(resp, result)
 
 	return result, err
 }
@@ -151,7 +149,7 @@ name		String	Y	文件的全名，使用URL编码（UTF-8），最多256个字符
 sourceId	String	N	调用方的文件源ID，不能重复
 url			String	N	文件的下载地址，使用URL编码（UTF-8），最多512个字符，注：在pull方式下必填，必须以http(s)://开头
 ***/
-func (o *UploadService) Upload(fileUploadRequest *request.FileUploadRequest) (*response.FileBean, *utils.Error) {
+func (o *UploadService) Upload(fileUploadRequest *request.FileUploadRequest) (*response.FileBean, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
@@ -170,42 +168,40 @@ func (o *UploadService) Upload(fileUploadRequest *request.FileUploadRequest) (*r
 
 //DeleteFile 源文件相关: 删除文件
 //http://static.bimface.com/book/restful/articles/api/file/delete-file.html
-func (o *UploadService) DeleteFile(fileID int64) (string, *utils.Error) {
+func (o *UploadService) DeleteFile(fileID int64) (string, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return "", err
 	}
 
-	headers := http.NewHeaders()
+	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
 	resp := o.ServiceClient.Delete(o.deleteFileURL(fileID), headers.Header)
 
-	var result *bean.GeneralResponse
-	result, err = http.RespToGeneralResponse(resp)
-
-	if err == nil {
-		return result.Code, nil
+	result, err := utils.RespToResponseResult(resp)
+	if err != nil {
+		return result.Code, err
 	}
 
-	return "", err
+	return result.Code, nil
 }
 
 //GetFileMetadata 源文件相关: 获取文件元信息
 //http://static.bimface.com/book/restful/articles/api/file/get-file-metadata.html
-func (o *UploadService) GetFileMetadata(fileID int64) (*response.FileBean, *utils.Error) {
+func (o *UploadService) GetFileMetadata(fileID int64) (*response.FileBean, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
 	}
 
-	headers := http.NewHeaders()
+	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
 	resp := o.ServiceClient.Get(o.getFileMetadataURL(fileID), headers.Header)
 
 	result := response.NewFileBean()
-	err = http.RespToBean(resp, result)
+	err = utils.RespToBean(resp, result)
 
 	return result, err
 }

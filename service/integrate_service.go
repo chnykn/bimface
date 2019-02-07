@@ -7,11 +7,9 @@ package service
 import (
 	"fmt"
 
-	"github.com/chnykn/bimface/bean"
 	"github.com/chnykn/bimface/bean/request"
 	"github.com/chnykn/bimface/bean/response"
 	"github.com/chnykn/bimface/config"
-	"github.com/chnykn/bimface/http"
 	"github.com/chnykn/bimface/utils"
 
 	"github.com/imroc/req"
@@ -35,12 +33,12 @@ type IntegrateService struct {
 }
 
 //NewIntegrateService ***
-func NewIntegrateService(serviceClient *http.ServiceClient, endpoint *config.Endpoint,
+func NewIntegrateService(serviceClient *utils.ServiceClient, endpoint *config.Endpoint,
 	credential *config.Credential, accessTokenService *AccessTokenService) *IntegrateService {
 	o := &IntegrateService{
 		AbstractService: AbstractService{
 			Endpoint:      endpoint,
-			ServiceClient: serviceClient, //http.NewServiceClient(),
+			ServiceClient: serviceClient, //utils.NewServiceClient(),
 		},
 		AccessTokenService: accessTokenService,
 	}
@@ -79,20 +77,20 @@ name					String		N	调用方设置的名称
 priority				Number		Y	优先级，数字越大，优先级越低	1, 2, 3
 callback				String		N	Callback地址，待集成完毕以后，BIMFACE会回调该地址
 ***/
-func (o *IntegrateService) Integrate(integrateRequest *request.IntegrateRequest) (*response.IntegrateStatus, *utils.Error) {
+func (o *IntegrateService) Integrate(integrateRequest *request.IntegrateRequest) (*response.IntegrateStatus, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
 	}
 
-	headers := http.NewHeaders()
+	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
 	body := req.BodyJSON(integrateRequest)
 	resp := o.ServiceClient.Put(o.integrateURL(), headers.Header, body)
 
 	result := response.NewIntegrateStatus()
-	err = http.RespToBean(resp, result)
+	err = utils.RespToBean(resp, result)
 
 	return result, err
 }
@@ -100,13 +98,13 @@ func (o *IntegrateService) Integrate(integrateRequest *request.IntegrateRequest)
 //-----------------------------------------------------------------------------------
 
 //GetIntegrateStatusResp ***
-func (o *IntegrateService) GetIntegrateStatusResp(integrateID int64) (*req.Resp, *utils.Error) {
+func (o *IntegrateService) GetIntegrateStatusResp(integrateID int64) (*req.Resp, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
 	}
 
-	headers := http.NewHeaders()
+	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
 	resp := o.ServiceClient.Get(o.getIntegrateURL(integrateID), headers.Header)
@@ -115,14 +113,14 @@ func (o *IntegrateService) GetIntegrateStatusResp(integrateID int64) (*req.Resp,
 
 //GetIntegrateStatus 模型集成相关: 获取集成状态
 //http://doc.bimface.com/book/restful/articles/api/integrate/get-integrate.html
-func (o *IntegrateService) GetIntegrateStatus(integrateID int64) (*response.IntegrateStatus, *utils.Error) {
+func (o *IntegrateService) GetIntegrateStatus(integrateID int64) (*response.IntegrateStatus, error) {
 	resp, err := o.GetIntegrateStatusResp(integrateID)
 	if err != nil {
 		return nil, err
 	}
 
 	result := response.NewIntegrateStatus()
-	err = http.RespToBean(resp, result)
+	err = utils.RespToBean(resp, result)
 
 	return result, err
 }
@@ -131,23 +129,21 @@ func (o *IntegrateService) GetIntegrateStatus(integrateID int64) (*response.Inte
 
 //DeleteIntegrate 模型集成相关: 删除集成模型
 //http://doc.bimface.com/book/restful/articles/api/integrate/delete-integrate.html
-func (o *IntegrateService) DeleteIntegrate(integrateID int64) (string, *utils.Error) {
+func (o *IntegrateService) DeleteIntegrate(integrateID int64) (string, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return "", err
 	}
 
-	headers := http.NewHeaders()
+	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
 	resp := o.ServiceClient.Delete(o.deleteIntegrateURL(integrateID), headers.Header)
 
-	var result *bean.GeneralResponse
-	result, err = http.RespToGeneralResponse(resp)
-
-	if err == nil {
-		return result.Code, nil
+	result, err := utils.RespToResponseResult(resp)
+	if err != nil {
+		return result.Code, err
 	}
 
-	return "", err
+	return result.Code, nil
 }

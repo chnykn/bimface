@@ -6,8 +6,8 @@ package response
 
 //SpecialtyFloor ***
 type SpecialtyFloor struct {
-	Floor      string
-	Categories []Category
+	Floor      string     `json:"floor"`
+	Categories []Category `json:"categories"`
 }
 
 //NewSpecialtyFloor ***
@@ -23,8 +23,8 @@ func NewSpecialtyFloor(floor string) *SpecialtyFloor {
 
 //Specialty ***
 type Specialty struct {
-	Specialty string
-	Floors    []SpecialtyFloor
+	Specialty string           `json:"specialty"`
+	Floors    []SpecialtyFloor `json:"floors"`
 }
 
 //NewSpecialty ***
@@ -40,8 +40,8 @@ func NewSpecialty(specialty string) *Specialty {
 
 //SpecialtyTree ***
 type SpecialtyTree struct {
-	TreeType int64
-	Tree     []Specialty
+	TreeType int64       `json:"treeType"`
+	Tree     []Specialty `json:"tree"`
 }
 
 //NewSpecialtyTree ***

@@ -8,8 +8,8 @@ import "fmt"
 
 //AccessToken ***
 type AccessToken struct {
-	Token      string
-	ExpireTime string
+	Token      string `json:"token"`
+	ExpireTime string `json:"expireTime"`
 }
 
 //NewAccessToken ***

@@ -7,9 +7,9 @@ package service
 import (
 	"fmt"
 
+	"github.com/chnykn/bimface/bean/common"
 	"github.com/chnykn/bimface/bean/response"
 	"github.com/chnykn/bimface/config"
-	"github.com/chnykn/bimface/http"
 	"github.com/chnykn/bimface/utils"
 
 	"github.com/imroc/req"
@@ -30,12 +30,12 @@ type CategoryTreeService struct {
 }
 
 //NewCategoryTreeService ***
-func NewCategoryTreeService(serviceClient *http.ServiceClient, endpoint *config.Endpoint,
+func NewCategoryTreeService(serviceClient *utils.ServiceClient, endpoint *config.Endpoint,
 	credential *config.Credential, accessTokenService *AccessTokenService) *CategoryTreeService {
 	o := &CategoryTreeService{
 		AbstractService: AbstractService{
 			Endpoint:      endpoint,
-			ServiceClient: serviceClient, //http.NewServiceClient(),
+			ServiceClient: serviceClient, //utils.NewServiceClient(),
 		},
 		AccessTokenService: accessTokenService,
 	}
@@ -67,13 +67,13 @@ func (o *CategoryTreeService) integrationTreeURL(integrateID int64, treeType int
 fileId	Number	Y	文件ID
 v		String	N	结果数据版本：1.0（1.0版本结果数据）2.0（2.0版本结果数据）	 默认为1.0数据
 ***/
-func (o *CategoryTreeService) GetCategoryTreeResp(fileID int64, isV2 bool) (*req.Resp, *utils.Error) {
+func (o *CategoryTreeService) GetCategoryTreeResp(fileID int64, isV2 bool) (*req.Resp, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
 	}
 
-	headers := http.NewHeaders()
+	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
 	resp := o.ServiceClient.Get(o.categoryURL(fileID, isV2), headers.Header)
@@ -85,14 +85,19 @@ func (o *CategoryTreeService) GetCategoryTreeResp(fileID int64, isV2 bool) (*req
 字段	类型	必填	描述
 fileId	Number	Y	文件ID
 ***/
-func (o *CategoryTreeService) GetCategoryTree(fileID int64) ([]response.Category, *utils.Error) {
+func (o *CategoryTreeService) GetCategoryTree(fileID int64) ([]response.Category, error) {
 	resp, err := o.GetCategoryTreeResp(fileID, false)
 	if err != nil {
 		return nil, err
 	}
 
-	result, err := http.RespToBeans(resp, &response.Category{})
-	return result.([]response.Category), nil
+	result := []response.Category{}
+	err = utils.RespToBean(resp, &result)
+	if err != nil {
+		return nil, err
+	}
+
+	return result, nil
 }
 
 //GetCategoryTreeV2 文件转换相关: 获取单文件的所有构件类别、族和族类型树, 结果数据版本：2.0（2.0版本结果数据）
@@ -100,14 +105,19 @@ func (o *CategoryTreeService) GetCategoryTree(fileID int64) ([]response.Category
 字段	类型	必填	描述
 fileId	Number	Y	文件ID
 ***/
-func (o *CategoryTreeService) GetCategoryTreeV2(fileID int64) ([]response.CategoryNode, *utils.Error) {
+func (o *CategoryTreeService) GetCategoryTreeV2(fileID int64) ([]common.TreeNode, error) {
 	resp, err := o.GetCategoryTreeResp(fileID, true)
 	if err != nil {
 		return nil, err
 	}
 
-	result, err := http.RespToBeans(resp, &response.CategoryNode{})
-	return result.([]response.CategoryNode), nil
+	result := []common.TreeNode{}
+	err = utils.RespToBean(resp, &result)
+	if err != nil {
+		return nil, err
+	}
+
+	return result, nil
 }
 
 //-----------------------------------------------------------------------------------
@@ -120,13 +130,13 @@ func (o *CategoryTreeService) GetCategoryTreeV2(fileID int64) ([]response.Catego
 integrateId	Number	Y	集成ID
 treeType	Number	Y	树类型：1（按专业视图）2（按楼层视图）
 ***/
-func (o *CategoryTreeService) GetIntegrationTreeResp(integrateID int64, treeType int) (*req.Resp, *utils.Error) {
+func (o *CategoryTreeService) GetIntegrationTreeResp(integrateID int64, treeType int) (*req.Resp, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
 	}
 
-	headers := http.NewHeaders()
+	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
 	resp := o.ServiceClient.Get(o.integrationTreeURL(integrateID, treeType), headers.Header)
@@ -138,14 +148,14 @@ func (o *CategoryTreeService) GetIntegrationTreeResp(integrateID int64, treeType
 字段		类型	必填	描述
 integrateId	Number	Y	集成ID
 ***/
-func (o *CategoryTreeService) GetIntegrationSpecialtyTree(integrateID int64) (*response.SpecialtyTree, *utils.Error) {
+func (o *CategoryTreeService) GetIntegrationSpecialtyTree(integrateID int64) (*response.SpecialtyTree, error) {
 	resp, err := o.GetIntegrationTreeResp(integrateID, 1)
 	if err != nil {
 		return nil, err
 	}
 
 	result := response.NewSpecialtyTree(1)
-	err = http.RespToBean(resp, result)
+	err = utils.RespToBean(resp, result)
 
 	return result, err
 }
@@ -155,14 +165,14 @@ func (o *CategoryTreeService) GetIntegrationSpecialtyTree(integrateID int64) (*r
 字段		类型	必填	描述
 integrateId	Number	Y	集成ID
 ***/
-func (o *CategoryTreeService) GetIntegrationFloorTree(integrateID int64) (*response.FloorTree, *utils.Error) {
+func (o *CategoryTreeService) GetIntegrationFloorTree(integrateID int64) (*response.FloorTree, error) {
 	resp, err := o.GetIntegrationTreeResp(integrateID, 2)
 	if err != nil {
 		return nil, err
 	}
 
 	result := response.NewFloorTree(2)
-	err = http.RespToBean(resp, result)
+	err = utils.RespToBean(resp, result)
 
 	return result, err
 }

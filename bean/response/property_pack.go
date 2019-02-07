@@ -12,10 +12,10 @@ import (
 
 //PropertyItem PropertyItem
 type PropertyItem struct {
-	Key       string
-	Value     string
-	Unit      string
-	ValueType int
+	Key       string `json:"key"`
+	Value     string `json:"value"`
+	Unit      string `json:"unit,omitempty"`
+	ValueType int    `json:"valueType,omitempty"`
 }
 
 //NewPropertyItem ***
@@ -37,8 +37,8 @@ func (o *PropertyItem) ToString() string {
 
 //PropertyGroup PropertyGroup
 type PropertyGroup struct {
-	Group string
-	Items []PropertyItem
+	Group string         `json:"group"`
+	Items []PropertyItem `json:"items"`
 }
 
 //NewPropertyGroup ***
@@ -54,12 +54,12 @@ func NewPropertyGroup(name string) *PropertyGroup {
 
 //PropertyPack ***
 type PropertyPack struct {
-	ElementID   string
-	Name        string
-	GUID        string
-	FamilyGUID  string
-	BoundingBox common.BoundingBox
-	Properties  []PropertyGroup
+	ElementID   string             `json:"elementId"`
+	Name        string             `json:"name"`
+	GUID        string             `json:"guid"`
+	FamilyGUID  string             `json:"familyGuid"`
+	BoundingBox common.BoundingBox `json:"boundingBox"`
+	Properties  []PropertyGroup    `json:"properties"`
 }
 
 //NewPropertyPack ***

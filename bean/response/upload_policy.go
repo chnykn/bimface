@@ -6,13 +6,13 @@ package response
 
 //UploadPolicy ***
 type UploadPolicy struct {
-	Host         string
-	Policy       string
-	AccessID     string
-	Signature    string
-	Expire       int64
-	CallbackBody string
-	ObjectKey    string
+	Host         string `json:"host"`
+	Policy       string `json:"policy"`
+	AccessID     string `json:"accessId"`
+	Signature    string `json:"signature"`
+	Expire       int64  `json:"expire"`
+	CallbackBody string `json:"callbackBody"`
+	ObjectKey    string `json:"objectKey"`
 }
 
 //NewUploadPolicy ***
