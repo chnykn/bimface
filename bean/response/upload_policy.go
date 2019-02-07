@@ -11,7 +11,7 @@ type UploadPolicy struct {
 	AccessID     string `json:"accessId"`
 	Signature    string `json:"signature"`
 	Expire       int64  `json:"expire"`
-	CallbackBody string `json:"callbackBody"`
+	CallbackBody string `json:"callbackBody,omitempty"`
 	ObjectKey    string `json:"objectKey"`
 }
 

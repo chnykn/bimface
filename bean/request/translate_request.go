@@ -29,7 +29,7 @@ const (
 
 //TranslateRequest ***
 type TranslateRequest struct {
-	Source   *TranslateSource `json:"source,omitempty"`
+	Source   *TranslateSource `json:"source"`
 	Priority int              `json:"priority"` //[1,2,3] 数字越大，优先级越低
 	Callback string           `json:"callback,omitempty"`
 }

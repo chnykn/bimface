@@ -52,9 +52,9 @@ func NewPropertyGroup(name string) *PropertyGroup {
 
 //--------------------------------------------------------------------
 
-//PropertyPack ***
-type PropertyPack struct {
-	ElementID   string             `json:"elementId"`
+//Element ***
+type Element struct {
+	ID          string             `json:"elementId"`
 	Name        string             `json:"name"`
 	GUID        string             `json:"guid"`
 	FamilyGUID  string             `json:"familyGuid"`
@@ -62,22 +62,22 @@ type PropertyPack struct {
 	Properties  []PropertyGroup    `json:"properties"`
 }
 
-//NewPropertyPack ***
-func NewPropertyPack(elementID string) *PropertyPack {
-	o := &PropertyPack{
-		ElementID: elementID,
+//NewElement ***
+func NewElement(id string) *Element {
+	o := &Element{
+		ID: id,
 		//Groups: make([]PropertyGroup, 0),
 	}
 	return o
 }
 
 //AddPropertyGroup ***
-func (o *PropertyPack) AddPropertyGroup(group PropertyGroup) {
+func (o *Element) AddPropertyGroup(group PropertyGroup) {
 	o.Properties = append(o.Properties, group)
 }
 
 // ToString get the string
-func (o *PropertyPack) ToString() string {
-	return fmt.Sprintf("Properties [ElementID=%s, Name=%s, GUID=%s, FamilyGUID=%s,BoundingBox=%v, Properties=%v]",
-		o.ElementID, o.Name, o.GUID, o.FamilyGUID, o.BoundingBox, o.Properties)
+func (o *Element) ToString() string {
+	return fmt.Sprintf("Element [ID=%s, Name=%s, GUID=%s, FamilyGUID=%s,BoundingBox=%v, Properties=%v]",
+		o.ID, o.Name, o.GUID, o.FamilyGUID, o.BoundingBox, o.Properties)
 }

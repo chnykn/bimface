@@ -13,16 +13,16 @@ const (
 	DateFormat = "yyyy-MM-dd HH:mm:ss" //2006-01-02 15:04:05
 )
 
-//ResponseResult ***
-type ResponseResult struct {
+//RespResult ***
+type RespResult struct {
 	Code    string `json:"code"` // = "success"
 	Message string `json:"message"`
 	//Data    interface{} //Data is bean.response.Xxx
 }
 
-// NewResponseResult ***
-func NewResponseResult(data interface{}) *ResponseResult {
-	o := &ResponseResult{
+// NewRespResult ***
+func NewRespResult(data interface{}) *RespResult {
+	o := &RespResult{
 		Code:    CodeSuccess,
 		Message: "",
 		//Data:    data,
@@ -32,6 +32,6 @@ func NewResponseResult(data interface{}) *ResponseResult {
 }
 
 // ToString get the string
-func (o *ResponseResult) ToString() string {
-	return fmt.Sprintf("ResponseResult [code=%s, message=%s]", o.Code, o.Message)
+func (o *RespResult) ToString() string {
+	return fmt.Sprintf("RespResult [code=%s, message=%s]", o.Code, o.Message)
 }

@@ -16,8 +16,8 @@ package response
 	"structElev": 7750
 **/
 
-//Elev ***
-type Elev struct {
+//Floor ***
+type Floor struct {
 	ID         string  `json:"id"`
 	Name       string  `json:"name"`
 	Elevation  float64 `json:"elevation"`
@@ -29,9 +29,9 @@ type Elev struct {
 	Rooms      string  `json:"rooms,omitempty"`
 }
 
-//NewElev ***
-func NewElev() *Elev { //id int64, name string
-	o := &Elev{
+//NewFloor ***
+func NewFloor() *Floor { //id int64, name string
+	o := &Floor{
 		// ID:   id,
 		// Name: name,
 	}

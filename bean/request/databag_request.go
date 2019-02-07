@@ -4,8 +4,8 @@
 
 package request
 
-//OfflineDatabagRequest ***
-type OfflineDatabagRequest struct {
+//DatabagRequest ***
+type DatabagRequest struct {
 	FileID         *int64 `json:"fileId,omitempty"` // FileID IntegrateID CompareID 三者只能有一个填写
 	IntegrateID    *int64 `json:"integrateId,omitempty"`
 	CompareID      *int64 `json:"compareId,omitempty"`
@@ -13,11 +13,11 @@ type OfflineDatabagRequest struct {
 	DatabagVersion string `json:"databagVersion,omitempty"`
 }
 
-//NewOfflineDatabagRequest ***
-func NewOfflineDatabagRequest() *OfflineDatabagRequest {
+//NewDatabagRequest ***
+func NewDatabagRequest() *DatabagRequest {
 	//fileID string, integrateID string, compareID string,	callback string, databagVersion string
 
-	o := &OfflineDatabagRequest{
+	o := &DatabagRequest{
 		// FileID:         fileID,
 		// IntegrateID:    integrateID,
 		// CompareID:      compareID,

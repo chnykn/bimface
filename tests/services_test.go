@@ -37,9 +37,27 @@ func TestCategoryTreeService(t *testing.T) {
 		fmt.Printf("err = %v \n", err)
 	}
 
-	tree, err := client.CategoryTreeService.GetIntegrationSpecialtyTree(1532041801780160)
+	tree, err := client.CategoryTreeService.GetCategoryTreeV2(1525914374062720)
 	if err == nil {
-		fmt.Printf("GetIntegrationSpecialtyTree = %v \n", tree)
+		fmt.Printf("GetCategoryTreeV2 = %v \n", tree)
+	} else {
+		fmt.Printf("err = %v \n", err)
+	}
+}
+
+func TestIntgrTreeService(t *testing.T) {
+	client := getClient()
+
+	stree, err := client.IntgrTreeService.GetSpecialtyTree(1532041801780160)
+	if err == nil {
+		fmt.Printf("GetSpecialtyTree = %v \n", stree)
+	} else {
+		fmt.Printf("err = %v \n", err)
+	}
+
+	ftree, err := client.IntgrTreeService.GetFloorTree(1532041801780160)
+	if err == nil {
+		fmt.Printf("GetFloorTree = %v \n", ftree)
 	} else {
 		fmt.Printf("err = %v \n", err)
 	}
@@ -55,27 +73,27 @@ func TestElementService(t *testing.T) {
 		fmt.Printf("err = %v \n", err)
 	}
 
-	elems, err := client.ElementService.GetIntegrationElementsWithParams(1532041801780160, nil)
+	elems, err := client.ElementService.GetIntgrElementsWithParams(1532041801780160, nil)
 	if err == nil {
-		fmt.Printf("GetIntegrationElementsWithParams = %v \n", elems)
+		fmt.Printf("GetIntgrElementsWithParams = %v \n", elems)
 	} else {
 		fmt.Printf("err = %v \n", err)
 	}
 }
 
-func TestElevService(t *testing.T) {
+func TestFloorService(t *testing.T) {
 	client := getClient()
 
-	elevs, err := client.ElevService.GetElevs(1525914374062720)
+	Floors, err := client.FloorService.GetFloors(1525914374062720)
 	if err == nil {
-		fmt.Printf("GetElevs = %v \n", elevs)
+		fmt.Printf("GetFloors = %v \n", Floors)
 	} else {
 		fmt.Printf("err = %v \n", err)
 	}
 
-	elevs, err = client.ElevService.GetIntegrationElevs(1532041801780160)
+	Floors, err = client.FloorService.GetIntegrationFloors(1532041801780160)
 	if err == nil {
-		fmt.Printf("GetIntegrationElevs = %v \n", elevs)
+		fmt.Printf("GetIntegrationFloors = %v \n", Floors)
 	} else {
 		fmt.Printf("err = %v \n", err)
 	}
@@ -91,9 +109,9 @@ func TestPropertyService(t *testing.T) {
 		fmt.Printf("err = %v \n", err)
 	}
 
-	props, err = client.PropertyService.GetIntegrateElementProperty(1532041801780160, 1525914374062720, "678602")
+	props, err = client.PropertyService.GetIntgrElementProperty(1532041801780160, 1525914374062720, "678602")
 	if err == nil {
-		fmt.Printf("GetIntegrateElementProperty = %v \n", props)
+		fmt.Printf("GetIntgrElementProperty = %v \n", props)
 	} else {
 		fmt.Printf("err = %v \n", err)
 	}
@@ -154,7 +172,7 @@ func TestUploadService(t *testing.T) {
 			fmt.Printf("err = %v \n", err)
 		}
 
-		uploadReq := request.NewFileUploadRequest("F:/场地_建筑.rvt")
+		uploadReq := request.NewUploadRequest("F:/场地_建筑.rvt")
 		fileBean, err := client.UploadService.Upload(uploadReq)
 		if err == nil {
 			fmt.Printf("Upload = %v \n", fileBean)
@@ -168,16 +186,16 @@ func TestUploadService(t *testing.T) {
 func TestIntegrateService(t *testing.T) {
 	client := getClient()
 
-	status, err := client.IntegrateService.GetIntegrateStatus(1538044326628288)
+	status, err := client.IntegrateService.GetIntgrStatus(1538044326628288)
 	if err == nil {
-		fmt.Printf("GetIntegrateStatus = %v \n", status)
+		fmt.Printf("GetIntgrStatus = %v \n", status)
 	} else {
 		fmt.Printf("err = %v \n", err)
 	}
 
-	integReq := request.NewIntegrateRequest("深高速-综合办公楼-New")
-	integReq.Sources = append(integReq.Sources, request.NewIntegrateSource(1531158346498720, "建筑"))
-	integReq.Sources = append(integReq.Sources, request.NewIntegrateSource(1525914374062720, "结构"))
+	integReq := request.NewIntgrRequest("深高速-综合办公楼-New")
+	integReq.Sources = append(integReq.Sources, request.NewIntgrSource(1531158346498720, "建筑"))
+	integReq.Sources = append(integReq.Sources, request.NewIntgrSource(1525914374062720, "结构"))
 	status, err = client.IntegrateService.Integrate(integReq)
 	if err == nil {
 		fmt.Printf("Integrate = %v \n", status)

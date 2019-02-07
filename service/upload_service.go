@@ -87,12 +87,12 @@ func (o *UploadService) getFileMetadataURL(fileID int64) string {
 
 //------------------------------------------------------------------------------------
 
-func (o *UploadService) doUploadByURL(fileUploadRequest *request.FileUploadRequest, token string) (*response.FileBean, error) {
+func (o *UploadService) doUploadByURL(uploadRequest *request.UploadRequest, token string) (*response.FileBean, error) {
 	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(token)
 
-	resp := o.ServiceClient.Put(o.uploadByURL(fileUploadRequest.Name, fileUploadRequest.URL,
-		fileUploadRequest.SourceID), headers.Header)
+	resp := o.ServiceClient.Put(o.uploadByURL(uploadRequest.Name, uploadRequest.URL,
+		uploadRequest.SourceID), headers.Header)
 
 	result := response.NewFileBean()
 	err := utils.RespToBean(resp, result)
@@ -100,12 +100,12 @@ func (o *UploadService) doUploadByURL(fileUploadRequest *request.FileUploadReque
 	return result, err
 }
 
-func (o *UploadService) doUploadByOSS(fileUploadRequest *request.FileUploadRequest, token string) (*response.FileBean, error) {
+func (o *UploadService) doUploadByOSS(uploadRequest *request.UploadRequest, token string) (*response.FileBean, error) {
 	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(token)
 
-	resp := o.ServiceClient.Put(o.uploadByOssURL(fileUploadRequest.Name, fileUploadRequest.Bucket,
-		fileUploadRequest.ObjectKey, fileUploadRequest.SourceID), headers.Header)
+	resp := o.ServiceClient.Put(o.uploadByOssURL(uploadRequest.Name, uploadRequest.Bucket,
+		uploadRequest.ObjectKey, uploadRequest.SourceID), headers.Header)
 
 	result := response.NewFileBean()
 	err := utils.RespToBean(resp, result)
@@ -113,16 +113,16 @@ func (o *UploadService) doUploadByOSS(fileUploadRequest *request.FileUploadReque
 	return result, err
 }
 
-func (o *UploadService) doUploadBody(fileUploadRequest *request.FileUploadRequest, token string) (*response.FileBean, error) {
+func (o *UploadService) doUploadBody(uploadRequest *request.UploadRequest, token string) (*response.FileBean, error) {
 
 	/***
-	data, ferr := fileUploadRequest.InputFile.Open()
+	data, ferr := uploadRequest.InputFile.Open()
 	if ferr != nil {
-		return nil, utils.NewError(ferr.Error(), "fileUploadRequest.InputFile.Open() @ doUploadBody")
+		return nil, utils.NewError(ferr.Error(), "uploadRequest.InputFile.Open() @ doUploadBody")
 	}
 	defer data.Close()
 
-	buf := make([]byte, fileUploadRequest.InputFile.Size) //fileUploadRequest.ContentLength
+	buf := make([]byte, uploadRequest.InputFile.Size) //uploadRequest.ContentLength
 	data.Read(buf)
 	***/
 
@@ -130,10 +130,10 @@ func (o *UploadService) doUploadBody(fileUploadRequest *request.FileUploadReques
 
 	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(token)
-	headers.Header["Content-Length"] = strconv.FormatInt(fileUploadRequest.ContentLength, 10)
+	headers.Header["Content-Length"] = strconv.FormatInt(uploadRequest.ContentLength, 10)
 
-	resp := o.ServiceClient.Put(o.uploadURL(fileUploadRequest.Name, fileUploadRequest.SourceID),
-		headers.Header, fileUploadRequest.InputStream)
+	resp := o.ServiceClient.Put(o.uploadURL(uploadRequest.Name, uploadRequest.SourceID),
+		headers.Header, uploadRequest.InputStream)
 
 	result := response.NewFileBean()
 	err := utils.RespToBean(resp, result)
@@ -149,18 +149,18 @@ name		String	Y	文件的全名，使用URL编码（UTF-8），最多256个字符
 sourceId	String	N	调用方的文件源ID，不能重复
 url			String	N	文件的下载地址，使用URL编码（UTF-8），最多512个字符，注：在pull方式下必填，必须以http(s)://开头
 ***/
-func (o *UploadService) Upload(fileUploadRequest *request.FileUploadRequest) (*response.FileBean, error) {
+func (o *UploadService) Upload(uploadRequest *request.UploadRequest) (*response.FileBean, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
 	}
 
-	if fileUploadRequest.IsByURL() {
-		return o.doUploadByURL(fileUploadRequest, accessToken.Token)
-	} else if fileUploadRequest.IsByOSS() {
-		return o.doUploadByOSS(fileUploadRequest, accessToken.Token)
+	if uploadRequest.IsByURL() {
+		return o.doUploadByURL(uploadRequest, accessToken.Token)
+	} else if uploadRequest.IsByOSS() {
+		return o.doUploadByOSS(uploadRequest, accessToken.Token)
 	} else {
-		return o.doUploadBody(fileUploadRequest, accessToken.Token)
+		return o.doUploadBody(uploadRequest, accessToken.Token)
 	}
 }
 
@@ -179,7 +179,7 @@ func (o *UploadService) DeleteFile(fileID int64) (string, error) {
 
 	resp := o.ServiceClient.Delete(o.deleteFileURL(fileID), headers.Header)
 
-	result, err := utils.RespToResponseResult(resp)
+	result, err := utils.RespToResult(resp)
 	if err != nil {
 		return result.Code, err
 	}

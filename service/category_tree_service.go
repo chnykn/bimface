@@ -18,9 +18,6 @@ import (
 const (
 	//获取文件转换的构件层次结构
 	categoryURI string = "/data/hierarchy?fileId=%d"
-
-	//获取集成模型的构件层次结构
-	integrationTreeURI string = "/data/integration/tree?integrateId=%d&treeType=%d"
 )
 
 //CategoryTreeService ***
@@ -51,10 +48,6 @@ func (o *CategoryTreeService) categoryURL(fileID int64, isV2 bool) string {
 		result = result + "&v=2.0"
 	}
 	return result
-}
-
-func (o *CategoryTreeService) integrationTreeURL(integrateID int64, treeType int) string {
-	return fmt.Sprintf(o.Endpoint.APIHost+integrationTreeURI, integrateID, treeType)
 }
 
 //-----------------------------------------------------------------------------------
@@ -118,61 +111,4 @@ func (o *CategoryTreeService) GetCategoryTreeV2(fileID int64) ([]common.TreeNode
 	}
 
 	return result, nil
-}
-
-//-----------------------------------------------------------------------------------
-
-//GetIntegrationTreeResp 模型集成相关: 获取集成模型的构件层次结构
-//模型集成以后，可以获取两种构件的层次结构：1）按专业视图；2）按楼层视图
-//http://static.bimface.com/book/restful/articles/api/integrate/get-integrate-tree.html
-/***
-字段		类型	必填	描述
-integrateId	Number	Y	集成ID
-treeType	Number	Y	树类型：1（按专业视图）2（按楼层视图）
-***/
-func (o *CategoryTreeService) GetIntegrationTreeResp(integrateID int64, treeType int) (*req.Resp, error) {
-	accessToken, err := o.AccessTokenService.Get()
-	if err != nil {
-		return nil, err
-	}
-
-	headers := utils.NewHeaders()
-	headers.AddOAuth2Header(accessToken.Token)
-
-	resp := o.ServiceClient.Get(o.integrationTreeURL(integrateID, treeType), headers.Header)
-	return resp, nil
-}
-
-//GetIntegrationSpecialtyTree 按专业视图,获取集成模型的构件层次结构
-/***
-字段		类型	必填	描述
-integrateId	Number	Y	集成ID
-***/
-func (o *CategoryTreeService) GetIntegrationSpecialtyTree(integrateID int64) (*response.SpecialtyTree, error) {
-	resp, err := o.GetIntegrationTreeResp(integrateID, 1)
-	if err != nil {
-		return nil, err
-	}
-
-	result := response.NewSpecialtyTree(1)
-	err = utils.RespToBean(resp, result)
-
-	return result, err
-}
-
-//GetIntegrationFloorTree 按楼层视图,获取集成模型的构件层次结构
-/***
-字段		类型	必填	描述
-integrateId	Number	Y	集成ID
-***/
-func (o *CategoryTreeService) GetIntegrationFloorTree(integrateID int64) (*response.FloorTree, error) {
-	resp, err := o.GetIntegrationTreeResp(integrateID, 2)
-	if err != nil {
-		return nil, err
-	}
-
-	result := response.NewFloorTree(2)
-	err = utils.RespToBean(resp, result)
-
-	return result, err
 }

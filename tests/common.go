@@ -7,6 +7,6 @@ import (
 )
 
 func getClient() *bimface.Client {
-	return bimface.NewClient("purREs2GDIdCL81tUVSS6pAMfkZ59KNi", "954ZyagB5vskJXKb2tZWSRnhJhRNKQ96",
+	return bimface.NewClient(<yourAppKey>, <yourAppSecret>,
 		config.NewEndpoint(consts.APIHost, consts.FileHost))
 }

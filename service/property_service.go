@@ -73,13 +73,13 @@ func (o *PropertyService) GetElementPropertyResp(fileID int64, elementID string)
 fileId		Number	Y	文件ID
 elementId	String	Y	构件ID
 ***/
-func (o *PropertyService) GetElementProperty(fileID int64, elementID string) (*response.PropertyPack, error) {
+func (o *PropertyService) GetElementProperty(fileID int64, elementID string) (*response.Element, error) {
 	resp, err := o.GetElementPropertyResp(fileID, elementID)
 	if err != nil {
 		return nil, err
 	}
 
-	result := response.NewPropertyPack(elementID)
+	result := response.NewElement(elementID)
 	err = utils.RespToBean(resp, result)
 
 	return result, err
@@ -87,8 +87,8 @@ func (o *PropertyService) GetElementProperty(fileID int64, elementID string) (*r
 
 //-----------------------------------------------------------------------------------
 
-//GetIntegrateElementPropertyResp ***
-func (o *PropertyService) GetIntegrateElementPropertyResp(integrateID, fileID int64, elementID string) (*req.Resp, error) {
+//GetIntgrElementPropertyResp ***
+func (o *PropertyService) GetIntgrElementPropertyResp(integrateID, fileID int64, elementID string) (*req.Resp, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
@@ -101,20 +101,20 @@ func (o *PropertyService) GetIntegrateElementPropertyResp(integrateID, fileID in
 	return resp, err
 }
 
-//GetIntegrateElementProperty 模型集成相关: 获取集成模型的构件属性
+//GetIntgrElementProperty 模型集成相关: 获取集成模型的构件属性
 //http://static.bimface.com/book/restful/articles/api/integrate/get-integrate-element-prop.html
 /***
 字段		类型	必填	描述
 fileId		Number	Y	文件ID
 elementId	String	Y	构件ID
 ***/
-func (o *PropertyService) GetIntegrateElementProperty(integrateID, fileID int64, elementID string) (*response.PropertyPack, error) {
-	resp, err := o.GetIntegrateElementPropertyResp(integrateID, fileID, elementID)
+func (o *PropertyService) GetIntgrElementProperty(integrateID, fileID int64, elementID string) (*response.Element, error) {
+	resp, err := o.GetIntgrElementPropertyResp(integrateID, fileID, elementID)
 	if err != nil {
 		return nil, err
 	}
 
-	result := response.NewPropertyPack(elementID)
+	result := response.NewElement(elementID)
 	err = utils.RespToBean(resp, result)
 
 	return result, err

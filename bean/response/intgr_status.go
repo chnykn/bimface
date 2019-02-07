@@ -4,8 +4,10 @@
 
 package response
 
-//IntegrateStatus ***
-type IntegrateStatus struct {
+//"Intgr" stand for "Integration"
+
+//IntgrStatus ***
+type IntgrStatus struct {
 	ID         int64    `json:"integrateId"`
 	Name       string   `json:"name"`
 	Priority   int64    `json:"priority"`
@@ -15,9 +17,9 @@ type IntegrateStatus struct {
 	CreateTime string   `json:"createTime"`
 }
 
-//NewIntegrateStatus ***
-func NewIntegrateStatus() *IntegrateStatus { //id int64, name string
-	o := &IntegrateStatus{
+//NewIntgrStatus ***
+func NewIntgrStatus() *IntgrStatus { //id int64, name string
+	o := &IntgrStatus{
 		// ID:   id,
 		// Name: name,
 		Thumbnail: make([]string, 0),

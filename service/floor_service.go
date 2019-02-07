@@ -15,20 +15,20 @@ import (
 )
 
 const (
-	getElevsURI            string = "/data/v2/files/%d/floors"
-	getIntegrationElevsURI string = "/data/v2/integrations/%d/floors"
+	getFloorsURI            string = "/data/v2/files/%d/floors"
+	getIntegrationFloorsURI string = "/data/v2/integrations/%d/floors"
 )
 
-//ElevService ***
-type ElevService struct {
+//FloorService ***
+type FloorService struct {
 	AbstractService    //base class
 	AccessTokenService *AccessTokenService
 }
 
-//NewElevService ***
-func NewElevService(serviceClient *utils.ServiceClient, endpoint *config.Endpoint,
-	credential *config.Credential, accessTokenService *AccessTokenService) *ElevService {
-	o := &ElevService{
+//NewFloorService ***
+func NewFloorService(serviceClient *utils.ServiceClient, endpoint *config.Endpoint,
+	credential *config.Credential, accessTokenService *AccessTokenService) *FloorService {
+	o := &FloorService{
 		AbstractService: AbstractService{
 			Endpoint:      endpoint,
 			ServiceClient: serviceClient, //utils.NewServiceClient(),
@@ -41,18 +41,18 @@ func NewElevService(serviceClient *utils.ServiceClient, endpoint *config.Endpoin
 
 //---------------------------------------------------------------------
 
-func (o *ElevService) getElevsURL(fileID int64) string {
-	return fmt.Sprintf(o.Endpoint.APIHost+getElevsURI, fileID)
+func (o *FloorService) getFloorsURL(fileID int64) string {
+	return fmt.Sprintf(o.Endpoint.APIHost+getFloorsURI, fileID)
 }
 
-func (o *ElevService) getIntegrationElevsURL(integrationID int64) string {
-	return fmt.Sprintf(o.Endpoint.APIHost+getIntegrationElevsURI, integrationID)
+func (o *FloorService) getIntegrationFloorsURL(integrationID int64) string {
+	return fmt.Sprintf(o.Endpoint.APIHost+getIntegrationFloorsURI, integrationID)
 }
 
 //-----------------------------------------------------------------------------------
 
-//GetElevsResp ***
-func (o *ElevService) GetElevsResp(fileID int64) (*req.Resp, error) {
+//GetFloorsResp ***
+func (o *FloorService) GetFloorsResp(fileID int64) (*req.Resp, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
@@ -61,19 +61,19 @@ func (o *ElevService) GetElevsResp(fileID int64) (*req.Resp, error) {
 	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
-	resp := o.ServiceClient.Get(o.getElevsURL(fileID), headers.Header)
+	resp := o.ServiceClient.Get(o.getFloorsURL(fileID), headers.Header)
 	return resp, nil
 }
 
-//GetElevs 获取文件转换的楼层信息
+//GetFloors 获取文件转换的楼层信息
 //http://static.bimface.com/book/restful/articles/api/translate/get-floors.html
-func (o *ElevService) GetElevs(fileID int64) ([]response.Elev, error) {
-	resp, err := o.GetElevsResp(fileID)
+func (o *FloorService) GetFloors(fileID int64) ([]response.Floor, error) {
+	resp, err := o.GetFloorsResp(fileID)
 	if err != nil {
 		return nil, err
 	}
 
-	result := make([]response.Elev, 0)
+	result := make([]response.Floor, 0)
 	err = utils.RespToBean(resp, &result)
 	if err != nil {
 		return nil, err
@@ -84,8 +84,8 @@ func (o *ElevService) GetElevs(fileID int64) ([]response.Elev, error) {
 
 //-----------------------------------------------------------------------------------
 
-//GetIntegrationElevsResp ***
-func (o *ElevService) GetIntegrationElevsResp(integrateID int64) (*req.Resp, error) {
+//GetIntegrationFloorsResp ***
+func (o *FloorService) GetIntegrationFloorsResp(integrateID int64) (*req.Resp, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
@@ -94,19 +94,19 @@ func (o *ElevService) GetIntegrationElevsResp(integrateID int64) (*req.Resp, err
 	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
-	resp := o.ServiceClient.Get(o.getIntegrationElevsURL(integrateID), headers.Header)
+	resp := o.ServiceClient.Get(o.getIntegrationFloorsURL(integrateID), headers.Header)
 	return resp, nil
 }
 
-//GetIntegrationElevs 获取集成模型楼层信息
+//GetIntegrationFloors 获取集成模型楼层信息
 //http://static.bimface.com/book/restful/articles/api/integrate/get-integrate-floors.html
-func (o *ElevService) GetIntegrationElevs(integrateID int64) ([]response.Elev, error) {
-	resp, err := o.GetIntegrationElevsResp(integrateID)
+func (o *FloorService) GetIntegrationFloors(integrateID int64) ([]response.Floor, error) {
+	resp, err := o.GetIntegrationFloorsResp(integrateID)
 	if err != nil {
 		return nil, err
 	}
 
-	result := make([]response.Elev, 0)
+	result := make([]response.Floor, 0)
 	err = utils.RespToBean(resp, &result)
 	if err != nil {
 		return nil, err

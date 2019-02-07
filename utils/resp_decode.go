@@ -22,13 +22,13 @@ type errorInfo struct {
 	Message   string
 }
 
-//RespToResponseResult ***
-func RespToResponseResult(resp *req.Resp) (*bean.ResponseResult, error) {
+//RespToResult ***
+func RespToResult(resp *req.Resp) (*bean.RespResult, error) {
 	if resp == nil {
-		return nil, fmt.Errorf("RespToResponseResult Error, resp == nil")
+		return nil, fmt.Errorf("RespToResult Error, resp == nil")
 	}
 
-	result := new(bean.ResponseResult)
+	result := new(bean.RespResult)
 	err := resp.ToJSON(result)
 	if err != nil {
 		return nil, err
@@ -45,7 +45,7 @@ func RespToResponseResult(resp *req.Resp) (*bean.ResponseResult, error) {
 
 //RespToBean : the obj must be pointer, and will be populated by resp
 func RespToBean(resp *req.Resp, returnObj interface{}) error {
-	result, err := RespToResponseResult(resp)
+	result, err := RespToResult(resp)
 	if err != nil {
 		return err
 	}
@@ -54,14 +54,14 @@ func RespToBean(resp *req.Resp, returnObj interface{}) error {
 		return fmt.Errorf("RespToBean Error, code=%s, message=%s", result.Code, result.Message)
 	}
 
-	rjson, _ := resp.ToString()
-	n := strings.Index(rjson, `"data":`)
+	text, _ := resp.ToString()
+	n := strings.Index(text, `"data":`)
 	if n < 0 {
 		return fmt.Errorf(`RespToBean Error, not found "data" in json`)
 	}
 
-	rjson = rjson[n+7 : strings.LastIndex(rjson, "}")]
-	fmt.Println(rjson)
+	text = text[n+7 : strings.LastIndex(text, "}")]
+	fmt.Println(text)
 
-	return json.Unmarshal([]byte(rjson), returnObj)
+	return json.Unmarshal([]byte(text), returnObj)
 }

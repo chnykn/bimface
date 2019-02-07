@@ -77,7 +77,7 @@ name					String		N	调用方设置的名称
 priority				Number		Y	优先级，数字越大，优先级越低	1, 2, 3
 callback				String		N	Callback地址，待集成完毕以后，BIMFACE会回调该地址
 ***/
-func (o *IntegrateService) Integrate(integrateRequest *request.IntegrateRequest) (*response.IntegrateStatus, error) {
+func (o *IntegrateService) Integrate(integrateRequest *request.IntgrRequest) (*response.IntgrStatus, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
@@ -89,7 +89,7 @@ func (o *IntegrateService) Integrate(integrateRequest *request.IntegrateRequest)
 	body := req.BodyJSON(integrateRequest)
 	resp := o.ServiceClient.Put(o.integrateURL(), headers.Header, body)
 
-	result := response.NewIntegrateStatus()
+	result := response.NewIntgrStatus()
 	err = utils.RespToBean(resp, result)
 
 	return result, err
@@ -97,8 +97,8 @@ func (o *IntegrateService) Integrate(integrateRequest *request.IntegrateRequest)
 
 //-----------------------------------------------------------------------------------
 
-//GetIntegrateStatusResp ***
-func (o *IntegrateService) GetIntegrateStatusResp(integrateID int64) (*req.Resp, error) {
+//GetIntgrStatusResp ***
+func (o *IntegrateService) GetIntgrStatusResp(integrateID int64) (*req.Resp, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
@@ -111,15 +111,15 @@ func (o *IntegrateService) GetIntegrateStatusResp(integrateID int64) (*req.Resp,
 	return resp, err
 }
 
-//GetIntegrateStatus 模型集成相关: 获取集成状态
+//GetIntgrStatus 模型集成相关: 获取集成状态
 //http://doc.bimface.com/book/restful/articles/api/integrate/get-integrate.html
-func (o *IntegrateService) GetIntegrateStatus(integrateID int64) (*response.IntegrateStatus, error) {
-	resp, err := o.GetIntegrateStatusResp(integrateID)
+func (o *IntegrateService) GetIntgrStatus(integrateID int64) (*response.IntgrStatus, error) {
+	resp, err := o.GetIntgrStatusResp(integrateID)
 	if err != nil {
 		return nil, err
 	}
 
-	result := response.NewIntegrateStatus()
+	result := response.NewIntgrStatus()
 	err = utils.RespToBean(resp, result)
 
 	return result, err
@@ -140,7 +140,7 @@ func (o *IntegrateService) DeleteIntegrate(integrateID int64) (string, error) {
 
 	resp := o.ServiceClient.Delete(o.deleteIntegrateURL(integrateID), headers.Header)
 
-	result, err := utils.RespToResponseResult(resp)
+	result, err := utils.RespToResult(resp)
 	if err != nil {
 		return result.Code, err
 	}

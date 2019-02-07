@@ -143,7 +143,7 @@ func (o *ShareLinkService) generalDeleteShare(isTranslate bool, xxID int64) (str
 	}
 	resp := o.ServiceClient.Delete(url, headers.Header)
 
-	result, err := utils.RespToResponseResult(resp)
+	result, err := utils.RespToResult(resp)
 	if err != nil {
 		return result.Code, err
 	}

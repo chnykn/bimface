@@ -19,7 +19,7 @@ const (
 	elementURI string = "/data/element/id?fileId=%d"
 
 	//获取集成模型的构件列表
-	integrateElementURI string = "/data/integration/element?integrateId=%d"
+	IntgrElementURI string = "/data/integration/element?integrateId=%d"
 )
 
 //ElementService ***
@@ -48,8 +48,8 @@ func (o *ElementService) elementURL(fileID int64) string {
 	return fmt.Sprintf(o.Endpoint.APIHost+elementURI, fileID)
 }
 
-func (o *ElementService) integrateElementURL(integrateID int64) string {
-	return fmt.Sprintf(o.Endpoint.APIHost+integrateElementURI, integrateID)
+func (o *ElementService) IntgrElementURL(integrateID int64) string {
+	return fmt.Sprintf(o.Endpoint.APIHost+IntgrElementURI, integrateID)
 }
 
 //-----------------------------------------------------------------------------------
@@ -121,8 +121,8 @@ func (o *ElementService) GetElements(fileID int64, floor, specialty, categoryID,
 
 //-----------------------------------------------------------------------------------
 
-//GetIntegrationElementsResp ***
-func (o *ElementService) GetIntegrationElementsResp(integrateID int64, params req.QueryParam) (*req.Resp, error) {
+//GetIntgrElementsResp ***
+func (o *ElementService) GetIntgrElementsResp(integrateID int64, params req.QueryParam) (*req.Resp, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
@@ -131,13 +131,13 @@ func (o *ElementService) GetIntegrationElementsResp(integrateID int64, params re
 	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
-	resp := o.ServiceClient.Get(o.integrateElementURL(integrateID), params, headers.Header)
+	resp := o.ServiceClient.Get(o.IntgrElementURL(integrateID), params, headers.Header)
 	return resp, nil
 }
 
-//GetIntegrationElementsWithParams ***
-func (o *ElementService) GetIntegrationElementsWithParams(integrateID int64, params req.QueryParam) (*response.Elements, error) {
-	resp, err := o.GetIntegrationElementsResp(integrateID, params)
+//GetIntgrElementsWithParams ***
+func (o *ElementService) GetIntgrElementsWithParams(integrateID int64, params req.QueryParam) (*response.IntgrElements, error) {
+	resp, err := o.GetIntgrElementsResp(integrateID, params)
 	if err != nil {
 		return nil, err
 	}
@@ -148,7 +148,7 @@ func (o *ElementService) GetIntegrationElementsWithParams(integrateID int64, par
 	return result, err
 }
 
-//GetIntegrationElements 模型集成相关: 获取集成的构件列表
+//GetIntgrElements 模型集成相关: 获取集成的构件列表
 //http://doc.bimface.com/book/restful/articles/api/integrate/get-integrate-element.html
 /***
 字段		类型	必填	描述
@@ -159,8 +159,8 @@ categoryId	String	N	构件分类ID
 family		String	N	族
 familyType	String	N	族类型
 ***/
-func (o *ElementService) GetIntegrationElements(fileID int64, floor, specialty, categoryID,
-	family, familyType string) (*response.Elements, error) {
+func (o *ElementService) GetIntgrElements(fileID int64, floor, specialty, categoryID,
+	family, familyType string) (*response.IntgrElements, error) {
 
 	params := make(req.QueryParam)
 	if floor != "" {
@@ -179,5 +179,5 @@ func (o *ElementService) GetIntegrationElements(fileID int64, floor, specialty, 
 		params["familyType"] = familyType
 	}
 
-	return o.GetIntegrationElementsWithParams(fileID, params)
+	return o.GetIntgrElementsWithParams(fileID, params)
 }

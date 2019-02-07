@@ -20,20 +20,21 @@ type Client struct {
 	AccessTokenService *service.AccessTokenService
 	SupportFileService *service.SupportFileService
 
-	AppendFileService     *service.AppendFileService
-	CategoryTreeService   *service.CategoryTreeService
-	CompareService        *service.CompareService
-	DownloadService       *service.DownloadService
-	DrawingSheetsService  *service.DrawingSheetsService
-	ElementService        *service.ElementService
-	ElevService           *service.ElevService
-	IntegrateService      *service.IntegrateService
-	OfflineDatabagService *service.OfflineDatabagService
-	PropertyService       *service.PropertyService
-	ShareLinkService      *service.ShareLinkService
-	TranslateService      *service.TranslateService
-	UploadService         *service.UploadService
-	ViewTokenService      *service.ViewTokenService
+	AppendFileService      *service.AppendFileService
+	CategoryTreeService    *service.CategoryTreeService
+	CompareService         *service.CompareService
+	DownloadService        *service.DownloadService
+	DrawingSheetsService   *service.DrawingSheetsService
+	ElementService         *service.ElementService
+	FloorService           *service.FloorService
+	IntegrateService       *service.IntegrateService
+	IntgrTreeService *service.IntgrTreeService
+	DatabagService  *service.DatabagService
+	PropertyService        *service.PropertyService
+	ShareLinkService       *service.ShareLinkService
+	TranslateService       *service.TranslateService
+	UploadService          *service.UploadService
+	ViewTokenService       *service.ViewTokenService
 }
 
 // NewClient create an bimface client.
@@ -56,9 +57,10 @@ func NewClient(appKey string, appSecret string, endpoint *config.Endpoint) *Clie
 	o.DownloadService = service.NewDownloadService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
 	o.ElementService = service.NewElementService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
 	o.DrawingSheetsService = service.NewDrawingSheetsService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
-	o.ElevService = service.NewElevService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
+	o.FloorService = service.NewFloorService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
 	o.IntegrateService = service.NewIntegrateService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
-	o.OfflineDatabagService = service.NewOfflineDatabagService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
+	o.IntgrTreeService = service.NewIntgrTreeService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
+	o.DatabagService = service.NewDatabagService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
 	o.PropertyService = service.NewPropertyService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
 	o.ShareLinkService = service.NewShareLinkService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
 	o.TranslateService = service.NewTranslateService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)

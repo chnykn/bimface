@@ -4,17 +4,17 @@
 
 package response
 
-//OfflineDatabag ***
-type OfflineDatabag struct {
+//Databag ***
+type Databag struct {
 	DatabagVersion string `json:"databagVersion"`
 	Status         string `json:"status"`
 	Reason         string `json:"reason"`
 	CreateTime     string `json:"createTime"`
 }
 
-//NewOfflineDatabag ***
-func NewOfflineDatabag() *OfflineDatabag {
-	o := &OfflineDatabag{
+//NewDatabag ***
+func NewDatabag() *Databag {
+	o := &Databag{
 		// DatabagVersion:   ,
 		// Status: ,
 	}
