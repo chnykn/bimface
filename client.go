@@ -20,21 +20,21 @@ type Client struct {
 	AccessTokenService *service.AccessTokenService
 	SupportFileService *service.SupportFileService
 
-	AppendFileService      *service.AppendFileService
-	CategoryTreeService    *service.CategoryTreeService
-	CompareService         *service.CompareService
-	DownloadService        *service.DownloadService
-	DrawingSheetsService   *service.DrawingSheetsService
-	ElementService         *service.ElementService
-	FloorService           *service.FloorService
-	IntegrateService       *service.IntegrateService
-	IntgrTreeService *service.IntgrTreeService
-	DatabagService  *service.DatabagService
-	PropertyService        *service.PropertyService
-	ShareLinkService       *service.ShareLinkService
-	TranslateService       *service.TranslateService
-	UploadService          *service.UploadService
-	ViewTokenService       *service.ViewTokenService
+	AppendFileService    *service.AppendFileService
+	CategoryTreeService  *service.CategoryTreeService
+	CompareService       *service.CompareService
+	DownloadService      *service.DownloadService
+	DrawingSheetsService *service.DrawingSheetsService
+	ElementService       *service.ElementService
+	FloorService         *service.FloorService
+	IntegrateService     *service.IntegrateService
+	IntgrTreeService     *service.IntgrTreeService
+	DatabagService       *service.DatabagService
+	PropertyService      *service.PropertyService
+	ShareLinkService     *service.ShareLinkService
+	TranslateService     *service.TranslateService
+	UploadService        *service.UploadService
+	ViewTokenService     *service.ViewTokenService
 }
 
 // NewClient create an bimface client.

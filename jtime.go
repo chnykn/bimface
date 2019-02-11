@@ -4,8 +4,8 @@ import (
 	"time"
 )
 
-//JsonTime ***
-type JsonTime time.Time
+//JTime ***
+type JTime time.Time
 
 const (
 	timeFormart     = `2006-01-02 15:04:05`
@@ -13,14 +13,14 @@ const (
 )
 
 //UnmarshalJSON ***
-func (t *JsonTime) UnmarshalJSON(data []byte) (err error) {
+func (t *JTime) UnmarshalJSON(data []byte) (err error) {
 	now, err := time.ParseInLocation(timeFormartJson, string(data), time.Local)
-	*t = JsonTime(now)
+	*t = JTime(now)
 	return
 }
 
 //MarshalJSON ***
-func (t *JsonTime) MarshalJSON() ([]byte, error) {
+func (t *JTime) MarshalJSON() ([]byte, error) {
 	b := make([]byte, 0, len(timeFormart)+2)
 	b = append(b, '"')
 	b = time.Time(*t).AppendFormat(b, timeFormart)
@@ -28,6 +28,6 @@ func (t *JsonTime) MarshalJSON() ([]byte, error) {
 	return b, nil
 }
 
-func (t JsonTime) String() string {
+func (t JTime) String() string {
 	return time.Time(t).Format(timeFormart)
 }

@@ -77,7 +77,7 @@ name					String		N	调用方设置的名称
 priority				Number		Y	优先级，数字越大，优先级越低	1, 2, 3
 callback				String		N	Callback地址，待集成完毕以后，BIMFACE会回调该地址
 ***/
-func (o *IntegrateService) Integrate(integrateRequest *request.IntgrRequest) (*response.IntgrStatus, error) {
+func (o *IntegrateService) Integrate(intgrRequest *request.IntgrRequest) (*response.IntgrStatus, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
@@ -86,7 +86,7 @@ func (o *IntegrateService) Integrate(integrateRequest *request.IntgrRequest) (*r
 	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
-	body := req.BodyJSON(integrateRequest)
+	body := req.BodyJSON(intgrRequest)
 	resp := o.ServiceClient.Put(o.integrateURL(), headers.Header, body)
 
 	result := response.NewIntgrStatus()
@@ -97,8 +97,8 @@ func (o *IntegrateService) Integrate(integrateRequest *request.IntgrRequest) (*r
 
 //-----------------------------------------------------------------------------------
 
-//GetIntgrStatusResp ***
-func (o *IntegrateService) GetIntgrStatusResp(integrateID int64) (*req.Resp, error) {
+//GetIntegrateStatusResp ***
+func (o *IntegrateService) GetIntegrateStatusResp(integrateID int64) (*req.Resp, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
@@ -111,10 +111,10 @@ func (o *IntegrateService) GetIntgrStatusResp(integrateID int64) (*req.Resp, err
 	return resp, err
 }
 
-//GetIntgrStatus 模型集成相关: 获取集成状态
+//GetIntegrateStatus 模型集成相关: 获取集成状态
 //http://doc.bimface.com/book/restful/articles/api/integrate/get-integrate.html
-func (o *IntegrateService) GetIntgrStatus(integrateID int64) (*response.IntgrStatus, error) {
-	resp, err := o.GetIntgrStatusResp(integrateID)
+func (o *IntegrateService) GetIntegrateStatus(integrateID int64) (*response.IntgrStatus, error) {
+	resp, err := o.GetIntegrateStatusResp(integrateID)
 	if err != nil {
 		return nil, err
 	}

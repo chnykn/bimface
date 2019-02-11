@@ -19,7 +19,7 @@ const (
 	elementURI string = "/data/element/id?fileId=%d"
 
 	//获取集成模型的构件列表
-	IntgrElementURI string = "/data/integration/element?integrateId=%d"
+	intgrElementURI string = "/data/integration/element?integrateId=%d"
 )
 
 //ElementService ***
@@ -48,8 +48,8 @@ func (o *ElementService) elementURL(fileID int64) string {
 	return fmt.Sprintf(o.Endpoint.APIHost+elementURI, fileID)
 }
 
-func (o *ElementService) IntgrElementURL(integrateID int64) string {
-	return fmt.Sprintf(o.Endpoint.APIHost+IntgrElementURI, integrateID)
+func (o *ElementService) intgrElementURL(integrateID int64) string {
+	return fmt.Sprintf(o.Endpoint.APIHost+intgrElementURI, integrateID)
 }
 
 //-----------------------------------------------------------------------------------
@@ -131,7 +131,7 @@ func (o *ElementService) GetIntgrElementsResp(integrateID int64, params req.Quer
 	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
-	resp := o.ServiceClient.Get(o.IntgrElementURL(integrateID), params, headers.Header)
+	resp := o.ServiceClient.Get(o.intgrElementURL(integrateID), params, headers.Header)
 	return resp, nil
 }
 

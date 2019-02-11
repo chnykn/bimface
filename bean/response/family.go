@@ -12,6 +12,7 @@ type Family struct {
 	Name  string   `json:"family"`
 	Types []string `json:"familyTypes"  sql:",array"`
 
+	GUID       string    `json:"-"`
 	CategoryID string    `json:"-"`
 	Category   *Category `json:"-"`
 }
