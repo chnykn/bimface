@@ -37,25 +37,25 @@ type ElementDiff struct {
 	A string //变化图元前一个版本的ID
 	B string //变化图元后一个版本的ID
 
-	NewAttributes    []ElementAttr `json:"newAttributes"`
-	DeleteAttributes []ElementAttr `json:"deleteAttributes"`
-	ChangeAttributes []ChangeAttrs `json:"changeAttributes"`
+	NewAttributes    []*ElementAttr `json:"newAttributes"`
+	DeleteAttributes []*ElementAttr `json:"deleteAttributes"`
+	ChangeAttributes []*ChangeAttrs `json:"changeAttributes"`
 
-	NewQuantities    []ElementQty `json:"newQuantities"`
-	DeleteQuantities []ElementQty `json:"deleteQuantities"`
-	ChangeQuantities []ChangeQtys `json:"changeQuantities"`
+	NewQuantities    []*ElementQty `json:"newQuantities"`
+	DeleteQuantities []*ElementQty `json:"deleteQuantities"`
+	ChangeQuantities []*ChangeQtys `json:"changeQuantities"`
 }
 
 //NewElementDiff ***
 func NewElementDiff() *ElementDiff {
 	o := &ElementDiff{
-		NewAttributes:    make([]ElementAttr, 0),
-		DeleteAttributes: make([]ElementAttr, 0),
-		ChangeAttributes: make([]ChangeAttrs, 0),
+		NewAttributes:    make([]*ElementAttr, 0),
+		DeleteAttributes: make([]*ElementAttr, 0),
+		ChangeAttributes: make([]*ChangeAttrs, 0),
 
-		NewQuantities:    make([]ElementQty, 0),
-		DeleteQuantities: make([]ElementQty, 0),
-		ChangeQuantities: make([]ChangeQtys, 0),
+		NewQuantities:    make([]*ElementQty, 0),
+		DeleteQuantities: make([]*ElementQty, 0),
+		ChangeQuantities: make([]*ChangeQtys, 0),
 	}
 	return o
 }

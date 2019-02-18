@@ -8,9 +8,9 @@ import "fmt"
 
 //Category ***
 type Category struct {
-	ID       string   `json:"categoryId"`
-	Name     string   `json:"categoryName"`
-	Families []Family `json:"families"`
+	ID       string    `json:"categoryId"`
+	Name     string    `json:"categoryName"`
+	Families []*Family `json:"families"`
 }
 
 //NewCategory ***
@@ -18,7 +18,7 @@ func NewCategory() *Category { //id int64, name string
 	o := &Category{
 		// CategoryID:   id,
 		// CategoryName: name,
-		Families: make([]Family, 0),
+		Families: make([]*Family, 0),
 	}
 	return o
 }

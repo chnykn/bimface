@@ -61,7 +61,7 @@ func RespToBean(resp *req.Resp, returnObj interface{}) error {
 	}
 
 	text = text[n+7 : strings.LastIndex(text, "}")]
-	fmt.Println(text)
+	//fmt.Println(text)
 
 	return json.Unmarshal([]byte(text), returnObj)
 }

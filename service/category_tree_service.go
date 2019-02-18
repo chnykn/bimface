@@ -78,13 +78,13 @@ func (o *CategoryTreeService) GetCategoryTreeResp(fileID int64, isV2 bool) (*req
 字段	类型	必填	描述
 fileId	Number	Y	文件ID
 ***/
-func (o *CategoryTreeService) GetCategoryTree(fileID int64) ([]response.Category, error) {
+func (o *CategoryTreeService) GetCategoryTree(fileID int64) ([]*response.Category, error) {
 	resp, err := o.GetCategoryTreeResp(fileID, false)
 	if err != nil {
 		return nil, err
 	}
 
-	result := []response.Category{}
+	result := make([]*response.Category, 0)
 	err = utils.RespToBean(resp, &result)
 	if err != nil {
 		return nil, err
@@ -98,13 +98,13 @@ func (o *CategoryTreeService) GetCategoryTree(fileID int64) ([]response.Category
 字段	类型	必填	描述
 fileId	Number	Y	文件ID
 ***/
-func (o *CategoryTreeService) GetCategoryTreeV2(fileID int64) ([]common.TreeNode, error) {
+func (o *CategoryTreeService) GetCategoryTreeV2(fileID int64) ([]*common.TreeNode, error) {
 	resp, err := o.GetCategoryTreeResp(fileID, true)
 	if err != nil {
 		return nil, err
 	}
 
-	result := []common.TreeNode{}
+	result := make([]*common.TreeNode, 0)
 	err = utils.RespToBean(resp, &result)
 	if err != nil {
 		return nil, err

@@ -67,13 +67,13 @@ func (o *FloorService) GetFloorsResp(fileID int64) (*req.Resp, error) {
 
 //GetFloors 获取文件转换的楼层信息
 //http://static.bimface.com/book/restful/articles/api/translate/get-floors.html
-func (o *FloorService) GetFloors(fileID int64) ([]response.Floor, error) {
+func (o *FloorService) GetFloors(fileID int64) ([]*response.Floor, error) {
 	resp, err := o.GetFloorsResp(fileID)
 	if err != nil {
 		return nil, err
 	}
 
-	result := make([]response.Floor, 0)
+	result := make([]*response.Floor, 0)
 	err = utils.RespToBean(resp, &result)
 	if err != nil {
 		return nil, err
@@ -100,13 +100,13 @@ func (o *FloorService) GetIntegrationFloorsResp(integrateID int64) (*req.Resp, e
 
 //GetIntegrationFloors 获取集成模型楼层信息
 //http://static.bimface.com/book/restful/articles/api/integrate/get-integrate-floors.html
-func (o *FloorService) GetIntegrationFloors(integrateID int64) ([]response.Floor, error) {
+func (o *FloorService) GetIntegrationFloors(integrateID int64) ([]*response.Floor, error) {
 	resp, err := o.GetIntegrationFloorsResp(integrateID)
 	if err != nil {
 		return nil, err
 	}
 
-	result := make([]response.Floor, 0)
+	result := make([]*response.Floor, 0)
 	err = utils.RespToBean(resp, &result)
 	if err != nil {
 		return nil, err

@@ -6,8 +6,8 @@ package common
 
 //BoundingBox ***
 type BoundingBox struct {
-	Min Coordinate
-	Max Coordinate
+	Min Coordinate `json:"min"`
+	Max Coordinate `json:"max"`
 }
 
 //NewBoundingBox ***

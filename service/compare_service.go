@@ -154,13 +154,13 @@ func (o *CompareService) GetCompareDataResp(compareID int64) (*req.Resp, error) 
 字段		类型	必填	描述
 compareId	Number	Y	模型对比Id
 ***/
-func (o *CompareService) GetCompareData(compareID int64) ([]response.CompareData, error) {
+func (o *CompareService) GetCompareData(compareID int64) ([]*response.CompareData, error) {
 	resp, err := o.GetCompareDataResp(compareID)
 	if err != nil {
 		return nil, err
 	}
 
-	result := []response.CompareData{}
+	result := make([]*response.CompareData, 0)
 	err = utils.RespToBean(resp, &result)
 	if err != nil {
 		return nil, err

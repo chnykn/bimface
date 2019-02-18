@@ -13,7 +13,7 @@ type SupportFile struct {
 }
 
 //NewSupportFile ***
-func NewSupportFile() *SupportFile { //length int64, types []string
+func NewSupportFile() *SupportFile { //length int64, types []*string
 	o := &SupportFile{
 		// Length: length,
 		Types: make([]string, 0),

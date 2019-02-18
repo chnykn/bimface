@@ -37,15 +37,15 @@ func (o *PropertyItem) ToString() string {
 
 //PropertyGroup PropertyGroup
 type PropertyGroup struct {
-	Group string         `json:"group"`
-	Items []PropertyItem `json:"items"`
+	Group string          `json:"group"`
+	Items []*PropertyItem `json:"items"`
 }
 
 //NewPropertyGroup ***
 func NewPropertyGroup(name string) *PropertyGroup {
 	o := &PropertyGroup{
 		Group: name,
-		Items: make([]PropertyItem, 0),
+		Items: make([]*PropertyItem, 0),
 	}
 	return o
 }
@@ -59,20 +59,20 @@ type Element struct {
 	GUID        string             `json:"guid"`
 	FamilyGUID  string             `json:"familyGuid"`
 	BoundingBox common.BoundingBox `json:"boundingBox"`
-	Properties  []PropertyGroup    `json:"properties"`
+	Properties  []*PropertyGroup   `json:"properties"`
 }
 
 //NewElement ***
 func NewElement(id string) *Element {
 	o := &Element{
 		ID: id,
-		//Groups: make([]PropertyGroup, 0),
+		//Groups: make([]*PropertyGroup, 0),
 	}
 	return o
 }
 
 //AddPropertyGroup ***
-func (o *Element) AddPropertyGroup(group PropertyGroup) {
+func (o *Element) AddPropertyGroup(group *PropertyGroup) {
 	o.Properties = append(o.Properties, group)
 }
 

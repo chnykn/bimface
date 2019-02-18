@@ -8,15 +8,15 @@ package response
 
 //IntgrFloorSpecialty Specialty in floor
 type IntgrFloorSpecialty struct {
-	Name       string     `json:"specialty"`
-	Categories []Category `json:"categories"`
+	Name       string      `json:"specialty"`
+	Categories []*Category `json:"categories"`
 }
 
 //NewIntgrFloorSpecialty ***
 func NewIntgrFloorSpecialty(name string) *IntgrFloorSpecialty {
 	o := &IntgrFloorSpecialty{
 		Name:       name,
-		Categories: make([]Category, 0),
+		Categories: make([]*Category, 0),
 	}
 	return o
 }
@@ -25,15 +25,15 @@ func NewIntgrFloorSpecialty(name string) *IntgrFloorSpecialty {
 
 //IntgrFloor ***
 type IntgrFloor struct {
-	Name        string                `json:"floor"`
-	Specialties []IntgrFloorSpecialty `json:"specialties"`
+	Name        string                 `json:"floor"`
+	Specialties []*IntgrFloorSpecialty `json:"specialties"`
 }
 
 //NewIntgrFloor ***
 func NewIntgrFloor(name string) *IntgrFloor {
 	o := &IntgrFloor{
 		Name:        name,
-		Specialties: make([]IntgrFloorSpecialty, 0),
+		Specialties: make([]*IntgrFloorSpecialty, 0),
 	}
 	return o
 }
@@ -42,15 +42,15 @@ func NewIntgrFloor(name string) *IntgrFloor {
 
 //IntgrFloorTree ***
 type IntgrFloorTree struct {
-	TreeType int64        `json:"treeType"`
-	Tree     []IntgrFloor `json:"tree"`
+	TreeType int64         `json:"treeType"`
+	Tree     []*IntgrFloor `json:"tree"`
 }
 
 //NewIntgrFloorTree ***
 func NewIntgrFloorTree(treeType int64) *IntgrFloorTree {
 	o := &IntgrFloorTree{
 		TreeType: treeType,
-		Tree:     make([]IntgrFloor, 0),
+		Tree:     make([]*IntgrFloor, 0),
 	}
 	return o
 }

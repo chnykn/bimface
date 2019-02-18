@@ -129,7 +129,7 @@ fileId		Number	Y	通过文件转换ID创建离线数据包时必填
 integrateId	Number	Y	通过集成模型ID创建离线数据包时必填
 compareId	Number	Y	通过模型对比ID创建离线数据包时必填
 ***/
-func (o *DatabagService) QueryDatabag(databagRequest *request.DatabagRequest) ([]response.Databag, error) {
+func (o *DatabagService) QueryDatabag(databagRequest *request.DatabagRequest) ([]*response.Databag, error) {
 
 	var url string
 	if databagRequest.FileID != nil {
@@ -153,7 +153,7 @@ func (o *DatabagService) QueryDatabag(databagRequest *request.DatabagRequest) ([
 
 	resp := o.ServiceClient.Get(url, headers.Header)
 
-	result := make([]response.Databag, 0)
+	result := make([]*response.Databag, 0)
 	err = utils.RespToBean(resp, &result)
 	if err != nil {
 		return nil, err

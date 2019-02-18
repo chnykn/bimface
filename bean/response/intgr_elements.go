@@ -27,14 +27,14 @@ func NewIntgrElement(fileID string, elementID string) *IntgrElement {
 
 //IntgrElements ***
 type IntgrElements struct {
-	Elements    []IntgrElement     `json:"elements"`
+	Elements    []*IntgrElement    `json:"elements"`
 	BoundingBox common.BoundingBox `json:"boundingBox"`
 }
 
 //NewElements ***
 func NewElements() *IntgrElements {
 	o := &IntgrElements{
-		Elements: make([]IntgrElement, 0),
+		Elements: make([]*IntgrElement, 0),
 		//BoundingBox: common.NewBoundingBox(),
 	}
 	return o

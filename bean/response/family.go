@@ -10,11 +10,9 @@ import "fmt"
 type Family struct {
 	ID    string   `json:"id"`
 	Name  string   `json:"family"`
-	Types []string `json:"familyTypes"  sql:",array"`
+	Types []string `json:"familyTypes"`
 
-	GUID       string    `json:"-"`
-	CategoryID string    `json:"-"`
-	Category   *Category `json:"-"`
+	GUID string `json:"-"`
 }
 
 //NewFamily ***
