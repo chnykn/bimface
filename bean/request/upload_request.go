@@ -4,23 +4,29 @@
 
 package request
 
-import (
-	"os"
-	"path"
-
-	"github.com/chnykn/bimface/utils"
-)
+import "bytes"
 
 //UploadRequest ***
 type UploadRequest struct {
-	Name          string `json:"name"`
-	SourceID      string `json:"sourceId,omitempty"`
-	URL           string `json:"url,omitempt"`
-	ContentLength int64  `json:"contentLength,omitempt"` // multipart.FileHeader.Size
-	InputStream   []byte `json:"-"`                      // *multipart.FileHeader
-	Bucket        string `json:"bucket,omitempty"`
-	ObjectKey     string `json:"objectKey,omitempty"`
+	Name      string `json:"name"`
+	SourceID  string `json:"sourceId,omitempty"`
+	URL       string `json:"url,omitempt"`
+	Buffer    *bytes.Buffer
+	Bucket    string `json:"bucket,omitempty"`
+	ObjectKey string `json:"objectKey,omitempty"`
 }
+
+/*
+type UploadRequest struct {
+	Name          string       `json:"name"`
+	SourceID      string       `json:"sourceId,omitempty"`
+	URL           string       `json:"url,omitempt"`
+	ContentLength int64        `json:"contentLength,omitempt"` // multipart.FileHeader.Size
+	InputStream   bytes.Buffer `json:"-"`                      //[]byte
+	Bucket        string       `json:"bucket,omitempty"`
+	ObjectKey     string       `json:"objectKey,omitempty"`
+}
+
 
 //NewUploadRequest ***
 func NewUploadRequest(localFile string) *UploadRequest {
@@ -54,6 +60,7 @@ func NewUploadRequest(localFile string) *UploadRequest {
 	}
 	return o
 }
+*/
 
 //---------------------------------------------------------------------
 

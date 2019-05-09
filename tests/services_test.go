@@ -1,10 +1,15 @@
 package tests
 
 import (
+	"bytes"
 	"fmt"
+	"io"
+	"os"
+	"path"
 	"testing"
 
 	"github.com/chnykn/bimface/bean/request"
+	"github.com/chnykn/bimface/utils"
 )
 
 func TestAccessTokenService(t *testing.T) {
@@ -154,28 +159,72 @@ func TestShareLinkService(t *testing.T) {
 	}
 }
 
+func fileToBuffer(file io.Reader) (*bytes.Buffer, error) {
+
+	result := bytes.NewBuffer(make([]byte, 0))
+
+	buf := make([]byte, 1024)
+	for {
+		n, err := file.Read(buf)
+		if (err != nil) && (err != io.EOF) {
+			return nil, err
+		}
+
+		if n == 0 {
+			break
+		}
+
+		_, err = result.Write(buf[:n])
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return result, nil
+}
+
 func TestUploadService(t *testing.T) {
 	client := getClient()
 
-	fileBean, err := client.UploadService.GetFileMetadata(1538038887260832)
+	filePath := "F:/Garry/RVT/Sample.rvt"
+	file, err := os.Open(filePath)
+	if err != nil {
+		fmt.Printf("err = %v \n", err)
+		return
+	}
+	defer file.Close()
+
+	buffer, err := fileToBuffer(file)
+	if err != nil {
+		fmt.Printf("err = %v \n", err)
+		return
+	}
+
+	fileName := path.Base(filePath)
+
+	uploadReq := &request.UploadRequest{
+		Name:   utils.EncodeURI(fileName),
+		Buffer: buffer,
+	}
+
+	fileBean, err := client.UploadService.Upload(uploadReq)
 	if err == nil {
-		fmt.Printf("GetFileMetadata = %v \n", fileBean)
+		fmt.Printf("Upload = %v \n", fileBean)
 	} else {
 		fmt.Printf("err = %v \n", err)
 	}
 
 	/*
-		result, err := client.UploadService.DeleteFile(1538038887260832)
+		fileBean, err := client.UploadService.GetFileMetadata(1538038887260832)
 		if err == nil {
-			fmt.Printf("DeleteFile = %v \n", result)
+			fmt.Printf("GetFileMetadata = %v \n", fileBean)
 		} else {
 			fmt.Printf("err = %v \n", err)
 		}
 
-		uploadReq := request.NewUploadRequest("F:/场地_建筑.rvt")
-		fileBean, err := client.UploadService.Upload(uploadReq)
+		result, err := client.UploadService.DeleteFile(1538038887260832)
 		if err == nil {
-			fmt.Printf("Upload = %v \n", fileBean)
+			fmt.Printf("DeleteFile = %v \n", result)
 		} else {
 			fmt.Printf("err = %v \n", err)
 		}
@@ -186,7 +235,7 @@ func TestUploadService(t *testing.T) {
 func TestIntegrateService(t *testing.T) {
 	client := getClient()
 
-	status, err := client.IntegrateService.GetIntgrStatus(1538044326628288)
+	status, err := client.IntegrateService.GetIntegrateStatus(1538044326628288)
 	if err == nil {
 		fmt.Printf("GetIntgrStatus = %v \n", status)
 	} else {
@@ -209,4 +258,30 @@ func TestIntegrateService(t *testing.T) {
 	} else {
 		fmt.Printf("err = %v \n", err)
 	}
+}
+
+func TestSupportFileService(t *testing.T) {
+	client := getClient()
+
+	res, err := client.SupportFileService.GetSupport()
+	if err == nil {
+		fmt.Printf("GetSupport = %v \n", res)
+	} else {
+		fmt.Printf("err = %v \n", err)
+	}
+
+}
+
+//
+
+func TestUrlEscape(t *testing.T) {
+
+	s := "doc/callback?name=trans&id=1&fileId=1602047233139584&transferId=1602047233139584&status=success&thumbnail=https%3A%2F%2Fm.bimface.com%2F0c18dfb2c6544f15e88e9a6d5717f8aa%2Fthumbnail%2F96.png%2Chttps%3A%2F%2Fm.bimface.com%2F0c18dfb2c6544f15e88e9a6d5717f8aa%2Fthumbnail%2F256.png&reason=&nonce=785eb7a6-5446-4f40-bbf7-5e0d6c0b307a&signature=6b7564994a6f2b24a51f5165cac3284c"
+
+	res, err := utils.DecodeURI(s)
+	if err != nil {
+		fmt.Printf("DecodeURI err=%v \n", err)
+	}
+	fmt.Println(res)
+
 }

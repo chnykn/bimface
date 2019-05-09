@@ -6,7 +6,6 @@ package service
 
 import (
 	"fmt"
-	"strconv"
 
 	"github.com/chnykn/bimface/bean/request"
 	"github.com/chnykn/bimface/bean/response"
@@ -130,10 +129,10 @@ func (o *UploadService) doUploadBody(uploadRequest *request.UploadRequest, token
 
 	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(token)
-	headers.Header["Content-Length"] = strconv.FormatInt(uploadRequest.ContentLength, 10)
+	//headers.Header["Content-Length"] = strconv.FormatInt(uploadRequest.ContentLength, 10)
 
 	resp := o.ServiceClient.Put(o.uploadURL(uploadRequest.Name, uploadRequest.SourceID),
-		headers.Header, uploadRequest.InputStream)
+		headers.Header, uploadRequest.Buffer)
 
 	result := response.NewFileBean()
 	err := utils.RespToBean(resp, result)
