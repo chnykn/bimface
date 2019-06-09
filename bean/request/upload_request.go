@@ -11,7 +11,7 @@ type UploadRequest struct {
 	Name      string `json:"name"`
 	SourceID  string `json:"sourceId,omitempty"`
 	URL       string `json:"url,omitempt"`
-	Buffer    *bytes.Buffer
+	Buffer    bytes.Buffer
 	Bucket    string `json:"bucket,omitempty"`
 	ObjectKey string `json:"objectKey,omitempty"`
 }
