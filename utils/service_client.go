@@ -14,6 +14,7 @@ func NewServiceClient() *ServiceClient {
 		request: req.New(),
 	}
 	//o.request.Header.Set("Content-Type", "application/json")
+	o.request.SetTimeout(0)
 
 	return o
 }
