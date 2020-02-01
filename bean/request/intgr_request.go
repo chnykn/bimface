@@ -16,9 +16,10 @@ type IntgrSource struct {
 }
 
 //NewIntgrSource ***
-func NewIntgrSource(fileID int64, specialty string) *IntgrSource {
+func NewIntgrSource(fileID int64, floor, specialty string) *IntgrSource {
 	o := &IntgrSource{
 		FileID:    fileID,
+		Floor:     floor,
 		Specialty: specialty,
 	}
 	return o
