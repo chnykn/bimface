@@ -20,8 +20,10 @@ const (
 
 	//getUploadPolicyURI string = "/upload/policy?name=%s"
 
-	deleteFileURI      string = "/file?fileId=%d"
-	getFileMetadataURI string = "/metadata?fileId=%d"
+	deleteFileURI          string = "/file?fileId=%d"
+	getFileMetaURI         string = "/files/%d"
+	getFileListURI         string = "/files"
+	getFileUploadStatusURI string = "/files/%d//uploadStatus"
 )
 
 //UploadService ***
@@ -80,8 +82,16 @@ func (o *UploadService) deleteFileURL(fileID int64) string {
 	return fmt.Sprintf(o.Endpoint.FileHost+deleteFileURI, fileID)
 }
 
-func (o *UploadService) getFileMetadataURL(fileID int64) string {
-	return fmt.Sprintf(o.Endpoint.FileHost+getFileMetadataURI, fileID)
+func (o *UploadService) getFileMetaURL(fileID int64) string {
+	return fmt.Sprintf(o.Endpoint.FileHost+getFileMetaURI, fileID)
+}
+
+func (o *UploadService) getFileListURL() string {
+	return fmt.Sprintf(o.Endpoint.FileHost + getFileListURI)
+}
+
+func (o *UploadService) getFileUploadStatusURL(fileID int64) string {
+	return fmt.Sprintf(o.Endpoint.FileHost+getFileUploadStatusURI, fileID)
 }
 
 //------------------------------------------------------------------------------------
@@ -186,9 +196,9 @@ func (o *UploadService) DeleteFile(fileID int64) (string, error) {
 	return result.Code, nil
 }
 
-//GetFileMetadata 源文件相关: 获取文件元信息
+//GetFileMeta 源文件相关: 获取文件信息
 //http://static.bimface.com/book/restful/articles/api/file/get-file-metadata.html
-func (o *UploadService) GetFileMetadata(fileID int64) (*response.FileBean, error) {
+func (o *UploadService) GetFileMeta(fileID int64) (*response.FileBean, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
@@ -197,9 +207,46 @@ func (o *UploadService) GetFileMetadata(fileID int64) (*response.FileBean, error
 	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
-	resp := o.ServiceClient.Get(o.getFileMetadataURL(fileID), headers.Header)
+	resp := o.ServiceClient.Get(o.getFileMetaURL(fileID), headers.Header)
 
 	result := response.NewFileBean()
+	err = utils.RespToBean(resp, result)
+
+	return result, err
+}
+
+// GetFileList 获取文件信息列表 GET https://file.bimface.com/files
+// http://static.bimface.com/restful-apidoc/dist/file.html#_listfilesusingget
+func (o *UploadService) GetFileList() ([]*response.FileBean, error) {
+	accessToken, err := o.AccessTokenService.Get()
+	if err != nil {
+		return nil, err
+	}
+
+	headers := utils.NewHeaders()
+	headers.AddOAuth2Header(accessToken.Token)
+
+	resp := o.ServiceClient.Get(o.getFileListURL(), headers.Header)
+
+	result := make([]*response.FileBean, 0)
+	err = utils.RespToBean(resp, result)
+
+	return result, err
+}
+
+//GetFileUploadStatus GET https://file.bimface.com/files/{fileId}/uploadStatus
+func (o *UploadService) GetFileUploadStatus(fileID int64) (*response.UploadStatus, error) {
+	accessToken, err := o.AccessTokenService.Get()
+	if err != nil {
+		return nil, err
+	}
+
+	headers := utils.NewHeaders()
+	headers.AddOAuth2Header(accessToken.Token)
+
+	resp := o.ServiceClient.Get(o.getFileUploadStatusURL(fileID), headers.Header)
+
+	result := response.NewUploadStatus()
 	err = utils.RespToBean(resp, result)
 
 	return result, err

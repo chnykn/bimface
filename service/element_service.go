@@ -16,7 +16,7 @@ import (
 
 const (
 	//获取文件转换的构件列表
-	elementURI string = "/data/element/id?fileId=%d"
+	elementIdsURI string = "/data/v2/files/%d/elementIds" //data/v2/files/{fileId}/elementIds
 
 	//获取集成模型的构件列表
 	intgrElementURI string = "/data/integration/element?integrateId=%d"
@@ -44,8 +44,8 @@ func NewElementService(serviceClient *utils.ServiceClient, endpoint *config.Endp
 
 //---------------------------------------------------------------------
 
-func (o *ElementService) elementURL(fileID int64) string {
-	return fmt.Sprintf(o.Endpoint.APIHost+elementURI, fileID)
+func (o *ElementService) elementIdsURL(fileID int64) string {
+	return fmt.Sprintf(o.Endpoint.APIHost+elementIdsURI, fileID)
 }
 
 func (o *ElementService) intgrElementURL(integrateID int64) string {
@@ -54,7 +54,7 @@ func (o *ElementService) intgrElementURL(integrateID int64) string {
 
 //-----------------------------------------------------------------------------------
 
-//GetElementsResp ***
+//GetElementsResp *** http://static.bimface.com/restful-apidoc/dist/translateSingleModel.html#_getelementidsusingget
 func (o *ElementService) GetElementsResp(fileID int64, params req.QueryParam) (*req.Resp, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
@@ -64,12 +64,12 @@ func (o *ElementService) GetElementsResp(fileID int64, params req.QueryParam) (*
 	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
-	resp := o.ServiceClient.Get(o.elementURL(fileID), params, headers.Header)
+	resp := o.ServiceClient.Get(o.elementIdsURL(fileID), params, headers.Header)
 	return resp, nil
 }
 
 //GetElementsWithParams 文件转换相关: 获取文件转换的构件列表
-//必填参数: fileID
+//必填参数: fileID  params相关参数，详见 http://static.bimface.com/restful-apidoc/dist/translateSingleModel.html#_getelementidsusingget
 func (o *ElementService) GetElementsWithParams(fileID int64, params req.QueryParam) ([]string, error) {
 	resp, err := o.GetElementsResp(fileID, params)
 	if err != nil {
@@ -86,7 +86,7 @@ func (o *ElementService) GetElementsWithParams(fileID int64, params req.QueryPar
 }
 
 //GetElements 文件转换相关: 获取文件转换的构件列表
-//http://doc.bimface.com/book/restful/articles/api/translate/get-ele-ids.html
+//http://static.bimface.com/restful-apidoc/dist/translateSingleModel.html#_getelementidsusingget
 /***
 字段		类型	必填	描述
 fileId		Number	Y	文件ID
@@ -95,6 +95,7 @@ floor		String	N	楼层
 categoryId	String	N	构件分类ID
 family		String	N	族
 familyType	String	N	族类型
+*** 其他参数详见网址地址
 ***/
 func (o *ElementService) GetElements(fileID int64, floor, specialty, categoryID,
 	family, familyType string) ([]string, error) {

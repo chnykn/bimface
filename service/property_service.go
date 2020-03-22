@@ -15,7 +15,7 @@ import (
 
 const (
 	//获取文件转换的构件属性
-	propertyURI string = "/data/element/property?fileId=%d&elementId=%s"
+	propertyURI string = "/data/v2/files/%d/elements/%d" //data/v2/files/{fileId}/elements/{elementId}
 
 	integratePropertyURI string = "/data/integration/element/property?integrateId=%d&fileId=%d&elementId=%s"
 )
@@ -42,7 +42,7 @@ func NewPropertyService(serviceClient *utils.ServiceClient, endpoint *config.End
 
 //---------------------------------------------------------------------
 
-func (o *PropertyService) propertyURL(fileID int64, elementID string) string {
+func (o *PropertyService) elemPropertyURL(fileID int64, elementID string) string {
 	return fmt.Sprintf(o.Endpoint.APIHost+propertyURI, fileID, elementID)
 }
 
@@ -62,12 +62,12 @@ func (o *PropertyService) GetElementPropertyResp(fileID int64, elementID string)
 	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
-	resp := o.ServiceClient.Get(o.propertyURL(fileID, elementID), headers.Header)
+	resp := o.ServiceClient.Get(o.elemPropertyURL(fileID, elementID), headers.Header)
 	return resp, err
 }
 
 //GetElementProperty 文件转换相关: 获取文件转换的构件属性
-//http://static.bimface.com/book/restful/articles/api/translate/get-ele-prop.html
+//http://static.bimface.com/restful-apidoc/dist/translateSingleModel.html#_getelementusingget_1
 /***
 字段		类型	必填	描述
 fileId		Number	Y	文件ID
