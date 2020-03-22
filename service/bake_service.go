@@ -23,16 +23,16 @@ const (
 	intgrBakeURI string = "/integrations/%d/bake"
 )
 
-//BakeServiceService ***
-type BakeServiceService struct {
+//BakeService ***
+type BakeService struct {
 	AbstractService    //base class
 	AccessTokenService *AccessTokenService
 }
 
-//NewBakeServiceService ***
-func NewBakeServiceService(serviceClient *utils.ServiceClient, endpoint *config.Endpoint,
-	credential *config.Credential, accessTokenService *AccessTokenService) *BakeServiceService {
-	o := &BakeServiceService{
+//NewBakeService ***
+func NewBakeService(serviceClient *utils.ServiceClient, endpoint *config.Endpoint,
+	credential *config.Credential, accessTokenService *AccessTokenService) *BakeService {
+	o := &BakeService{
 		AbstractService: AbstractService{
 			Endpoint:      endpoint,
 			ServiceClient: serviceClient, //utils.NewServiceClient(),
@@ -45,11 +45,11 @@ func NewBakeServiceService(serviceClient *utils.ServiceClient, endpoint *config.
 
 //---------------------------------------------------------------------
 
-func (o *BakeServiceService) fileBakeURL(fileId int64) string {
+func (o *BakeService) fileBakeURL(fileId int64) string {
 	return fmt.Sprintf(o.Endpoint.FileHost+fileBakeURI, fileId)
 }
 
-func (o *BakeServiceService) intgrBakeURL(intgrId int64) string {
+func (o *BakeService) intgrBakeURL(intgrId int64) string {
 	return fmt.Sprintf(o.Endpoint.FileHost+intgrBakeURI, intgrId)
 }
 
@@ -57,7 +57,7 @@ func (o *BakeServiceService) intgrBakeURL(intgrId int64) string {
 
 //CreateFileBake 为文件创建bake数据包
 //https://static.bimface.com/restful-apidoc/dist/bakeDatabag.html#_createtranslatebakedatabagusingput
-func (o *BakeServiceService) CreateFileBake(fileId int64, config map[string]string) (*response.Bake, error) {
+func (o *BakeService) CreateFileBake(fileId int64, config map[string]string) (*response.Bake, error) {
 
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
@@ -77,7 +77,7 @@ func (o *BakeServiceService) CreateFileBake(fileId int64, config map[string]stri
 }
 
 //CreateFileDefaultBake ***
-func (o *BakeServiceService) CreateFileDefaultBake(fileId int64) (*response.Bake, error) {
+func (o *BakeService) CreateFileDefaultBake(fileId int64) (*response.Bake, error) {
 
 	confg := make(map[string]string)
 	confg["texture"] = "true" //texture:true
@@ -87,7 +87,7 @@ func (o *BakeServiceService) CreateFileDefaultBake(fileId int64) (*response.Bake
 
 //GetFileBake 查询文件bake数据包
 //https://static.bimface.com/restful-apidoc/dist/bakeDatabag.html#_gettranslatebakedatabagusingget
-func (o *BakeServiceService) GetFileBake(fileId int64, config map[string]string) (*response.Bake, error) {
+func (o *BakeService) GetFileBake(fileId int64, config map[string]string) (*response.Bake, error) {
 
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
@@ -110,7 +110,7 @@ func (o *BakeServiceService) GetFileBake(fileId int64, config map[string]string)
 
 //CreateIntgrBake 为集成模型创建bake数据包
 //https://static.bimface.com/restful-apidoc/dist/bakeDatabag.html#_createintegratebakedatabagusingput
-func (o *BakeServiceService) CreateIntgrBake(intgrId int64, config map[string]string) (*response.Bake, error) {
+func (o *BakeService) CreateIntgrBake(intgrId int64, config map[string]string) (*response.Bake, error) {
 
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
@@ -130,7 +130,7 @@ func (o *BakeServiceService) CreateIntgrBake(intgrId int64, config map[string]st
 }
 
 //CreateIntgrDefaultBake ***
-func (o *BakeServiceService) CreateIntgrDefaultBake(intgrId int64) (*response.Bake, error) {
+func (o *BakeService) CreateIntgrDefaultBake(intgrId int64) (*response.Bake, error) {
 
 	confg := make(map[string]string)
 	confg["texture"] = "true" //texture:true
@@ -140,7 +140,7 @@ func (o *BakeServiceService) CreateIntgrDefaultBake(intgrId int64) (*response.Ba
 
 //GetIntgrBake 查询集成模型bake数据包
 //https://static.bimface.com/restful-apidoc/dist/bakeDatabag.html#_getintegratebakedatabagusingget
-func (o *BakeServiceService) GetIntgrBake(intgrId int64, config map[string]string) (*response.Bake, error) {
+func (o *BakeService) GetIntgrBake(intgrId int64, config map[string]string) (*response.Bake, error) {
 
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {

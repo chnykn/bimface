@@ -33,6 +33,7 @@ type Client struct {
 	PropertyService      *service.PropertyService
 	ShareLinkService     *service.ShareLinkService
 	TranslateService     *service.TranslateService
+	BakeService          *service.BakeService
 	UploadService        *service.UploadService
 	ViewTokenService     *service.ViewTokenService
 }
@@ -64,6 +65,7 @@ func NewClient(appKey string, appSecret string, endpoint *config.Endpoint) *Clie
 	o.PropertyService = service.NewPropertyService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
 	o.ShareLinkService = service.NewShareLinkService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
 	o.TranslateService = service.NewTranslateService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
+	o.BakeService = service.NewBakeService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
 	o.UploadService = service.NewUploadService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
 	o.ViewTokenService = service.NewViewTokenService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
 
