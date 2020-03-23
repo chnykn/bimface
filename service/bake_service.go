@@ -46,11 +46,11 @@ func NewBakeService(serviceClient *utils.ServiceClient, endpoint *config.Endpoin
 //---------------------------------------------------------------------
 
 func (o *BakeService) fileBakeURL(fileId int64) string {
-	return fmt.Sprintf(o.Endpoint.FileHost+fileBakeURI, fileId)
+	return fmt.Sprintf(o.Endpoint.APIHost+fileBakeURI, fileId)
 }
 
 func (o *BakeService) intgrBakeURL(intgrId int64) string {
-	return fmt.Sprintf(o.Endpoint.FileHost+intgrBakeURI, intgrId)
+	return fmt.Sprintf(o.Endpoint.APIHost+intgrBakeURI, intgrId)
 }
 
 //---------------------------------------------------------------------
@@ -67,7 +67,10 @@ func (o *BakeService) CreateFileBake(fileId int64, config map[string]string) (*r
 	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
-	body := req.BodyJSON(config)
+	conf := make(map[string]interface{})
+	conf["config"] = config
+
+	body := req.BodyJSON(conf)
 	resp := o.ServiceClient.Put(o.fileBakeURL(fileId), headers.Header, body)
 
 	result := response.NewBake()
@@ -87,7 +90,7 @@ func (o *BakeService) CreateFileDefaultBake(fileId int64) (*response.Bake, error
 
 //GetFileBake 查询文件bake数据包
 //https://static.bimface.com/restful-apidoc/dist/bakeDatabag.html#_gettranslatebakedatabagusingget
-func (o *BakeService) GetFileBake(fileId int64, config map[string]string) (*response.Bake, error) {
+func (o *BakeService) GetFileBake(fileId int64) ([]*response.Bake, error) {
 
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
@@ -97,11 +100,10 @@ func (o *BakeService) GetFileBake(fileId int64, config map[string]string) (*resp
 	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
-	body := req.BodyJSON(config)
-	resp := o.ServiceClient.Put(o.fileBakeURL(fileId), headers.Header, body)
+	resp := o.ServiceClient.Get(o.fileBakeURL(fileId), headers.Header)
 
-	result := response.NewBake()
-	err = utils.RespToBean(resp, result)
+	result := make([]*response.Bake, 0)
+	err = utils.RespToBean(resp, &result)
 
 	return result, err
 }
@@ -120,7 +122,10 @@ func (o *BakeService) CreateIntgrBake(intgrId int64, config map[string]string) (
 	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
-	body := req.BodyJSON(config)
+	conf := make(map[string]interface{})
+	conf["config"] = config
+
+	body := req.BodyJSON(conf)
 	resp := o.ServiceClient.Put(o.intgrBakeURL(intgrId), headers.Header, body)
 
 	result := response.NewBake()
@@ -140,7 +145,7 @@ func (o *BakeService) CreateIntgrDefaultBake(intgrId int64) (*response.Bake, err
 
 //GetIntgrBake 查询集成模型bake数据包
 //https://static.bimface.com/restful-apidoc/dist/bakeDatabag.html#_getintegratebakedatabagusingget
-func (o *BakeService) GetIntgrBake(intgrId int64, config map[string]string) (*response.Bake, error) {
+func (o *BakeService) GetIntgrBake(intgrId int64) ([]*response.Bake, error) {
 
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
@@ -150,11 +155,10 @@ func (o *BakeService) GetIntgrBake(intgrId int64, config map[string]string) (*re
 	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
-	body := req.BodyJSON(config)
-	resp := o.ServiceClient.Put(o.intgrBakeURL(intgrId), headers.Header, body)
+	resp := o.ServiceClient.Put(o.intgrBakeURL(intgrId), headers.Header)
 
-	result := response.NewBake()
-	err = utils.RespToBean(resp, result)
+	result := make([]*response.Bake, 0)
+	err = utils.RespToBean(resp, &result)
 
 	return result, err
 }
