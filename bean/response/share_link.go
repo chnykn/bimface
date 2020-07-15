@@ -10,6 +10,10 @@ import "fmt"
 type ShareLink struct {
 	URL        string `json:"url"`
 	ExpireTime string `json:"expireTime"`
+	Password   string `json:"password"`
+	SourceId   string `json:"sourceId"`
+	SourceName string `json:"sourceName"`
+	SourceType string `json:"sourceType"`
 }
 
 //NewShareLink ***
