@@ -205,7 +205,7 @@ func unescape(s string, mode encoding) (string, error) {
 
 //EncodeURI ***
 func EncodeURI(rawString string) string {
-	return escape(rawString, encodeFragment)
+	return escape(rawString, encodeQueryComponent)
 }
 
 //DecodeURI ***

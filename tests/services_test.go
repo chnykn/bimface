@@ -144,7 +144,7 @@ func TestTranslateService(t *testing.T) {
 func TestShareLinkService(t *testing.T) {
 	client := getClient()
 
-	shareLink, err := client.ShareLinkService.CreateShare(1531158346498720, 0)
+	shareLink, err := client.ShareLinkService.CreateShare(1531158346498720, 0, "", false)
 	if err == nil {
 		fmt.Printf("CreateShare = %v \n", shareLink)
 	} else {
@@ -204,7 +204,7 @@ func TestUploadService(t *testing.T) {
 
 	uploadReq := &request.UploadRequest{
 		Name:   utils.EncodeURI(fileName),
-		Buffer: buffer,
+		Buffer: *buffer,
 	}
 
 	fileBean, err := client.UploadService.Upload(uploadReq)
@@ -243,8 +243,8 @@ func TestIntegrateService(t *testing.T) {
 	}
 
 	integReq := request.NewIntgrRequest("深高速-综合办公楼-New")
-	integReq.Sources = append(integReq.Sources, request.NewIntgrSource(1531158346498720, "建筑"))
-	integReq.Sources = append(integReq.Sources, request.NewIntgrSource(1525914374062720, "结构"))
+	integReq.Sources = append(integReq.Sources, request.NewIntgrSource(1531158346498720, "建筑", ""))
+	integReq.Sources = append(integReq.Sources, request.NewIntgrSource(1525914374062720, "结构", ""))
 	status, err = client.IntegrateService.Integrate(integReq)
 	if err == nil {
 		fmt.Printf("Integrate = %v \n", status)
@@ -276,9 +276,20 @@ func TestSupportFileService(t *testing.T) {
 
 func TestUrlEscape(t *testing.T) {
 
-	s := "doc/callback?name=trans&id=1&fileId=1602047233139584&transferId=1602047233139584&status=success&thumbnail=https%3A%2F%2Fm.bimface.com%2F0c18dfb2c6544f15e88e9a6d5717f8aa%2Fthumbnail%2F96.png%2Chttps%3A%2F%2Fm.bimface.com%2F0c18dfb2c6544f15e88e9a6d5717f8aa%2Fthumbnail%2F256.png&reason=&nonce=785eb7a6-5446-4f40-bbf7-5e0d6c0b307a&signature=6b7564994a6f2b24a51f5165cac3284c"
+	//s := "doc/callback?name=trans&id=1&fileId=1602047233139584&transferId=1602047233139584&status=success&thumbnail=https%3A%2F%2Fm.bimface.com%2F0c18dfb2c6544f15e88e9a6d5717f8aa%2Fthumbnail%2F96.png%2Chttps%3A%2F%2Fm.bimface.com%2F0c18dfb2c6544f15e88e9a6d5717f8aa%2Fthumbnail%2F256.png&reason=&nonce=785eb7a6-5446-4f40-bbf7-5e0d6c0b307a&signature=6b7564994a6f2b24a51f5165cac3284c"
+	//
+	//res, err := utils.DecodeURI(s)
+	//if err != nil {
+	//	fmt.Printf("DecodeURI err=%v \n", err)
+	//}
+	//fmt.Println(res)
 
-	res, err := utils.DecodeURI(s)
+	//----------------------------------
+
+	estr := utils.EncodeURI("xxx?name=测试&文件.rvt&id=12")
+	fmt.Println(estr)
+
+	res, err := utils.DecodeURI(estr)
 	if err != nil {
 		fmt.Printf("DecodeURI err=%v \n", err)
 	}
