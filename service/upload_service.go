@@ -49,7 +49,7 @@ func NewUploadService(serviceClient *utils.ServiceClient, endpoint *config.Endpo
 //---------------------------------------------------------------------
 
 func (o *UploadService) uploadURL(fileName string, sourceID string) string {
-	result := fmt.Sprintf(o.Endpoint.FileHost+uploadURI, fileName)
+	result := fmt.Sprintf(o.Endpoint.FileHost+uploadURI, utils.EncodeURI(fileName))
 	if sourceID != "" {
 		result = result + "&sourceId=" + utils.EncodeURI(sourceID)
 	}
@@ -57,8 +57,7 @@ func (o *UploadService) uploadURL(fileName string, sourceID string) string {
 }
 
 func (o *UploadService) uploadByURL(fileName, url string, sourceID string) string {
-	encodeUrl := utils.EncodeURI(url)
-	result := fmt.Sprintf(o.Endpoint.FileHost+uploadByURLURI, fileName, encodeUrl)
+	result := fmt.Sprintf(o.Endpoint.FileHost+uploadByURLURI, utils.EncodeURI(fileName), utils.EncodeURI(url))
 	if sourceID != "" {
 		result = result + "&sourceId=" + utils.EncodeURI(sourceID)
 	}
@@ -66,7 +65,7 @@ func (o *UploadService) uploadByURL(fileName, url string, sourceID string) strin
 }
 
 func (o *UploadService) uploadByOssURL(fileName, bucket, objectKey string, sourceID string) string {
-	result := fmt.Sprintf(o.Endpoint.FileHost+uploadByOssURI, fileName, bucket, objectKey)
+	result := fmt.Sprintf(o.Endpoint.FileHost+uploadByOssURI, utils.EncodeURI(fileName), bucket, objectKey)
 	if sourceID != "" {
 		result = result + "&sourceId=" + utils.EncodeURI(sourceID)
 	}

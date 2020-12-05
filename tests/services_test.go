@@ -218,7 +218,7 @@ func TestUploadService(t *testing.T) {
 	fileName := path.Base(filePath)
 
 	uploadReq := &request.UploadRequest{
-		Name:   utils.EncodeURI(fileName),
+		Name:   fileName,
 		Buffer: *buffer,
 	}
 
