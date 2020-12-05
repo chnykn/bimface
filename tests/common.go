@@ -7,8 +7,8 @@ import (
 )
 
 const (
-	appKey    = "ipurREs2GDIdCL81tUVSS6pAMfkZ59KN"
-	appSecret = "6954ZyagB5vskJXKb2tZWSRnhJhRNKQ9"
+	appKey    = "<yourAppKey>"
+	appSecret = "<yourAppSecret>"
 )
 
 func getClient() *bimface.Client {

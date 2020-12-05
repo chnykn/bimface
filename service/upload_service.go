@@ -23,7 +23,7 @@ const (
 	deleteFileURI          string = "/file?fileId=%d"
 	getFileMetaURI         string = "/files/%d"
 	getFileListURI         string = "/files"
-	getFileUploadStatusURI string = "/files/%d//uploadStatus"
+	getFileUploadStatusURI string = "/files/%d/uploadStatus"
 )
 
 //UploadService ***
@@ -57,7 +57,8 @@ func (o *UploadService) uploadURL(fileName string, sourceID string) string {
 }
 
 func (o *UploadService) uploadByURL(fileName, url string, sourceID string) string {
-	result := fmt.Sprintf(o.Endpoint.FileHost+uploadByURLURI, fileName, url)
+	encodeUrl := utils.EncodeURI(url)
+	result := fmt.Sprintf(o.Endpoint.FileHost+uploadByURLURI, fileName, encodeUrl)
 	if sourceID != "" {
 		result = result + "&sourceId=" + utils.EncodeURI(sourceID)
 	}
@@ -228,8 +229,8 @@ func (o *UploadService) GetFileList() ([]*response.FileBean, error) {
 
 	resp := o.ServiceClient.Get(o.getFileListURL(), headers.Header)
 
-	result := make([]*response.FileBean, 0)
-	err = utils.RespToBean(resp, result)
+	var result []*response.FileBean //:= make([]*response.FileBean, 0)
+	err = utils.RespToBean(resp, &result)
 
 	return result, err
 }

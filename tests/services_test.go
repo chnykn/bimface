@@ -71,16 +71,19 @@ func TestIntgrTreeService(t *testing.T) {
 func TestElementService(t *testing.T) {
 	client := getClient()
 
-	elemIds, err := client.ElementService.GetElementsWithParams(1525914374062720, nil)
+	elemIds, err := client.ElementService.GetElementsWithParams(1828586603571104, nil)
 	if err == nil {
 		fmt.Printf("GetElements = %v \n", elemIds)
 	} else {
 		fmt.Printf("err = %v \n", err)
 	}
 
-	elems, err := client.ElementService.GetIntgrElementsWithParams(1532041801780160, nil)
+	elems, err := client.ElementService.GetIntgrElementsWithParams(1951707129635584, nil)
 	if err == nil {
-		fmt.Printf("GetIntgrElementsWithParams = %v \n", elems)
+		for i := range elems.Elements {
+			fmt.Printf("GetIntgrElementsWithParams[%d] = %v \n", i, elems.Elements[i])
+		}
+
 	} else {
 		fmt.Printf("err = %v \n", err)
 	}
@@ -107,25 +110,37 @@ func TestFloorService(t *testing.T) {
 func TestPropertyService(t *testing.T) {
 	client := getClient()
 
-	props, err := client.PropertyService.GetElementProperty(1525914374062720, "678602")
+	props, err := client.PropertyService.GetElementProperty(1828586603571104, "566402")
 	if err == nil {
 		fmt.Printf("GetElementProperty = %v \n", props)
 	} else {
 		fmt.Printf("err = %v \n", err)
 	}
 
-	props, err = client.PropertyService.GetIntgrElementProperty(1532041801780160, 1525914374062720, "678602")
+	props, err = client.PropertyService.GetIntgrElementProperty(1951707129635584, "566402")
 	if err == nil {
 		fmt.Printf("GetIntgrElementProperty = %v \n", props)
 	} else {
 		fmt.Printf("err = %v \n", err)
+	}
+
+	//----------------------------
+
+	propsList, err2 := client.PropertyService.GetElementProperties(1828586603571104)
+	if err2 == nil {
+		for i := range propsList {
+			fmt.Printf("ElementProperty[%d] = %v \n", i, propsList[i])
+		}
+
+	} else {
+		fmt.Printf("err = %v \n", err2)
 	}
 }
 
 func TestTranslateService(t *testing.T) {
 	client := getClient()
 
-	transRequest := request.NewTranslateRequest(1525914374062720)
+	transRequest := request.NewTranslateRequest(1964823598336000)
 	status, err := client.TranslateService.Translate(transRequest)
 	if err == nil {
 		fmt.Printf("Translate = %v \n", status)
@@ -133,7 +148,7 @@ func TestTranslateService(t *testing.T) {
 		fmt.Printf("err = %v \n", err)
 	}
 
-	status, err = client.TranslateService.GetTranslateStatus(1525914374062720)
+	status, err = client.TranslateService.GetTranslateStatus(1964823598336000)
 	if err == nil {
 		fmt.Printf("GetTranslateStatus = %v \n", status)
 	} else {
@@ -269,7 +284,19 @@ func TestSupportFileService(t *testing.T) {
 	} else {
 		fmt.Printf("err = %v \n", err)
 	}
+}
 
+func TestGetFileList(t *testing.T) {
+	client := getClient()
+
+	res, err := client.UploadService.GetFileList()
+	if err == nil {
+		for i := range res {
+			fmt.Printf("FileList[%d] = %v \n", i, res[i])
+		}
+	} else {
+		fmt.Printf("err = %v \n", err)
+	}
 }
 
 //
@@ -294,5 +321,4 @@ func TestUrlEscape(t *testing.T) {
 		fmt.Printf("DecodeURI err=%v \n", err)
 	}
 	fmt.Println(res)
-
 }
