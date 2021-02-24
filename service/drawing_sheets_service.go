@@ -35,8 +35,8 @@ func NewDrawingSheetsService(serviceClient *utils.ServiceClient, endpoint *confi
 
 //---------------------------------------------------------------------
 
-func (o *DrawingSheetsService) getDrawingSheetsURI(fileID int64) string {
-	return fmt.Sprintf(o.Endpoint.APIHost+getDrawingSheetsURI, fileID)
+func (o *DrawingSheetsService) getDrawingSheetsURI(fileId int64) string {
+	return fmt.Sprintf(o.Endpoint.APIHost+getDrawingSheetsURI, fileId)
 }
 
 //GetDrawingSheets 文件转换相关: 获取文件转换的二维图纸信息
@@ -104,7 +104,7 @@ func (o *DrawingSheetsService) getDrawingSheetsURI(fileID int64) string {
 	{...same as above ...}
 ]
 */
-func (o *DrawingSheetsService) GetDrawingSheets(fileID int64) (map[string]interface{}, error) {
+func (o *DrawingSheetsService) GetDrawingSheets(fileId int64) (map[string]interface{}, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
@@ -113,7 +113,7 @@ func (o *DrawingSheetsService) GetDrawingSheets(fileID int64) (map[string]interf
 	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
-	resp := o.ServiceClient.Get(o.getDrawingSheetsURI(fileID), headers.Header)
+	resp := o.ServiceClient.Get(o.getDrawingSheetsURI(fileId), headers.Header)
 
 	result := make(map[string]interface{})
 	err = utils.RespToBean(resp, &result)

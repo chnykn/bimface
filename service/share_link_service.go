@@ -49,8 +49,8 @@ func NewShareLinkService(serviceClient *utils.ServiceClient, endpoint *config.En
 
 //---------------------------------------------------------------------
 // expireDate's format YYYY-MM-DD
-func (o *ShareLinkService) createTranslateShareURI(fileID int64, activeHours int, expireDate string, needPassword bool) string {
-	result := fmt.Sprintf(o.Endpoint.APIHost+createTranslateShareURI, fileID)
+func (o *ShareLinkService) createTranslateShareURI(fileId int64, activeHours int, expireDate string, needPassword bool) string {
+	result := fmt.Sprintf(o.Endpoint.APIHost+createTranslateShareURI, fileId)
 	if activeHours > 0 {
 		result = result + "&activeHours=" + strconv.Itoa(activeHours)
 	} else if expireDate != "" {
@@ -63,13 +63,13 @@ func (o *ShareLinkService) createTranslateShareURI(fileID int64, activeHours int
 	return result
 }
 
-func (o *ShareLinkService) deleteTranslateShareURL(fileID int64) string {
-	return fmt.Sprintf(o.Endpoint.APIHost+deleteTranslateShareURI, fileID)
+func (o *ShareLinkService) deleteTranslateShareURL(fileId int64) string {
+	return fmt.Sprintf(o.Endpoint.APIHost+deleteTranslateShareURI, fileId)
 }
 
 // expireDate's format YYYY-MM-DD
-func (o *ShareLinkService) createIntegrateShareURI(integrateID int64, activeHours int, expireDate string, needPassword bool) string {
-	result := fmt.Sprintf(o.Endpoint.APIHost+createIntegrateShareURI, integrateID)
+func (o *ShareLinkService) createIntegrateShareURI(integrateId int64, activeHours int, expireDate string, needPassword bool) string {
+	result := fmt.Sprintf(o.Endpoint.APIHost+createIntegrateShareURI, integrateId)
 	if activeHours > 0 {
 		result = result + "&activeHours=" + strconv.Itoa(activeHours)
 	} else if expireDate != "" {
@@ -82,13 +82,13 @@ func (o *ShareLinkService) createIntegrateShareURI(integrateID int64, activeHour
 	return result
 }
 
-func (o *ShareLinkService) deleteIntegrateShareURL(integrateID int64) string {
-	return fmt.Sprintf(o.Endpoint.APIHost+deleteIntegrateShareURI, integrateID)
+func (o *ShareLinkService) deleteIntegrateShareURL(integrateId int64) string {
+	return fmt.Sprintf(o.Endpoint.APIHost+deleteIntegrateShareURI, integrateId)
 }
 
 //---------------------------------------------------------------------
 
-func (o *ShareLinkService) generalCreateShare(isTranslate bool, xxID int64, activeHours int, expireDate string, needPassword bool) (*response.ShareLink, error) {
+func (o *ShareLinkService) generalCreateShare(isTranslate bool, xxId int64, activeHours int, expireDate string, needPassword bool) (*response.ShareLink, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
@@ -99,9 +99,9 @@ func (o *ShareLinkService) generalCreateShare(isTranslate bool, xxID int64, acti
 
 	var url string
 	if isTranslate {
-		url = o.createTranslateShareURI(xxID, activeHours, expireDate, needPassword)
+		url = o.createTranslateShareURI(xxId, activeHours, expireDate, needPassword)
 	} else {
-		url = o.createIntegrateShareURI(xxID, activeHours, expireDate, needPassword)
+		url = o.createIntegrateShareURI(xxId, activeHours, expireDate, needPassword)
 	}
 	resp := o.ServiceClient.Post(url, headers.Header)
 
@@ -115,34 +115,34 @@ func (o *ShareLinkService) generalCreateShare(isTranslate bool, xxID int64, acti
 //http://static.bimface.com/book/restful/articles/api/share/create-sharelink.html
 /***
 字段		类型	必填	描述
-fileId		Number	N 	(集成ID二选一)	文件ID
-integrateId	Number	N 	(文件ID二选一)	集成ID
+fileId		Number	N 	(集成Id二选一)	文件Id
+integrateId	Number	N 	(文件Id二选一)	集成Id
 activeHours	Number	N	有效时长，单位：小时，如果不设置表示永久有效
 ***/
-func (o *ShareLinkService) CreateShare(fileID int64, activeHours int, expireDate string, needPassword bool) (*response.ShareLink, error) {
-	return o.generalCreateShare(true, fileID, activeHours, expireDate, needPassword)
+func (o *ShareLinkService) CreateShare(fileId int64, activeHours int, expireDate string, needPassword bool) (*response.ShareLink, error) {
+	return o.generalCreateShare(true, fileId, activeHours, expireDate, needPassword)
 }
 
 //CreateShareTranslation same to CreateShare
-func (o *ShareLinkService) CreateShareTranslation(fileID int64, activeHours int, expireDate string, needPassword bool) (*response.ShareLink, error) {
-	return o.CreateShare(fileID, activeHours, expireDate, needPassword)
+func (o *ShareLinkService) CreateShareTranslation(fileId int64, activeHours int, expireDate string, needPassword bool) (*response.ShareLink, error) {
+	return o.CreateShare(fileId, activeHours, expireDate, needPassword)
 }
 
 //CreateShareIntegration  发起集成模型以后，根据integrateId生成集成模型的分享链接
 //http://static.bimface.com/book/restful/articles/api/share/create-sharelink.html
 /***
 字段		类型	必填	描述
-fileId		Number	N 	(集成ID二选一)	文件ID
-integrateId	Number	N 	(文件ID二选一)	集成ID
+fileId		Number	N 	(集成Id二选一)	文件Id
+integrateId	Number	N 	(文件Id二选一)	集成Id
 activeHours	Number	N	有效时长，单位：小时，如果不设置表示永久有效
 ***/
-func (o *ShareLinkService) CreateShareIntegration(integrateID int64, activeHours int, expireDate string, needPassword bool) (*response.ShareLink, error) {
-	return o.generalCreateShare(false, integrateID, activeHours, expireDate, needPassword)
+func (o *ShareLinkService) CreateShareIntegration(integrateId int64, activeHours int, expireDate string, needPassword bool) (*response.ShareLink, error) {
+	return o.generalCreateShare(false, integrateId, activeHours, expireDate, needPassword)
 }
 
 //---------------------------------------------------------------------
 
-func (o *ShareLinkService) generalDeleteShare(isTranslate bool, xxID int64) (string, error) {
+func (o *ShareLinkService) generalDeleteShare(isTranslate bool, xxId int64) (string, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return "", err
@@ -153,9 +153,9 @@ func (o *ShareLinkService) generalDeleteShare(isTranslate bool, xxID int64) (str
 
 	var url string
 	if isTranslate {
-		url = o.deleteTranslateShareURL(xxID)
+		url = o.deleteTranslateShareURL(xxId)
 	} else {
-		url = o.deleteIntegrateShareURL(xxID)
+		url = o.deleteIntegrateShareURL(xxId)
 	}
 	resp := o.ServiceClient.Delete(url, headers.Header)
 
@@ -172,19 +172,19 @@ func (o *ShareLinkService) generalDeleteShare(isTranslate bool, xxID int64) (str
 
 //DeleteShare 取消分享: 文件转换以后 分享的链接
 //http://static.bimface.com/book/restful/articles/api/share/delete-sharelink.html
-func (o *ShareLinkService) DeleteShare(fileID int64) (string, error) {
-	return o.generalDeleteShare(true, fileID)
+func (o *ShareLinkService) DeleteShare(fileId int64) (string, error) {
+	return o.generalDeleteShare(true, fileId)
 }
 
 //DeleteShareTranslation same to DeleteShare
-func (o *ShareLinkService) DeleteShareTranslation(fileID int64) (string, error) {
-	return o.DeleteShare(fileID)
+func (o *ShareLinkService) DeleteShareTranslation(fileId int64) (string, error) {
+	return o.DeleteShare(fileId)
 }
 
 //DeleteShareIntegration 取消分享: 集成模型以后 分享的链接
 //http://static.bimface.com/book/restful/articles/api/share/delete-sharelink.html
-func (o *ShareLinkService) DeleteShareIntegration(integrateID int64) (string, error) {
-	return o.generalDeleteShare(false, integrateID)
+func (o *ShareLinkService) DeleteShareIntegration(integrateId int64) (string, error) {
+	return o.generalDeleteShare(false, integrateId)
 }
 
 //---------------------------------------------------------------------

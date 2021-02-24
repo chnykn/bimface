@@ -7,10 +7,11 @@ package service
 import (
 	"fmt"
 
+	"github.com/imroc/req"
+
 	"github.com/chnykn/bimface/bean/response"
 	"github.com/chnykn/bimface/config"
 	"github.com/chnykn/bimface/utils"
-	"github.com/imroc/req"
 )
 
 const (
@@ -48,16 +49,16 @@ func NewPropertyService(serviceClient *utils.ServiceClient, endpoint *config.End
 
 //---------------------------------------------------------------------
 
-func (o *PropertyService) elemPropertyURL(fileID int64, elementID string) string {
-	return fmt.Sprintf(o.Endpoint.APIHost+propertyURI, fileID, elementID)
+func (o *PropertyService) elemPropertyURL(fileId int64, elementId string) string {
+	return fmt.Sprintf(o.Endpoint.APIHost+propertyURI, fileId, elementId)
 }
 
-func (o *PropertyService) elemPropertiesURL(fileID int64) string {
-	return fmt.Sprintf(o.Endpoint.APIHost+propertiesURI, fileID)
+func (o *PropertyService) elemPropertiesURL(fileId int64) string {
+	return fmt.Sprintf(o.Endpoint.APIHost+propertiesURI, fileId)
 }
 
-func (o *PropertyService) integratePropertyURL(integrateID int64, elementID string) string { //fileID int64,
-	result := fmt.Sprintf(o.Endpoint.APIHost+integratePropertyURI2, integrateID, elementID)
+func (o *PropertyService) integratePropertyURL(integrateId int64, elementId string) string { //fileId int64,
+	result := fmt.Sprintf(o.Endpoint.APIHost+integratePropertyURI2, integrateId, elementId)
 	//if includeOverrides {
 	//	result = result + "?includeOverrides=true"
 	//}
@@ -67,7 +68,7 @@ func (o *PropertyService) integratePropertyURL(integrateID int64, elementID stri
 //-----------------------------------------------------------------------------------
 
 //GetElementPropertyResp ***
-func (o *PropertyService) GetElementPropertyResp(fileID int64, elementID string) (*req.Resp, error) {
+func (o *PropertyService) GetElementPropertyResp(fileId int64, elementId string) (*req.Resp, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
@@ -76,7 +77,7 @@ func (o *PropertyService) GetElementPropertyResp(fileID int64, elementID string)
 	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
-	resp := o.ServiceClient.Get(o.elemPropertyURL(fileID, elementID), headers.Header)
+	resp := o.ServiceClient.Get(o.elemPropertyURL(fileId, elementId), headers.Header)
 	return resp, err
 }
 
@@ -84,16 +85,16 @@ func (o *PropertyService) GetElementPropertyResp(fileID int64, elementID string)
 //http://static.bimface.com/restful-apidoc/dist/translateSingleModel.html#_getelementusingget_1
 /***
 字段		类型	必填	描述
-fileId		Number	Y	文件ID
-elementId	String	Y	构件ID
+fileId		Number	Y	文件Id
+elementId	String	Y	构件Id
 ***/
-func (o *PropertyService) GetElementProperty(fileID int64, elementID string) (*response.Element, error) {
-	resp, err := o.GetElementPropertyResp(fileID, elementID)
+func (o *PropertyService) GetElementProperty(fileId int64, elementId string) (*response.Element, error) {
+	resp, err := o.GetElementPropertyResp(fileId, elementId)
 	if err != nil {
 		return nil, err
 	}
 
-	result := response.NewElement(elementID)
+	result := response.NewElement(elementId)
 	err = utils.RespToBean(resp, result)
 
 	return result, err
@@ -104,7 +105,7 @@ func (o *PropertyService) GetElementProperty(fileID int64, elementID string) (*r
 //TODO ....
 
 //GetElementPropertyResp ***
-func (o *PropertyService) GetElementPropertiesResp(fileID int64) (*req.Resp, error) {
+func (o *PropertyService) GetElementPropertiesResp(fileId int64) (*req.Resp, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
@@ -113,12 +114,12 @@ func (o *PropertyService) GetElementPropertiesResp(fileID int64) (*req.Resp, err
 	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
-	resp := o.ServiceClient.Post(o.elemPropertiesURL(fileID), headers.Header, `{ "elementIds" : [ "674160", "688045" ]}`)
+	resp := o.ServiceClient.Post(o.elemPropertiesURL(fileId), headers.Header, `{ "elementIds" : [ "674160", "688045" ]}`)
 	return resp, err
 }
 
-func (o *PropertyService) GetElementProperties(fileID int64) ([]*response.Element, error) {
-	resp, err := o.GetElementPropertiesResp(fileID)
+func (o *PropertyService) GetElementProperties(fileId int64) ([]*response.Element, error) {
+	resp, err := o.GetElementPropertiesResp(fileId)
 	if err != nil {
 		return nil, err
 	}
@@ -132,7 +133,7 @@ func (o *PropertyService) GetElementProperties(fileID int64) ([]*response.Elemen
 //-----------------------------------------------------------------------------------
 /*
 //GetIntgrElementPropertyResp ***
-func (o *PropertyService) GetIntgrElementPropertyResp(integrateID, fileID int64, elementID string) (*req.Resp, error) {
+func (o *PropertyService) GetIntgrElementPropertyResp(integrateId, fileId int64, elementId string) (*req.Resp, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
@@ -141,7 +142,7 @@ func (o *PropertyService) GetIntgrElementPropertyResp(integrateID, fileID int64,
 	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
-	resp := o.ServiceClient.Get(o.integratePropertyURL(integrateID, fileID, elementID), headers.Header)
+	resp := o.ServiceClient.Get(o.integratePropertyURL(integrateId, fileId, elementId), headers.Header)
 	return resp, err
 }
 */
@@ -150,17 +151,17 @@ func (o *PropertyService) GetIntgrElementPropertyResp(integrateID, fileID int64,
 //http://static.bimface.com/book/restful/articles/api/integrate/get-integrate-element-prop.html
 /***
 字段		类型	必填	描述
-fileId		Number	Y	文件ID
-elementId	String	Y	构件ID
+fileId		Number	Y	文件Id
+elementId	String	Y	构件Id
 ***/
 /*
-func (o *PropertyService) GetIntgrElementProperty(integrateID, fileID int64, elementID string) (*response.Element, error) {
-	resp, err := o.GetIntgrElementPropertyResp(integrateID, fileID, elementID)
+func (o *PropertyService) GetIntgrElementProperty(integrateId, fileId int64, elementId string) (*response.Element, error) {
+	resp, err := o.GetIntgrElementPropertyResp(integrateId, fileId, elementId)
 	if err != nil {
 		return nil, err
 	}
 
-	result := response.NewElement(elementID)
+	result := response.NewElement(elementId)
 	err = utils.RespToBean(resp, result)
 
 	return result, err
@@ -170,7 +171,7 @@ func (o *PropertyService) GetIntgrElementProperty(integrateID, fileID int64, ele
 //-----------------------------------------------------------------------------------
 
 //GetIntgrElementPropertyResp ***
-func (o *PropertyService) GetIntgrElementPropertyResp(integrateID int64, elementID string) (*req.Resp, error) {
+func (o *PropertyService) GetIntgrElementPropertyResp(integrateId int64, elementId string) (*req.Resp, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
@@ -179,7 +180,7 @@ func (o *PropertyService) GetIntgrElementPropertyResp(integrateID int64, element
 	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
-	resp := o.ServiceClient.Get(o.integratePropertyURL(integrateID, elementID), headers.Header)
+	resp := o.ServiceClient.Get(o.integratePropertyURL(integrateId, elementId), headers.Header)
 	return resp, err
 }
 
@@ -187,16 +188,16 @@ func (o *PropertyService) GetIntgrElementPropertyResp(integrateID int64, element
 //http://static.bimface.com/book/restful/articles/api/integrate/get-integrate-element-prop.html
 /***
 字段		类型	必填	描述
-fileId		Number	Y	文件ID
-elementId	String	Y	构件ID
+fileId		Number	Y	文件Id
+elementId	String	Y	构件Id
 ***/
-func (o *PropertyService) GetIntgrElementProperty(integrateID int64, elementID string) (*response.Element, error) {
-	resp, err := o.GetIntgrElementPropertyResp(integrateID, elementID)
+func (o *PropertyService) GetIntgrElementProperty(integrateId int64, elementId string) (*response.Element, error) {
+	resp, err := o.GetIntgrElementPropertyResp(integrateId, elementId)
 	if err != nil {
 		return nil, err
 	}
 
-	result := response.NewElement(elementID)
+	result := response.NewElement(elementId)
 	err = utils.RespToBean(resp, result)
 
 	return result, err

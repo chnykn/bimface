@@ -6,7 +6,7 @@ package response
 
 //AppendFile ***
 type AppendFile struct {
-	ID         int64  `json:"appendFileId"`
+	Id         int64  `json:"appendFileId"`
 	Name       string `json:"name"`
 	Length     int64  `json:"length"`
 	Position   int64  `json:"position"`

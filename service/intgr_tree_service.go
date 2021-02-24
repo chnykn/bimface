@@ -9,11 +9,11 @@ package service
 import (
 	"fmt"
 
+	"github.com/imroc/req"
+
 	"github.com/chnykn/bimface/bean/response"
 	"github.com/chnykn/bimface/config"
 	"github.com/chnykn/bimface/utils"
-
-	"github.com/imroc/req"
 )
 
 const (
@@ -44,8 +44,8 @@ func NewIntgrTreeService(serviceClient *utils.ServiceClient, endpoint *config.En
 
 //---------------------------------------------------------------------
 
-func (o *IntgrTreeService) integrationTreeURL(integrateID int64, treeType int) string {
-	return fmt.Sprintf(o.Endpoint.APIHost+integrationTreeURI, integrateID, treeType)
+func (o *IntgrTreeService) integrationTreeURL(integrateId int64, treeType int) string {
+	return fmt.Sprintf(o.Endpoint.APIHost+integrationTreeURI, integrateId, treeType)
 }
 
 //-----------------------------------------------------------------------------------
@@ -55,10 +55,10 @@ func (o *IntgrTreeService) integrationTreeURL(integrateID int64, treeType int) s
 //http://static.bimface.com/book/restful/articles/api/integrate/get-integrate-tree.html
 /***
 字段		类型	必填	描述
-integrateId	Number	Y	集成ID
+integrateId	Number	Y	集成Id
 treeType	Number	Y	树类型：1（按专业视图）2（按楼层视图）
 ***/
-func (o *IntgrTreeService) GetTreeResp(integrateID int64, treeType int) (*req.Resp, error) {
+func (o *IntgrTreeService) GetTreeResp(integrateId int64, treeType int) (*req.Resp, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
@@ -67,17 +67,17 @@ func (o *IntgrTreeService) GetTreeResp(integrateID int64, treeType int) (*req.Re
 	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
-	resp := o.ServiceClient.Get(o.integrationTreeURL(integrateID, treeType), headers.Header)
+	resp := o.ServiceClient.Get(o.integrationTreeURL(integrateId, treeType), headers.Header)
 	return resp, nil
 }
 
 //GetSpecialtyTree 按专业视图,获取集成模型的构件层次结构
 /***
 字段		类型	必填	描述
-integrateId	Number	Y	集成ID
+integrateId	Number	Y	集成Id
 ***/
-func (o *IntgrTreeService) GetSpecialtyTree(integrateID int64) (*response.IntgrSpecialtyTree, error) {
-	resp, err := o.GetTreeResp(integrateID, 1)
+func (o *IntgrTreeService) GetSpecialtyTree(integrateId int64) (*response.IntgrSpecialtyTree, error) {
+	resp, err := o.GetTreeResp(integrateId, 1)
 	if err != nil {
 		return nil, err
 	}
@@ -91,10 +91,10 @@ func (o *IntgrTreeService) GetSpecialtyTree(integrateID int64) (*response.IntgrS
 //GetFloorTree 按楼层视图,获取集成模型的构件层次结构
 /***
 字段		类型	必填	描述
-integrateId	Number	Y	集成ID
+integrateId	Number	Y	集成Id
 ***/
-func (o *IntgrTreeService) GetFloorTree(integrateID int64) (*response.IntgrFloorTree, error) {
-	resp, err := o.GetTreeResp(integrateID, 2)
+func (o *IntgrTreeService) GetFloorTree(integrateId int64) (*response.IntgrFloorTree, error) {
+	resp, err := o.GetTreeResp(integrateId, 2)
 	if err != nil {
 		return nil, err
 	}

@@ -10,15 +10,15 @@ import "github.com/chnykn/bimface/bean/common"
 
 //IntgrElement ***
 type IntgrElement struct {
-	FileID    string `json:"fileId"`
-	ElementID string `json:"elementId"`
+	FileId    string `json:"fileId"`
+	ElementId string `json:"elementId"`
 }
 
 //NewIntgrElement ***
-func NewIntgrElement(fileID string, elementID string) *IntgrElement {
+func NewIntgrElement(fileId string, elementId string) *IntgrElement {
 	o := &IntgrElement{
-		FileID:    fileID,
-		ElementID: elementID,
+		FileId:    fileId,
+		ElementId: elementId,
 	}
 	return o
 }

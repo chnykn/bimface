@@ -8,7 +8,7 @@ package response
 type UploadPolicy struct {
 	Host         string `json:"host"`
 	Policy       string `json:"policy"`
-	AccessID     string `json:"accessId"`
+	AccessId     string `json:"accessId"`
 	Signature    string `json:"signature"`
 	Expire       int64  `json:"expire"`
 	CallbackBody string `json:"callbackBody,omitempty"`

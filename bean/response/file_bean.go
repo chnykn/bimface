@@ -4,13 +4,11 @@
 
 package response
 
-import (
-	"fmt"
-)
+import "fmt"
 
 //FileBean ***
 type FileBean struct {
-	ID         int64  `json:"fileId"`
+	Id         int64  `json:"fileId"`
 	Name       string `json:"name"`
 	Status     string `json:"status"`
 	Etag       string `json:"etag"`
@@ -22,7 +20,7 @@ type FileBean struct {
 //NewFileBean ***
 func NewFileBean() *FileBean { //id int64, name string
 	o := &FileBean{
-		// ID:   id,
+		// Id:   id,
 		// Name: name,
 	}
 	return o
@@ -30,6 +28,6 @@ func NewFileBean() *FileBean { //id int64, name string
 
 // ToString get the string
 func (o *FileBean) ToString() string {
-	return fmt.Sprintf("FileBean [ID=%d, Name=%s, Status=%s, ETag=%s, Suffix=%s, Length=%d, CreateTime=%s]",
-		o.ID, o.Name, o.Status, o.Etag, o.Suffix, o.Length, o.CreateTime)
+	return fmt.Sprintf("FileBean [Id=%d, Name=%s, Status=%s, ETag=%s, Suffix=%s, Length=%d, CreateTime=%s]",
+		o.Id, o.Name, o.Status, o.Etag, o.Suffix, o.Length, o.CreateTime)
 }

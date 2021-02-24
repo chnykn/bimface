@@ -41,18 +41,18 @@ func NewFloorService(serviceClient *utils.ServiceClient, endpoint *config.Endpoi
 
 //---------------------------------------------------------------------
 
-func (o *FloorService) getFloorsURL(fileID int64) string {
-	return fmt.Sprintf(o.Endpoint.APIHost+getFloorsURI, fileID)
+func (o *FloorService) getFloorsURL(fileId int64) string {
+	return fmt.Sprintf(o.Endpoint.APIHost+getFloorsURI, fileId)
 }
 
-func (o *FloorService) getIntegrationFloorsURL(integrationID int64) string {
-	return fmt.Sprintf(o.Endpoint.APIHost+getIntegrationFloorsURI, integrationID)
+func (o *FloorService) getIntegrationFloorsURL(integrationId int64) string {
+	return fmt.Sprintf(o.Endpoint.APIHost+getIntegrationFloorsURI, integrationId)
 }
 
 //-----------------------------------------------------------------------------------
 
 //GetFloorsResp ***
-func (o *FloorService) GetFloorsResp(fileID int64) (*req.Resp, error) {
+func (o *FloorService) GetFloorsResp(fileId int64) (*req.Resp, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
@@ -61,14 +61,14 @@ func (o *FloorService) GetFloorsResp(fileID int64) (*req.Resp, error) {
 	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
-	resp := o.ServiceClient.Get(o.getFloorsURL(fileID), headers.Header)
+	resp := o.ServiceClient.Get(o.getFloorsURL(fileId), headers.Header)
 	return resp, nil
 }
 
 //GetFloors 获取文件转换的楼层信息
 //http://static.bimface.com/book/restful/articles/api/translate/get-floors.html
-func (o *FloorService) GetFloors(fileID int64) ([]*response.Floor, error) {
-	resp, err := o.GetFloorsResp(fileID)
+func (o *FloorService) GetFloors(fileId int64) ([]*response.Floor, error) {
+	resp, err := o.GetFloorsResp(fileId)
 	if err != nil {
 		return nil, err
 	}
@@ -85,7 +85,7 @@ func (o *FloorService) GetFloors(fileID int64) ([]*response.Floor, error) {
 //-----------------------------------------------------------------------------------
 
 //GetIntegrationFloorsResp ***
-func (o *FloorService) GetIntegrationFloorsResp(integrateID int64) (*req.Resp, error) {
+func (o *FloorService) GetIntegrationFloorsResp(integrateId int64) (*req.Resp, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
@@ -94,14 +94,14 @@ func (o *FloorService) GetIntegrationFloorsResp(integrateID int64) (*req.Resp, e
 	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
-	resp := o.ServiceClient.Get(o.getIntegrationFloorsURL(integrateID), headers.Header)
+	resp := o.ServiceClient.Get(o.getIntegrationFloorsURL(integrateId), headers.Header)
 	return resp, nil
 }
 
 //GetIntegrationFloors 获取集成模型楼层信息
 //http://static.bimface.com/book/restful/articles/api/integrate/get-integrate-floors.html
-func (o *FloorService) GetIntegrationFloors(integrateID int64) ([]*response.Floor, error) {
-	resp, err := o.GetIntegrationFloorsResp(integrateID)
+func (o *FloorService) GetIntegrationFloors(integrateId int64) ([]*response.Floor, error) {
+	resp, err := o.GetIntegrationFloorsResp(integrateId)
 	if err != nil {
 		return nil, err
 	}

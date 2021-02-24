@@ -6,19 +6,18 @@ package response
 
 //TranslateStatus ***
 type TranslateStatus struct {
-	FileID     int64    `json:"fileId"`
+	FileId     int64    `json:"fileId"`
 	Name       string   `json:"name"`
-	Priority   int64    `json:"priority"`
 	Status     string   `json:"status"`
-	Thumbnail  []string `json:"thumbnail"` // thumbnail http links
 	Reason     string   `json:"reason"`
+	Thumbnail  []string `json:"thumbnail"` // thumbnail http links
 	CreateTime string   `json:"createTime"`
 }
 
 //NewTranslateStatus ***
-func NewTranslateStatus() *TranslateStatus { //fileID int64, name string
+func NewTranslateStatus() *TranslateStatus { //fileId int64, name string
 	o := &TranslateStatus{
-		// FileID:   fileID,
+		// FileId:   fileId,
 		// Name: name,
 		Thumbnail: make([]string, 0),
 	}

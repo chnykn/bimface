@@ -56,10 +56,10 @@ func NewPropertyGroup(name string) *PropertyGroup {
 
 //Element ***
 type Element struct {
-	ID          string             `json:"elementId"`
+	Id          string             `json:"elementId"`
 	Name        string             `json:"name"`
-	GUID        string             `json:"guid"`
-	FamilyGUID  string             `json:"familyGuid"`
+	GUId        string             `json:"guid"`
+	FamilyGUId  string             `json:"familyGuid"`
 	BoundingBox common.BoundingBox `json:"boundingBox"`
 	Properties  []*PropertyGroup   `json:"properties"`
 }
@@ -67,7 +67,7 @@ type Element struct {
 //NewElement ***
 func NewElement(id string) *Element {
 	o := &Element{
-		ID: id,
+		Id: id,
 		//Groups: make([]*PropertyGroup, 0),
 	}
 	return o
@@ -80,6 +80,6 @@ func (o *Element) AddPropertyGroup(group *PropertyGroup) {
 
 // ToString get the string
 func (o *Element) ToString() string {
-	return fmt.Sprintf("Element [ID=%s, Name=%s, GUID=%s, FamilyGUID=%s,BoundingBox=%v, Properties=%v]",
-		o.ID, o.Name, o.GUID, o.FamilyGUID, o.BoundingBox, o.Properties)
+	return fmt.Sprintf("Element [Id=%s, Name=%s, GUId=%s, FamilyGUId=%s,BoundingBox=%v, Properties=%v]",
+		o.Id, o.Name, o.GUId, o.FamilyGUId, o.BoundingBox, o.Properties)
 }

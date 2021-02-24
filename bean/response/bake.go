@@ -18,9 +18,9 @@ type Bake struct {
 }
 
 //NewBake ***
-func NewBake() *Bake { //fileID int64, name string
+func NewBake() *Bake { //fileId int64, name string
 	o := &Bake{
-		// FileID:   fileID,
+		// FileId:   fileId,
 		// Name: name,
 	}
 	return o

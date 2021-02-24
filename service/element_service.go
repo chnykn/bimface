@@ -44,18 +44,18 @@ func NewElementService(serviceClient *utils.ServiceClient, endpoint *config.Endp
 
 //---------------------------------------------------------------------
 
-func (o *ElementService) elementIdsURL(fileID int64) string {
-	return fmt.Sprintf(o.Endpoint.APIHost+elementIdsURI, fileID)
+func (o *ElementService) elementIdsURL(fileId int64) string {
+	return fmt.Sprintf(o.Endpoint.APIHost+elementIdsURI, fileId)
 }
 
-func (o *ElementService) intgrElementURL(integrateID int64) string {
-	return fmt.Sprintf(o.Endpoint.APIHost+intgrElementURI, integrateID)
+func (o *ElementService) intgrElementURL(integrateId int64) string {
+	return fmt.Sprintf(o.Endpoint.APIHost+intgrElementURI, integrateId)
 }
 
 //-----------------------------------------------------------------------------------
 
 //GetElementsResp *** http://static.bimface.com/restful-apidoc/dist/translateSingleModel.html#_getelementidsusingget
-func (o *ElementService) GetElementsResp(fileID int64, params req.QueryParam) (*req.Resp, error) {
+func (o *ElementService) GetElementsResp(fileId int64, params req.QueryParam) (*req.Resp, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
@@ -64,14 +64,14 @@ func (o *ElementService) GetElementsResp(fileID int64, params req.QueryParam) (*
 	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
-	resp := o.ServiceClient.Get(o.elementIdsURL(fileID), params, headers.Header)
+	resp := o.ServiceClient.Get(o.elementIdsURL(fileId), params, headers.Header)
 	return resp, nil
 }
 
 //GetElementsWithParams 文件转换相关: 获取文件转换的构件列表
-//必填参数: fileID  params相关参数，详见 http://static.bimface.com/restful-apidoc/dist/translateSingleModel.html#_getelementidsusingget
-func (o *ElementService) GetElementsWithParams(fileID int64, params req.QueryParam) ([]string, error) {
-	resp, err := o.GetElementsResp(fileID, params)
+//必填参数: fileId  params相关参数，详见 http://static.bimface.com/restful-apidoc/dist/translateSingleModel.html#_getelementidsusingget
+func (o *ElementService) GetElementsWithParams(fileId int64, params req.QueryParam) ([]string, error) {
+	resp, err := o.GetElementsResp(fileId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -89,15 +89,15 @@ func (o *ElementService) GetElementsWithParams(fileID int64, params req.QueryPar
 //http://static.bimface.com/restful-apidoc/dist/translateSingleModel.html#_getelementidsusingget
 /***
 字段		类型	必填	描述
-fileId		Number	Y	文件ID
+fileId		Number	Y	文件Id
 specialty	String	N	专业
 floor		String	N	楼层
-categoryId	String	N	构件分类ID
+categoryId	String	N	构件分类Id
 family		String	N	族
 familyType	String	N	族类型
 *** 其他参数详见网址地址
 ***/
-func (o *ElementService) GetElements(fileID int64, floor, specialty, categoryID,
+func (o *ElementService) GetElements(fileId int64, floor, specialty, categoryId,
 	family, familyType string) ([]string, error) {
 
 	params := make(req.QueryParam)
@@ -107,8 +107,8 @@ func (o *ElementService) GetElements(fileID int64, floor, specialty, categoryID,
 	if specialty != "" {
 		params["specialty"] = specialty
 	}
-	if categoryID != "" {
-		params["categoryId"] = categoryID
+	if categoryId != "" {
+		params["categoryId"] = categoryId
 	}
 	if family != "" {
 		params["family"] = family
@@ -117,13 +117,13 @@ func (o *ElementService) GetElements(fileID int64, floor, specialty, categoryID,
 		params["familyType"] = familyType
 	}
 
-	return o.GetElementsWithParams(fileID, params)
+	return o.GetElementsWithParams(fileId, params)
 }
 
 //-----------------------------------------------------------------------------------
 
 //GetIntgrElementsResp ***
-func (o *ElementService) GetIntgrElementsResp(integrateID int64, params req.QueryParam) (*req.Resp, error) {
+func (o *ElementService) GetIntgrElementsResp(integrateId int64, params req.QueryParam) (*req.Resp, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
@@ -132,13 +132,13 @@ func (o *ElementService) GetIntgrElementsResp(integrateID int64, params req.Quer
 	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
-	resp := o.ServiceClient.Get(o.intgrElementURL(integrateID), params, headers.Header)
+	resp := o.ServiceClient.Get(o.intgrElementURL(integrateId), params, headers.Header)
 	return resp, nil
 }
 
 //GetIntgrElementsWithParams ***
-func (o *ElementService) GetIntgrElementsWithParams(integrateID int64, params req.QueryParam) (*response.IntgrElements, error) {
-	resp, err := o.GetIntgrElementsResp(integrateID, params)
+func (o *ElementService) GetIntgrElementsWithParams(integrateId int64, params req.QueryParam) (*response.IntgrElements, error) {
+	resp, err := o.GetIntgrElementsResp(integrateId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -153,14 +153,14 @@ func (o *ElementService) GetIntgrElementsWithParams(integrateID int64, params re
 //http://doc.bimface.com/book/restful/articles/api/integrate/get-integrate-element.html
 /***
 字段		类型	必填	描述
-integrateId	Number	Y	集成ID
+integrateId	Number	Y	集成Id
 specialty	String	N	专业
 floor		String	N	楼层
-categoryId	String	N	构件分类ID
+categoryId	String	N	构件分类Id
 family		String	N	族
 familyType	String	N	族类型
 ***/
-func (o *ElementService) GetIntgrElements(fileID int64, floor, specialty, categoryID,
+func (o *ElementService) GetIntgrElements(fileId int64, floor, specialty, categoryId,
 	family, familyType string) (*response.IntgrElements, error) {
 
 	params := make(req.QueryParam)
@@ -170,8 +170,8 @@ func (o *ElementService) GetIntgrElements(fileID int64, floor, specialty, catego
 	if specialty != "" {
 		params["specialty"] = specialty
 	}
-	if categoryID != "" {
-		params["categoryId"] = categoryID
+	if categoryId != "" {
+		params["categoryId"] = categoryId
 	}
 	if family != "" {
 		params["family"] = family
@@ -180,5 +180,5 @@ func (o *ElementService) GetIntgrElements(fileID int64, floor, specialty, catego
 		params["familyType"] = familyType
 	}
 
-	return o.GetIntgrElementsWithParams(fileID, params)
+	return o.GetIntgrElementsWithParams(fileId, params)
 }

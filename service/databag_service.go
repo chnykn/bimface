@@ -15,17 +15,17 @@ import (
 
 /**
 const (
-	createDatabagByFileID      string = "/files/%d/offlineDatabag?callback=%s"
-	createDatabagByIntegrateID string = "/integrations/%d/offlineDatabag?callback=%s"
-	createDatabagByCompareID   string = "/comparisions/%d/offlineDatabag?callback=%s"
+	createDatabagByFileId      string = "/files/%d/offlineDatabag?callback=%s"
+	createDatabagByIntegrateId string = "/integrations/%d/offlineDatabag?callback=%s"
+	createDatabagByCompareId   string = "/comparisions/%d/offlineDatabag?callback=%s"
 
-	queryDatabagByFileID      string = "/files/%d/offlineDatabag"
-	queryDatabagByIntegrateID string = "/integrations/%d/offlineDatabag"
-	queryDatabagByCompareID   string = "/comparisions/%d/offlineDatabag"
+	queryDatabagByFileId      string = "/files/%d/offlineDatabag"
+	queryDatabagByIntegrateId string = "/integrations/%d/offlineDatabag"
+	queryDatabagByCompareId   string = "/comparisions/%d/offlineDatabag"
 
-	getDatabagURLByFileID      string = "/data/databag/downloadUrl?fileId=%d&type=offline&databagVersion=%s"
-	getDatabagURLByIntegrateID string = "/data/databag/downloadUrl?integrateId=%d&type=offline&databagVersion=%s"
-	getDatabagURLByCompareID   string = "/data/databag/downloadUrl?comapreId=%d&type=offline&databagVersion=%s"
+	getDatabagURLByFileId      string = "/data/databag/downloadUrl?fileId=%d&type=offline&databagVersion=%s"
+	getDatabagURLByIntegrateId string = "/data/databag/downloadUrl?integrateId=%d&type=offline&databagVersion=%s"
+	getDatabagURLByCompareId   string = "/data/databag/downloadUrl?comapreId=%d&type=offline&databagVersion=%s"
 )
 **/
 
@@ -57,21 +57,21 @@ func NewDatabagService(serviceClient *utils.ServiceClient, endpoint *config.Endp
 
 //---------------------------------------------------------------------
 // kind must in [files, integrations, comparisions]
-func (o *DatabagService) createDatabagURL(kind string, xxID int64, callback string) string {
-	result := fmt.Sprintf(o.Endpoint.APIHost+createDatabagURI, kind, xxID)
+func (o *DatabagService) createDatabagURL(kind string, xxId int64, callback string) string {
+	result := fmt.Sprintf(o.Endpoint.APIHost+createDatabagURI, kind, xxId)
 	if callback != "" {
 		result = result + "?callback=" + utils.EncodeURI(callback)
 	}
 	return result
 }
 
-func (o *DatabagService) queryDatabagURL(kind string, xxID int64) string {
-	return fmt.Sprintf(o.Endpoint.APIHost+queryDatabagURI, kind, xxID)
+func (o *DatabagService) queryDatabagURL(kind string, xxId int64) string {
+	return fmt.Sprintf(o.Endpoint.APIHost+queryDatabagURI, kind, xxId)
 }
 
 //databagVersion 数据包版本，如果只有一个，则下载唯一的数据包，如果多个，则必须指定数据包版本
-func (o *DatabagService) downloadDatabagURL(kind string, xxID int64, databagVersion string) string {
-	result := fmt.Sprintf(o.Endpoint.APIHost+getDatabagURI, kind, xxID)
+func (o *DatabagService) downloadDatabagURL(kind string, xxId int64, databagVersion string) string {
+	result := fmt.Sprintf(o.Endpoint.APIHost+getDatabagURI, kind, xxId)
 	if databagVersion != "" {
 		result = result + "&databagVersion=" + databagVersion
 	}
@@ -84,20 +84,20 @@ func (o *DatabagService) downloadDatabagURL(kind string, xxID int64, databagVers
 //http://static.bimface.com/book/restful/articles/api/offlinedatabag/create-offlinedatabag.html
 /***
 字段		类型	必填	描述
-fileId		Number	Y	通过文件转换ID创建离线数据包时必填
-integrateId	Number	Y	通过集成模型ID创建离线数据包时必填
-compareId	Number	Y	通过模型对比ID创建离线数据包时必填
+fileId		Number	Y	通过文件转换Id创建离线数据包时必填
+integrateId	Number	Y	通过集成模型Id创建离线数据包时必填
+compareId	Number	Y	通过模型对比Id创建离线数据包时必填
 callback	String	N	回调url
 ***/
 func (o *DatabagService) CreateDatabag(databagRequest *request.DatabagRequest) (*response.Databag, error) {
 
 	var url string
-	if databagRequest.FileID != nil {
-		url = o.createDatabagURL("files", *databagRequest.FileID, databagRequest.Callback)
-	} else if databagRequest.IntegrateID != nil {
-		url = o.createDatabagURL("integrations", *databagRequest.IntegrateID, databagRequest.Callback)
-	} else if databagRequest.CompareID != nil {
-		url = o.createDatabagURL("comparisions", *databagRequest.IntegrateID, databagRequest.Callback)
+	if databagRequest.FileId != nil {
+		url = o.createDatabagURL("files", *databagRequest.FileId, databagRequest.Callback)
+	} else if databagRequest.IntegrateId != nil {
+		url = o.createDatabagURL("integrations", *databagRequest.IntegrateId, databagRequest.Callback)
+	} else if databagRequest.CompareId != nil {
+		url = o.createDatabagURL("comparisions", *databagRequest.IntegrateId, databagRequest.Callback)
 	}
 	if url == "" {
 		return nil, fmt.Errorf("url is null @ DatabagService.createDatabag")
@@ -125,19 +125,19 @@ func (o *DatabagService) CreateDatabag(databagRequest *request.DatabagRequest) (
 //http://static.bimface.com/book/restful/articles/api/offlinedatabag/query-offlinedataba.html
 /***
 字段		类型	必填	描述
-fileId		Number	Y	通过文件转换ID创建离线数据包时必填
-integrateId	Number	Y	通过集成模型ID创建离线数据包时必填
-compareId	Number	Y	通过模型对比ID创建离线数据包时必填
+fileId		Number	Y	通过文件转换Id创建离线数据包时必填
+integrateId	Number	Y	通过集成模型Id创建离线数据包时必填
+compareId	Number	Y	通过模型对比Id创建离线数据包时必填
 ***/
 func (o *DatabagService) QueryDatabag(databagRequest *request.DatabagRequest) ([]*response.Databag, error) {
 
 	var url string
-	if databagRequest.FileID != nil {
-		url = o.queryDatabagURL("files", *databagRequest.FileID)
-	} else if databagRequest.IntegrateID != nil {
-		url = o.queryDatabagURL("integrations", *databagRequest.IntegrateID)
-	} else if databagRequest.CompareID != nil {
-		url = o.queryDatabagURL("comparisions", *databagRequest.IntegrateID)
+	if databagRequest.FileId != nil {
+		url = o.queryDatabagURL("files", *databagRequest.FileId)
+	} else if databagRequest.IntegrateId != nil {
+		url = o.queryDatabagURL("integrations", *databagRequest.IntegrateId)
+	} else if databagRequest.CompareId != nil {
+		url = o.queryDatabagURL("comparisions", *databagRequest.IntegrateId)
 	}
 	if url == "" {
 		return nil, fmt.Errorf("url is null @ DatabagService.queryDatabag")
@@ -168,21 +168,21 @@ func (o *DatabagService) QueryDatabag(databagRequest *request.DatabagRequest) ([
 //http://static.bimface.com/book/restful/articles/api/offlinedatabag/get-download-offlinedataba-url.html
 /***
 字段			类型	必填	描述
-fileId			Number	Y	通过文件转换ID获取离线数据包下载地址时必填
-integrateId		Number	Y	通过集成模型ID获取离线数据包下载地址时必填
-compareId		Number	Y	通过模型对比ID获取离线数据包下载地址时必填
+fileId			Number	Y	通过文件转换Id获取离线数据包下载地址时必填
+integrateId		Number	Y	通过集成模型Id获取离线数据包下载地址时必填
+compareId		Number	Y	通过模型对比Id获取离线数据包下载地址时必填
 type			String	Y	值必须是“offline”
 databagVersion	String	N	数据包版本，如果只有一个，则下载唯一的数据包，如果多个，则必须指定数据包版本, 例如 3.0
 ***/
 func (o *DatabagService) GetDatabagDownloadURL(databagRequest *request.DatabagRequest) (string, error) {
 
 	var url string
-	if databagRequest.FileID != nil {
-		url = o.downloadDatabagURL("fileId", *databagRequest.FileID, databagRequest.DatabagVersion)
-	} else if databagRequest.IntegrateID != nil {
-		url = o.downloadDatabagURL("integrateId", *databagRequest.IntegrateID, databagRequest.DatabagVersion)
-	} else if databagRequest.CompareID != nil {
-		url = o.downloadDatabagURL("comapreId", *databagRequest.IntegrateID, databagRequest.DatabagVersion)
+	if databagRequest.FileId != nil {
+		url = o.downloadDatabagURL("fileId", *databagRequest.FileId, databagRequest.DatabagVersion)
+	} else if databagRequest.IntegrateId != nil {
+		url = o.downloadDatabagURL("integrateId", *databagRequest.IntegrateId, databagRequest.DatabagVersion)
+	} else if databagRequest.CompareId != nil {
+		url = o.downloadDatabagURL("comapreId", *databagRequest.IntegrateId, databagRequest.DatabagVersion)
 	}
 	if url == "" {
 		return "", fmt.Errorf("url is null @ DatabagService.queryDatabag")

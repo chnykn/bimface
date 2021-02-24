@@ -150,7 +150,7 @@ func TestTranslateService(t *testing.T) {
 
 	status, err = client.TranslateService.GetTranslateStatus(1964823598336000)
 	if err == nil {
-		fmt.Printf("GetTranslateStatus = %v \n", status)
+		fmt.Printf("TranslateStatus = %v \n", status)
 	} else {
 		fmt.Printf("err = %v \n", err)
 	}

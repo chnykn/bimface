@@ -2,58 +2,41 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package service
+package file
 
 import (
 	"fmt"
 
+	"github.com/imroc/req"
+
 	"github.com/chnykn/bimface/bean/request"
 	"github.com/chnykn/bimface/bean/response"
-	"github.com/chnykn/bimface/config"
 	"github.com/chnykn/bimface/utils"
-
-	"github.com/imroc/req"
 )
 
 const (
-	translateURI    string = "/translate"
-	getTranslateURI string = "/translate?fileId=%d"
+	translateURI        string = "/translate"
+	getTranslateURI     string = "/translate?fileId=%d"
+	translateDetailsURI string = "/translateDetails"
 )
-
-//TranslateService ***
-type TranslateService struct {
-	AbstractService    //base class
-	AccessTokenService *AccessTokenService
-}
-
-//NewTranslateService ***
-func NewTranslateService(serviceClient *utils.ServiceClient, endpoint *config.Endpoint,
-	credential *config.Credential, accessTokenService *AccessTokenService) *TranslateService {
-	o := &TranslateService{
-		AbstractService: AbstractService{
-			Endpoint:      endpoint,
-			ServiceClient: serviceClient, //utils.NewServiceClient(),
-		},
-		AccessTokenService: accessTokenService,
-	}
-
-	return o
-}
 
 //---------------------------------------------------------------------
 
-func (o *TranslateService) translateURL() string {
+func (o *Service) translateURL() string {
 	return o.Endpoint.APIHost + translateURI
 }
 
-func (o *TranslateService) getTranslateURL(fileID int64) string {
-	return fmt.Sprintf(o.Endpoint.APIHost+getTranslateURI, fileID)
+func (o *Service) getTranslateURL(fileId int64) string {
+	return fmt.Sprintf(o.Endpoint.APIHost+getTranslateURI, fileId)
+}
+
+func (o *Service) translateDetailsURL() string {
+	return fmt.Sprintf(o.Endpoint.APIHost + translateDetailsURI)
 }
 
 //-----------------------------------------------------------------------------------
 
 //Translate 文件转换相关: 发起文件转换
-//http://static.bimface.com/book/restful/articles/api/translate/put-translate.html
 /***
 字段		类型		必填	描述
 fileId		Number		Y	文件Id，即调用上传文件API返回的fileId
@@ -65,7 +48,7 @@ config		Json Object	N	转换引擎自定义参数，config参数跟转换引擎�
 							例如转换时添加内置材质，则添加参数值{“texture”:true}，
 							添加外部材质时参考“使用模型外置材质场景”请求报文{“texture”:true}等
 ***/
-func (o *TranslateService) Translate(transRequest *request.TranslateRequest) (*response.TranslateStatus, error) {
+func (o *Service) Translate(transRequest *request.TranslateRequest) (*response.TranslateStatus, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
@@ -85,8 +68,8 @@ func (o *TranslateService) Translate(transRequest *request.TranslateRequest) (*r
 
 //-----------------------------------------------------------------------------------
 
-//GetTranslateStatusResp ***
-func (o *TranslateService) GetTranslateStatusResp(fileID int64) (*req.Resp, error) {
+//TranslateStatusResp ***
+func (o *Service) GetTranslateStatusResp(fileId int64) (*req.Resp, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
@@ -95,19 +78,49 @@ func (o *TranslateService) GetTranslateStatusResp(fileID int64) (*req.Resp, erro
 	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
-	resp := o.ServiceClient.Get(o.getTranslateURL(fileID), headers.Header)
+	resp := o.ServiceClient.Get(o.getTranslateURL(fileId), headers.Header)
 	return resp, err
 }
 
-//GetTranslateStatus 文件转换相关: 获取转换状态
-//http://static.bimface.com/book/restful/articles/api/translate/get-translate.html
-func (o *TranslateService) GetTranslateStatus(fileID int64) (*response.TranslateStatus, error) {
-	resp, err := o.GetTranslateStatusResp(fileID)
+//TranslateStatus 文件转换相关: 获取转换状态
+func (o *Service) GetTranslateStatus(fileId int64) (*response.TranslateStatus, error) {
+	resp, err := o.GetTranslateStatusResp(fileId)
 	if err != nil {
 		return nil, err
 	}
 
 	result := response.NewTranslateStatus()
+	err = utils.RespToBean(resp, result)
+
+	return result, err
+}
+
+//-----------------------------------------------------------------------------------
+
+//TranslateDetailStatusResp ***
+func (o *Service) GetTranslateDetailStatusResp(detailRequst *request.TranslateDetailRequest) (*req.Resp, error) {
+	accessToken, err := o.AccessTokenService.Get()
+	if err != nil {
+		return nil, err
+	}
+
+	headers := utils.NewHeaders()
+	headers.AddOAuth2Header(accessToken.Token)
+
+	body := req.BodyJSON(detailRequst)
+	resp := o.ServiceClient.Post(o.translateDetailsURL(), body, headers.Header)
+
+	return resp, err
+}
+
+//TranslateDetailStatus 批量获取转换状态详情
+func (o *Service) GetTranslateDetailStatus(detailRequst *request.TranslateDetailRequest) (*response.TranslateDetailStatus, error) {
+	resp, err := o.GetTranslateDetailStatusResp(detailRequst)
+	if err != nil {
+		return nil, err
+	}
+
+	result := response.NewTranslateDetailStatus()
 	err = utils.RespToBean(resp, result)
 
 	return result, err

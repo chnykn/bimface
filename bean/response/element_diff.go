@@ -34,8 +34,8 @@ type ChangeQtys struct {
 
 //ElementDiff ***
 type ElementDiff struct {
-	A string //变化图元前一个版本的ID
-	B string //变化图元后一个版本的ID
+	A string //变化图元前一个版本的Id
+	B string //变化图元后一个版本的Id
 
 	NewAttributes    []*ElementAttr `json:"newAttributes"`
 	DeleteAttributes []*ElementAttr `json:"deleteAttributes"`

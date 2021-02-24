@@ -8,6 +8,9 @@ import (
 	"github.com/chnykn/bimface/config"
 	"github.com/chnykn/bimface/consts"
 	"github.com/chnykn/bimface/service"
+	"github.com/chnykn/bimface/service/file"
+	file2 "github.com/chnykn/bimface/service/model"
+	"github.com/chnykn/bimface/service/token"
 	"github.com/chnykn/bimface/utils"
 )
 
@@ -18,12 +21,12 @@ type Client struct {
 
 	serviceClient      *utils.ServiceClient
 	AccessTokenService *service.AccessTokenService
-	SupportFileService *service.SupportFileService
+	SupportFileService *file.SupportService
 
-	AppendFileService    *service.AppendFileService
+	AppendFileService    *file.AppendService
 	CategoryTreeService  *service.CategoryTreeService
 	CompareService       *service.CompareService
-	DownloadService      *service.DownloadService
+	DownloadService      *file.DownloadService
 	DrawingSheetsService *service.DrawingSheetsService
 	ElementService       *service.ElementService
 	FloorService         *service.FloorService
@@ -32,10 +35,10 @@ type Client struct {
 	DatabagService       *service.DatabagService
 	PropertyService      *service.PropertyService
 	ShareLinkService     *service.ShareLinkService
-	TranslateService     *service.TranslateService
+	TranslateService     *file2.TranslateService
 	BakeService          *service.BakeService
-	UploadService        *service.UploadService
-	ViewTokenService     *service.ViewTokenService
+	UploadService        *file.UploadService
+	ViewTokenService     *token.ViewTokenService
 }
 
 // NewClient create an bimface client.
@@ -50,12 +53,12 @@ func NewClient(appKey string, appSecret string, endpoint *config.Endpoint) *Clie
 		serviceClient: utils.NewServiceClient(),
 	}
 	o.AccessTokenService = service.NewAccessTokenService(o.serviceClient, o.endpoint, o.credential)
-	o.SupportFileService = service.NewSupportFileService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
+	o.SupportFileService = file.NewSupportFileService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
 
-	o.AppendFileService = service.NewAppendFileService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService, o.SupportFileService)
+	o.AppendFileService = file.NewAppendFileService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService, o.SupportFileService)
 	o.CategoryTreeService = service.NewCategoryTreeService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
 	o.CompareService = service.NewCompareService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
-	o.DownloadService = service.NewDownloadService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
+	o.DownloadService = file.NewDownloadService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
 	o.ElementService = service.NewElementService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
 	o.DrawingSheetsService = service.NewDrawingSheetsService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
 	o.FloorService = service.NewFloorService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
@@ -64,10 +67,10 @@ func NewClient(appKey string, appSecret string, endpoint *config.Endpoint) *Clie
 	o.DatabagService = service.NewDatabagService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
 	o.PropertyService = service.NewPropertyService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
 	o.ShareLinkService = service.NewShareLinkService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
-	o.TranslateService = service.NewTranslateService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
+	o.TranslateService = file2.NewTranslateService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
 	o.BakeService = service.NewBakeService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
-	o.UploadService = service.NewUploadService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
-	o.ViewTokenService = service.NewViewTokenService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
+	o.UploadService = file.NewUploadService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
+	o.ViewTokenService = token.NewViewTokenService(o.serviceClient, o.endpoint, o.credential, o.AccessTokenService)
 
 	return o
 }

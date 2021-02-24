@@ -7,12 +7,12 @@ package service
 import (
 	"fmt"
 
+	"github.com/imroc/req"
+
 	"github.com/chnykn/bimface/bean/common"
 	"github.com/chnykn/bimface/bean/response"
 	"github.com/chnykn/bimface/config"
 	"github.com/chnykn/bimface/utils"
-
-	"github.com/imroc/req"
 )
 
 const (
@@ -42,8 +42,8 @@ func NewCategoryTreeService(serviceClient *utils.ServiceClient, endpoint *config
 
 //---------------------------------------------------------------------
 
-func (o *CategoryTreeService) categoryURL(fileID int64, isV2 bool) string {
-	result := fmt.Sprintf(o.Endpoint.APIHost+categoryURI, fileID)
+func (o *CategoryTreeService) categoryURL(fileId int64, isV2 bool) string {
+	result := fmt.Sprintf(o.Endpoint.APIHost+categoryURI, fileId)
 	if isV2 {
 		result = result + "&v=2.0"
 	}
@@ -57,10 +57,10 @@ func (o *CategoryTreeService) categoryURL(fileID int64, isV2 bool) string {
 //1）获取1.0版本结果数据； 2）获取2.0版本结果数据
 /***
 字段	类型	必填	描述
-fileId	Number	Y	文件ID
+fileId	Number	Y	文件Id
 v		String	N	结果数据版本：1.0（1.0版本结果数据）2.0（2.0版本结果数据）	 默认为1.0数据
 ***/
-func (o *CategoryTreeService) GetCategoryTreeResp(fileID int64, isV2 bool) (*req.Resp, error) {
+func (o *CategoryTreeService) GetCategoryTreeResp(fileId int64, isV2 bool) (*req.Resp, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
@@ -69,17 +69,17 @@ func (o *CategoryTreeService) GetCategoryTreeResp(fileID int64, isV2 bool) (*req
 	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
-	resp := o.ServiceClient.Get(o.categoryURL(fileID, isV2), headers.Header)
+	resp := o.ServiceClient.Get(o.categoryURL(fileId, isV2), headers.Header)
 	return resp, nil
 }
 
 //GetCategoryTree 文件转换相关: 获取单文件的所有构件类别、族和族类型树, 结果数据版本：1.0（1.0版本结果数据）
 /***
 字段	类型	必填	描述
-fileId	Number	Y	文件ID
+fileId	Number	Y	文件Id
 ***/
-func (o *CategoryTreeService) GetCategoryTree(fileID int64) ([]*response.Category, error) {
-	resp, err := o.GetCategoryTreeResp(fileID, false)
+func (o *CategoryTreeService) GetCategoryTree(fileId int64) ([]*response.Category, error) {
+	resp, err := o.GetCategoryTreeResp(fileId, false)
 	if err != nil {
 		return nil, err
 	}
@@ -96,10 +96,10 @@ func (o *CategoryTreeService) GetCategoryTree(fileID int64) ([]*response.Categor
 //GetCategoryTreeV2 文件转换相关: 获取单文件的所有构件类别、族和族类型树, 结果数据版本：2.0（2.0版本结果数据）
 /***
 字段	类型	必填	描述
-fileId	Number	Y	文件ID
+fileId	Number	Y	文件Id
 ***/
-func (o *CategoryTreeService) GetCategoryTreeV2(fileID int64) ([]*common.TreeNode, error) {
-	resp, err := o.GetCategoryTreeResp(fileID, true)
+func (o *CategoryTreeService) GetCategoryTreeV2(fileId int64) ([]*common.TreeNode, error) {
+	resp, err := o.GetCategoryTreeResp(fileId, true)
 	if err != nil {
 		return nil, err
 	}

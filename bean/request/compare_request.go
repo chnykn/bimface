@@ -6,15 +6,15 @@ package request
 
 //CompareSource ***
 type CompareSource struct {
-	PreviousFileID  int64 `json:"previousFileId"`  //变更前文件ID，如果为新增文件，则为null
-	FollowingFileID int64 `json:"followingFileId"` //变更后文件ID，如果为删除文件，则为null
+	PreviousFileId  int64 `json:"previousFileId"`  //变更前文件Id，如果为新增文件，则为null
+	FollowingFileId int64 `json:"followingFileId"` //变更后文件Id，如果为删除文件，则为null
 }
 
 //NewCompareSource ***
-func NewCompareSource(previousFileID, followingFileID int64) *CompareSource {
+func NewCompareSource(previousFileId, followingFileId int64) *CompareSource {
 	o := &CompareSource{
-		PreviousFileID:  previousFileID,
-		FollowingFileID: followingFileID,
+		PreviousFileId:  previousFileId,
+		FollowingFileId: followingFileId,
 	}
 	return o
 }
@@ -30,7 +30,7 @@ type CompareRequest struct {
 	Name     string           `json:"Name"`     //用户指定对比后的模型的名字
 	Priority int              `json:"priority"` //[1,2,3] 数字越大，优先级越低
 	Callback string           `json:"callback,omitempty"`
-	SourceID string           `json:"sourceID,omitempty"` //第三方应用自己的ID
+	SourceId string           `json:"sourceId,omitempty"` //第三方应用自己的Id
 	Sources  []*CompareSource `json:"sources"`
 }
 

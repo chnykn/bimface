@@ -6,7 +6,7 @@ package response
 
 //CompareStatus ***
 type CompareStatus struct {
-	ID         int64  `json:"compareId"`
+	Id         int64  `json:"compareId"`
 	Priority   int64  `json:"priority"`
 	Status     string `json:"status"`
 	Thumbnail  string `json:"thumbnail"` // thumbnail http links
@@ -15,9 +15,9 @@ type CompareStatus struct {
 }
 
 //NewCompareStatus ***
-func NewCompareStatus() *CompareStatus { //fileID int64, name string
+func NewCompareStatus() *CompareStatus { //fileId int64, name string
 	o := &CompareStatus{
-		// FileID:   fileID,
+		// FileId:   fileId,
 		// Name: name,
 		//Thumbnail: make([]string, 0),
 	}
@@ -30,17 +30,17 @@ func NewCompareStatus() *CompareStatus { //fileID int64, name string
 type CompareElement struct {
 	DiffType           string `json:"diffType"` // NEW|DELETE|CHANGE,
 	Name               string `json:"name"`     // 柱1
-	PreviousFileID     int64  `json:"previousFileId"`
-	PreviousElementID  int64  `json:"previousElementId"`
-	FollowingFileID    int64  `json:"followingFileId"`
-	FollowingElementID int64  `json:"followingElementId"`
+	PreviousFileId     int64  `json:"previousFileId"`
+	PreviousElementId  int64  `json:"previousElementId"`
+	FollowingFileId    int64  `json:"followingFileId"`
+	FollowingElementId int64  `json:"followingElementId"`
 }
 
 //----------------------------------------------------------
 
 //CompareCategory ***
 type CompareCategory struct {
-	ID        string `json:"categoryId"`
+	Id        string `json:"categoryId"`
 	Name      string `json:"categoryName"`
 	ItemCount int64  `json:"itemCount"`
 	Elements  []*CompareElement
@@ -49,7 +49,7 @@ type CompareCategory struct {
 //NewCompareCategory ***
 func NewCompareCategory() *CompareCategory {
 	o := &CompareCategory{
-		// CategoryID:   ,
+		// CategoryId:   ,
 		// CategoryName: ,
 		Elements: make([]*CompareElement, 0),
 	}
@@ -60,7 +60,7 @@ func NewCompareCategory() *CompareCategory {
 
 //CompareData ***
 type CompareData struct {
-	SpecialtyID   string `json:"specialtyId"`
+	SpecialtyId   string `json:"specialtyId"`
 	SpecialtyName string `json:"specialtyName"`
 	ItemCount     int64  `json:"itemCount"`
 	Categories    []*CompareCategory
@@ -69,7 +69,7 @@ type CompareData struct {
 //NewCompareData ***
 func NewCompareData() *CompareData {
 	o := &CompareData{
-		// SpecialtyID:   ,
+		// SpecialtyId:   ,
 		// SpecialtyName: ,
 		Categories: make([]*CompareCategory, 0),
 	}

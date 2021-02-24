@@ -18,7 +18,7 @@ package response
 
 //Floor ***
 type Floor struct {
-	ID         string  `json:"id"`
+	Id         string  `json:"id"`
 	Name       string  `json:"name"`
 	Elevation  float64 `json:"elevation"`
 	ArchElev   float64 `json:"archElev"`
@@ -32,7 +32,7 @@ type Floor struct {
 //NewFloor ***
 func NewFloor() *Floor { //id int64, name string
 	o := &Floor{
-		// ID:   id,
+		// Id:   id,
 		// Name: name,
 	}
 	return o

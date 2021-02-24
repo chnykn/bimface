@@ -6,7 +6,7 @@ package common
 
 //TreeNode ***
 type TreeNode struct {
-	ID           string `json:"id"`
+	Id           string `json:"id"`
 	Type         string `json:"type"`
 	Name         string `json:"name"`
 	ActualName   string `json:"actualName"`
@@ -19,7 +19,7 @@ type TreeNode struct {
 func NewTreeNode() *TreeNode {
 	o := &TreeNode{
 		// Type: typ
-		// ID:   id,
+		// Id:   id,
 		// Name: name,
 		//ElementCount: 0,
 		Items: make([]TreeNode, 0),

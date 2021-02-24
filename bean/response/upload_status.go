@@ -9,16 +9,16 @@ package response
 
 //UploadStatus ***
 type UploadStatus struct {
-	FileID       int64  `json:"fileId"`
+	FileId       int64  `json:"fileId"`
 	Name         string `json:"name"`
 	FailedReason int64  `json:"failedReason"`
 	Status       string `json:"status"`
 }
 
 //NewUploadStatus ***
-func NewUploadStatus() *UploadStatus { //fileID int64, name string
+func NewUploadStatus() *UploadStatus { //fileId int64, name string
 	o := &UploadStatus{
-		// FileID:   fileID,
+		// FileId:   fileId,
 		// Name: name,
 	}
 	return o

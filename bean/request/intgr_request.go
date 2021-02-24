@@ -8,7 +8,7 @@ package request
 
 //IntgrSource ***
 type IntgrSource struct {
-	FileID        int64   `json:"fileId"` //必填
+	FileId        int64   `json:"fileId"` //必填
 	Specialty     string  `json:"specialty"`
 	SpecialtySort float64 `json:"specialtySort,omitempty"`
 	Floor         string  `json:"floor,omitempty"`
@@ -16,9 +16,9 @@ type IntgrSource struct {
 }
 
 //NewIntgrSource ***
-func NewIntgrSource(fileID int64, floor, specialty string) *IntgrSource {
+func NewIntgrSource(fileId int64, floor, specialty string) *IntgrSource {
 	o := &IntgrSource{
-		FileID:    fileID,
+		FileId:    fileId,
 		Floor:     floor,
 		Specialty: specialty,
 	}
@@ -33,20 +33,20 @@ const (
 
 //IntgrRequest ***
 type IntgrRequest struct {
-	Name     string             `json:"name"`     // 必填
-	Priority byte               `json:"priority"` // [1,2,3]  数字越大，优先级越低
-	Callback string             `json:"callback,omitempty"`
-	SourceID string             `json:"sourceID,omitempty"`
+	Name     string         `json:"name"`     // 必填
+	Priority byte           `json:"priority"` // [1,2,3]  数字越大，优先级越低
+	Callback string         `json:"callback,omitempty"`
+	SourceId string         `json:"sourceId,omitempty"`
 	Sources  []*IntgrSource `json:"sources"` //必填
 }
 
 //NewIntgrRequest ***
-func NewIntgrRequest(name string) *IntgrRequest { //, sourceID string
+func NewIntgrRequest(name string) *IntgrRequest { //, sourceId string
 	o := &IntgrRequest{
 		Name:     name,
 		Priority: defualtIntegratePriority,
 		Callback: "",
-		//SourceID: sourceID,
+		//SourceId: sourceId,
 		Sources: make([]*IntgrSource, 0),
 	}
 	return o

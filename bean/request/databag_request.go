@@ -6,21 +6,21 @@ package request
 
 //DatabagRequest ***
 type DatabagRequest struct {
-	FileID         *int64 `json:"fileId,omitempty"` // FileID IntegrateID CompareID 三者只能有一个填写
-	IntegrateID    *int64 `json:"integrateId,omitempty"`
-	CompareID      *int64 `json:"compareId,omitempty"`
+	FileId         *int64 `json:"fileId,omitempty"` // FileId IntegrateId CompareId 三者只能有一个填写
+	IntegrateId    *int64 `json:"integrateId,omitempty"`
+	CompareId      *int64 `json:"compareId,omitempty"`
 	Callback       string `json:"callback,omitempty"`
 	DatabagVersion string `json:"databagVersion,omitempty"`
 }
 
 //NewDatabagRequest ***
 func NewDatabagRequest() *DatabagRequest {
-	//fileID string, integrateID string, compareID string,	callback string, databagVersion string
+	//fileId string, integrateId string, compareId string,	callback string, databagVersion string
 
 	o := &DatabagRequest{
-		// FileID:         fileID,
-		// IntegrateID:    integrateID,
-		// CompareID:      compareID,
+		// FileId:         fileId,
+		// IntegrateId:    integrateId,
+		// CompareId:      compareId,
 		// Callback:       callback,
 		// DatabagVersion: databagVersion,
 	}
