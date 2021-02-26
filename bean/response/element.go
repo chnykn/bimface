@@ -20,36 +20,15 @@ type PropertyItem struct {
 	ValueType int    `json:"valueType,omitempty"`
 }
 
-//NewPropertyItem ***
-func NewPropertyItem(key string, value string, unit string) *PropertyItem {
-	o := &PropertyItem{
-		Key:   key,
-		Value: value,
-		Unit:  unit,
-	}
-	return o
-}
-
 // ToString get the string
 func (o *PropertyItem) ToString() string {
 	return fmt.Sprintf("PropertyItem [Key=%s, Value=%v, Unit=%s]", o.Key, o.Value, o.Unit)
 }
 
-//--------------------------------------------------------------------
-
 //PropertyGroup PropertyGroup
 type PropertyGroup struct {
 	Group string          `json:"group"`
 	Items []*PropertyItem `json:"items"`
-}
-
-//NewPropertyGroup ***
-func NewPropertyGroup(name string) *PropertyGroup {
-	o := &PropertyGroup{
-		Group: name,
-		Items: make([]*PropertyItem, 0),
-	}
-	return o
 }
 
 //--------------------------------------------------------------------
@@ -62,15 +41,6 @@ type Element struct {
 	FamilyGUId  string             `json:"familyGuid"`
 	BoundingBox common.BoundingBox `json:"boundingBox"`
 	Properties  []*PropertyGroup   `json:"properties"`
-}
-
-//NewElement ***
-func NewElement(id string) *Element {
-	o := &Element{
-		Id: id,
-		//Groups: make([]*PropertyGroup, 0),
-	}
-	return o
 }
 
 //AddPropertyGroup ***

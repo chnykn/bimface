@@ -17,15 +17,6 @@ type FileBean struct {
 	CreateTime string `json:"createTime"`
 }
 
-//NewFileBean ***
-func NewFileBean() *FileBean { //id int64, name string
-	o := &FileBean{
-		// Id:   id,
-		// Name: name,
-	}
-	return o
-}
-
 // ToString get the string
 func (o *FileBean) ToString() string {
 	return fmt.Sprintf("FileBean [Id=%d, Name=%s, Status=%s, ETag=%s, Suffix=%s, Length=%d, CreateTime=%s]",

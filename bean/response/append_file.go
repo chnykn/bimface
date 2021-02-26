@@ -4,8 +4,7 @@
 
 package response
 
-//AppendFile ***
-type AppendFile struct {
+type AppendFileBean struct {
 	Id         int64  `json:"appendFileId"`
 	Name       string `json:"name"`
 	Length     int64  `json:"length"`
@@ -13,12 +12,4 @@ type AppendFile struct {
 	Status     string `json:"status"`
 	CreateTime string `json:"createTime"`
 	File       FileBean
-}
-
-//NewAppendFile ***
-func NewAppendFile() *AppendFile {
-	o := &AppendFile{
-		//File: NewFileBean(),
-	}
-	return o
 }

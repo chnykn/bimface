@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package file
+package model
 
 import (
 	"fmt"
@@ -36,7 +36,7 @@ func (o *Service) translateDetailsURL() string {
 
 //-----------------------------------------------------------------------------------
 
-//Translate 文件转换相关: 发起文件转换
+//发起文件转换
 /***
 字段		类型		必填	描述
 fileId		Number		Y	文件Id，即调用上传文件API返回的fileId
@@ -60,7 +60,7 @@ func (o *Service) Translate(transRequest *request.TranslateRequest) (*response.T
 	body := req.BodyJSON(transRequest)
 	resp := o.ServiceClient.Put(o.translateURL(), body, headers.Header)
 
-	result := response.NewTranslateStatus()
+	var result *response.TranslateStatus
 	err = utils.RespToBean(resp, result)
 
 	return result, err
@@ -82,14 +82,14 @@ func (o *Service) GetTranslateStatusResp(fileId int64) (*req.Resp, error) {
 	return resp, err
 }
 
-//TranslateStatus 文件转换相关: 获取转换状态
+//获取转换状态
 func (o *Service) GetTranslateStatus(fileId int64) (*response.TranslateStatus, error) {
 	resp, err := o.GetTranslateStatusResp(fileId)
 	if err != nil {
 		return nil, err
 	}
 
-	result := response.NewTranslateStatus()
+	var result *response.TranslateStatus
 	err = utils.RespToBean(resp, result)
 
 	return result, err
@@ -113,14 +113,14 @@ func (o *Service) GetTranslateDetailStatusResp(detailRequst *request.TranslateDe
 	return resp, err
 }
 
-//TranslateDetailStatus 批量获取转换状态详情
+//批量获取转换状态详情
 func (o *Service) GetTranslateDetailStatus(detailRequst *request.TranslateDetailRequest) (*response.TranslateDetailStatus, error) {
 	resp, err := o.GetTranslateDetailStatusResp(detailRequst)
 	if err != nil {
 		return nil, err
 	}
 
-	result := response.NewTranslateDetailStatus()
+	var result *response.TranslateDetailStatus
 	err = utils.RespToBean(resp, result)
 
 	return result, err

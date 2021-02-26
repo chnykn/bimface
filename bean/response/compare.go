@@ -14,18 +14,6 @@ type CompareStatus struct {
 	CreateTime string `json:"createTime"`
 }
 
-//NewCompareStatus ***
-func NewCompareStatus() *CompareStatus { //fileId int64, name string
-	o := &CompareStatus{
-		// FileId:   fileId,
-		// Name: name,
-		//Thumbnail: make([]string, 0),
-	}
-	return o
-}
-
-//=================================================================
-
 //CompareElement ***
 type CompareElement struct {
 	DiffType           string `json:"diffType"` // NEW|DELETE|CHANGE,
@@ -36,8 +24,6 @@ type CompareElement struct {
 	FollowingElementId int64  `json:"followingElementId"`
 }
 
-//----------------------------------------------------------
-
 //CompareCategory ***
 type CompareCategory struct {
 	Id        string `json:"categoryId"`
@@ -46,32 +32,10 @@ type CompareCategory struct {
 	Elements  []*CompareElement
 }
 
-//NewCompareCategory ***
-func NewCompareCategory() *CompareCategory {
-	o := &CompareCategory{
-		// CategoryId:   ,
-		// CategoryName: ,
-		Elements: make([]*CompareElement, 0),
-	}
-	return o
-}
-
-//----------------------------------------------------------
-
 //CompareData ***
 type CompareData struct {
 	SpecialtyId   string `json:"specialtyId"`
 	SpecialtyName string `json:"specialtyName"`
 	ItemCount     int64  `json:"itemCount"`
 	Categories    []*CompareCategory
-}
-
-//NewCompareData ***
-func NewCompareData() *CompareData {
-	o := &CompareData{
-		// SpecialtyId:   ,
-		// SpecialtyName: ,
-		Categories: make([]*CompareCategory, 0),
-	}
-	return o
 }

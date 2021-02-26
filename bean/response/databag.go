@@ -11,12 +11,3 @@ type Databag struct {
 	Reason         string `json:"reason"`
 	CreateTime     string `json:"createTime"`
 }
-
-//NewDatabag ***
-func NewDatabag() *Databag {
-	o := &Databag{
-		// DatabagVersion:   ,
-		// Status: ,
-	}
-	return o
-}

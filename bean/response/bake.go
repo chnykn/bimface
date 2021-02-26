@@ -16,12 +16,3 @@ type Bake struct {
 	DatabagVersion string `json:"databagVersion"`
 	CreateTime     string `json:"createTime"`
 }
-
-//NewBake ***
-func NewBake() *Bake { //fileId int64, name string
-	o := &Bake{
-		// FileId:   fileId,
-		// Name: name,
-	}
-	return o
-}

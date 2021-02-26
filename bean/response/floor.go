@@ -4,17 +4,63 @@
 
 package response
 
+import "github.com/chnykn/bimface/bean/common"
+
 /**
-    "archElev": 7750,
-    "areas": null,
-    "elevation": 7750,
-    "height": null,
-    "id": "2",
-    "miniMap": "m.bimface.com/ecf1e14463da72ddc43ed38fe1b7a4a7/resource/model/maps/3F/7.750.png",
-    "name": "3F/7.750",
-    "rooms": null,
-	"structElev": 7750
+{
+ 	"id" : "311",
+	"name" : "elevation 1",
+    "archElev" : 0.0,
+    "elevation" : 0.0,
+    "structElev" : 0.0
+    "height" : 4000.0,
+    "miniMap" : "787e5907b0ca5cb35f5d10ba091a085b/resource/model/maps/elevation 1.png",
+
+    "areas" : [ {
+      "boundary" : "",
+      "id" : "313137",
+      "levelId" : "11",
+      "maxPt" : {
+        "x" : -4938.068482562385,
+        "y" : -3201.59397858169,
+        "z" : 0.0
+      },
+      "minPt" : {
+        "x" : -4938.068482562385,
+        "y" : -3201.59397858169,
+        "z" : 0.0
+      },
+      "name" : "dining room 4"
+    } ],
+    "rooms" : [ {
+      "boundary" : "",
+      "id" : "313137",
+      "levelId" : "11",
+      "maxPt" : {
+        "x" : -4938.068482562385,
+        "y" : -3201.59397858169,
+        "z" : 0.0
+      },
+      "minPt" : {
+        "x" : -4938.068482562385,
+        "y" : -3201.59397858169,
+        "z" : 0.0
+      },
+      "name" : "dining room 4"
+    } ]
+
+  }
 **/
+
+type FloorArea struct {
+	Id       string `json:"id"`
+	Name     string `json:"name"`
+	Boundary string `json:"boundary"`
+	LevelId  string `json:"levelId"`
+
+	MaxPt *common.Coordinate `json:"maxPt,omitempty"`
+	MinPt *common.Coordinate `json:"minPt,omitempty"`
+}
 
 //Floor ***
 type Floor struct {
@@ -23,17 +69,17 @@ type Floor struct {
 	Elevation  float64 `json:"elevation"`
 	ArchElev   float64 `json:"archElev"`
 	StructElev float64 `json:"structElev"`
+	Height     float64 `json:"height"`
 	MiniMap    string  `json:"miniMap"`
-	Areas      string  `json:"areas,omitempty"`
-	Height     string  `json:"height,omitempty"`
-	Rooms      string  `json:"rooms,omitempty"`
+
+	Areas []FloorArea `json:"areas,omitempty"`
+	Rooms []FloorArea `json:"rooms,omitempty"`
 }
 
-//NewFloor ***
-func NewFloor() *Floor { //id int64, name string
-	o := &Floor{
-		// Id:   id,
-		// Name: name,
-	}
-	return o
+//-----------------------
+
+//FileFloors ***
+type FileFloors struct {
+	FileId int64   `json:"FileId"`
+	Floors []Floor `json:"floors,omitempty"`
 }

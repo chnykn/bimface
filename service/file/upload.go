@@ -42,20 +42,6 @@ func (o *Service) getFileUploadStatusURL(fileId int64) string {
 	return fmt.Sprintf(o.Endpoint.FileHost+getFileUploadStatusURI, fileId)
 }
 
-/**
-func (o *Service) uploadByOssURL(fileName, bucket, objectKey string, sourceId string) string {
-	result := fmt.Sprintf(o.Endpoint.FileHost+uploadByOssURI, utils.EncodeURI(fileName), bucket, objectKey)
-	if sourceId != "" {
-		result = result + "&sourceId=" + utils.EncodeURI(sourceId)
-	}
-	return result
-}
-
-func (o *Service) getUploadPolicyURL(fileName string) string {
-	return fmt.Sprintf(o.Endpoint.FileHost+getUploadPolicyURI, fileName)
-}
-**/
-
 //------------------------------------------------------------------------------------
 
 func (o *Service) doUploadByURL(uploadRequest *request.UploadRequest, token string) (*response.FileBean, error) {
@@ -65,26 +51,11 @@ func (o *Service) doUploadByURL(uploadRequest *request.UploadRequest, token stri
 	resp := o.ServiceClient.Put(o.uploadByURL(uploadRequest.Name, uploadRequest.URL,
 		uploadRequest.SourceId), headers.Header)
 
-	result := response.NewFileBean()
+	var result *response.FileBean
 	err := utils.RespToBean(resp, result)
 
 	return result, err
 }
-
-/* --
-func (o *Service) doUploadByOSS(uploadRequest *request.UploadRequest, token string) (*response.FileBean, error) {
-	headers := utils.NewHeaders()
-	headers.AddOAuth2Header(token)
-
-	resp := o.ServiceClient.Put(o.uploadByOssURL(uploadRequest.Name, uploadRequest.Bucket,
-		uploadRequest.ObjectKey, uploadRequest.SourceId), headers.Header)
-
-	result := response.NewFileBean()
-	err := utils.RespToBean(resp, result)
-
-	return result, err
-}
-*/
 
 func (o *Service) doUploadBody(uploadRequest *request.UploadRequest, token string) (*response.FileBean, error) {
 
@@ -108,13 +79,13 @@ func (o *Service) doUploadBody(uploadRequest *request.UploadRequest, token strin
 	resp := o.ServiceClient.Put(o.uploadURL(uploadRequest.Name, uploadRequest.SourceId),
 		headers.Header, uploadRequest.Buffer)
 
-	result := response.NewFileBean()
+	var result *response.FileBean
 	err := utils.RespToBean(resp, result)
 
 	return result, err
 }
 
-//Upload 源文件相关: 上传文件
+//源文件相关: 上传文件
 //http://static.bimface.com/book/restful/articles/api/file/upload.html
 /***
 字段		类型	必填	描述	示例
@@ -151,7 +122,7 @@ func (o *Service) GetFileUploadStatus(fileId int64) (*response.UploadStatus, err
 
 	resp := o.ServiceClient.Get(o.getFileUploadStatusURL(fileId), headers.Header)
 
-	result := response.NewUploadStatus()
+	var result *response.UploadStatus
 	err = utils.RespToBean(resp, result)
 
 	return result, err

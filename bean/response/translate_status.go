@@ -13,13 +13,3 @@ type TranslateStatus struct {
 	Thumbnail  []string `json:"thumbnail"` // thumbnail http links
 	CreateTime string   `json:"createTime"`
 }
-
-//NewTranslateStatus ***
-func NewTranslateStatus() *TranslateStatus { //fileId int64, name string
-	o := &TranslateStatus{
-		// FileId:   fileId,
-		// Name: name,
-		Thumbnail: make([]string, 0),
-	}
-	return o
-}

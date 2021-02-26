@@ -16,13 +16,3 @@ type IntgrStatus struct {
 	Reason     string   `json:"reason"`
 	CreateTime string   `json:"createTime"`
 }
-
-//NewIntgrStatus ***
-func NewIntgrStatus() *IntgrStatus { //id int64, name string
-	o := &IntgrStatus{
-		// Id:   id,
-		// Name: name,
-		Thumbnail: make([]string, 0),
-	}
-	return o
-}

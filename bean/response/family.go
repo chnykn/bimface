@@ -15,15 +15,6 @@ type Family struct {
 	GUId string `json:"-"`
 }
 
-//NewFamily ***
-func NewFamily() *Family {
-	o := &Family{
-		//Family:      name,
-		Types: make([]string, 0),
-	}
-	return o
-}
-
 // ToString get the string
 func (o *Family) ToString() string {
 	return fmt.Sprintf("Family [Name=%s, Types=%v]", o.Name, o.Types)

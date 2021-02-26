@@ -73,7 +73,7 @@ func TestElementService(t *testing.T) {
 
 	elemIds, err := client.ElementService.GetElementsWithParams(1828586603571104, nil)
 	if err == nil {
-		fmt.Printf("GetElements = %v \n", elemIds)
+		fmt.Printf("GetElementIds = %v \n", elemIds)
 	} else {
 		fmt.Printf("err = %v \n", err)
 	}

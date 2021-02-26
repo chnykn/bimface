@@ -15,21 +15,21 @@ import (
 )
 
 const (
-	getFileMetaURI string = "/files/%d"
-	getFileListURI string = "/files"
+	fileMetaURI string = "/files/%d"
+	fileListURI string = "/files"
 )
 
 //---------------------------------------------------------------------
 
-func (o *Service) getFileMetaURL(fileId int64) string {
-	return fmt.Sprintf(o.Endpoint.FileHost+getFileMetaURI, fileId)
+func (o *Service) fileMetaURL(fileId int64) string {
+	return fmt.Sprintf(o.Endpoint.FileHost+fileMetaURI, fileId)
 }
 
-func (o *Service) getFileListURL() string {
-	return fmt.Sprintf(o.Endpoint.FileHost + getFileListURI)
+func (o *Service) fileListURL() string {
+	return fmt.Sprintf(o.Endpoint.FileHost + fileListURI)
 }
 
-//GetFileMeta 源文件相关: 获取文件信息
+//获取文件信息
 func (o *Service) GetFileMeta(fileId int64) (*response.FileBean, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
@@ -39,15 +39,15 @@ func (o *Service) GetFileMeta(fileId int64) (*response.FileBean, error) {
 	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
-	resp := o.ServiceClient.Get(o.getFileMetaURL(fileId), headers.Header)
+	resp := o.ServiceClient.Get(o.fileMetaURL(fileId), headers.Header)
 
-	result := response.NewFileBean()
+	var result *response.FileBean
 	err = utils.RespToBean(resp, result)
 
 	return result, err
 }
 
-// GetFileList 获取文件信息列表 GET https://file.bimface.com/files
+// 获取文件信息列表 GET https://file.bimface.com/files
 // http://static.bimface.com/restful-apidoc/dist/file.html#_listfilesusingget
 func (o *Service) GetFileList() ([]*response.FileBean, error) {
 	accessToken, err := o.AccessTokenService.Get()
@@ -58,7 +58,7 @@ func (o *Service) GetFileList() ([]*response.FileBean, error) {
 	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
-	resp := o.ServiceClient.Get(o.getFileListURL(), headers.Header)
+	resp := o.ServiceClient.Get(o.fileListURL(), headers.Header)
 
 	var result []*response.FileBean //:= make([]*response.FileBean, 0)
 	err = utils.RespToBean(resp, &result)

@@ -14,12 +14,3 @@ type UploadPolicy struct {
 	CallbackBody string `json:"callbackBody,omitempty"`
 	ObjectKey    string `json:"objectKey"`
 }
-
-//NewUploadPolicy ***
-func NewUploadPolicy() *UploadPolicy { //host string, policy string
-	o := &UploadPolicy{
-		// Host:   host,
-		// Policy: policy,
-	}
-	return o
-}

@@ -46,6 +46,7 @@ type ElementDiff struct {
 	ChangeQuantities []*ChangeQtys `json:"changeQuantities"`
 }
 
+/*
 //NewElementDiff ***
 func NewElementDiff() *ElementDiff {
 	o := &ElementDiff{
@@ -59,3 +60,5 @@ func NewElementDiff() *ElementDiff {
 	}
 	return o
 }
+
+*/

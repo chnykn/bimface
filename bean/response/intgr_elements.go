@@ -14,28 +14,8 @@ type IntgrElement struct {
 	ElementId string `json:"elementId"`
 }
 
-//NewIntgrElement ***
-func NewIntgrElement(fileId string, elementId string) *IntgrElement {
-	o := &IntgrElement{
-		FileId:    fileId,
-		ElementId: elementId,
-	}
-	return o
-}
-
-//---------------------------------------------------------------------
-
 //IntgrElements ***
 type IntgrElements struct {
 	Elements    []*IntgrElement    `json:"elements"`
 	BoundingBox common.BoundingBox `json:"boundingBox"`
-}
-
-//NewElements ***
-func NewElements() *IntgrElements {
-	o := &IntgrElements{
-		Elements: make([]*IntgrElement, 0),
-		//BoundingBox: common.NewBoundingBox(),
-	}
-	return o
 }

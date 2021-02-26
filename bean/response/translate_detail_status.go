@@ -41,12 +41,3 @@ type TranslateDetailStatus struct {
 	List []*TranslateDetailItem `json:"list"`
 	Page *TranslateDetailPage   `json:"page"`
 }
-
-//NewTranslateDetailStatus ***
-func NewTranslateDetailStatus() *TranslateDetailStatus {
-	o := &TranslateDetailStatus{
-		List: nil,
-		Page: nil,
-	}
-	return o
-}

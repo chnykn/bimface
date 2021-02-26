@@ -17,7 +17,7 @@ import (
 const (
 	//创建追加文件
 	createAppendFileURI string = "/appendFiles?name=%s&length=%d" //&sourceId=%s
-	queryAppendFileURI  string = "/appendFiles/%d"
+	getAppendFileURI    string = "/appendFiles/%d"
 	uploadAppendFileURI string = "/appendFiless/%d/data?position=%d"
 )
 
@@ -31,8 +31,8 @@ func (o *Service) createAppendFileURL(fileName string, length int64, sourceId st
 	return result
 }
 
-func (o *Service) queryAppendFileURL(appendFileId int64) string {
-	return fmt.Sprintf(o.Endpoint.FileHost+queryAppendFileURI, appendFileId)
+func (o *Service) getAppendFileURL(appendFileId int64) string {
+	return fmt.Sprintf(o.Endpoint.FileHost+getAppendFileURI, appendFileId)
 }
 
 func (o *Service) uploadAppendFileURL(appendFileId int64, position int64) string {
@@ -41,14 +41,14 @@ func (o *Service) uploadAppendFileURL(appendFileId int64, position int64) string
 
 //---------------------------------------------------------------------
 
-//GetSupport 断点续传: 创建追加文件
+//断点续传: 创建追加文件
 /***
 字段		类型	必填	描述
 name		String	Y	文件的全名，使用URL编码（UTF-8），最多256个字符
 sourceId	String	N	调用方的文件源Id，不能重复
 length		Number	Y	上传文件长度
 ***/
-func (o *Service) createAppendFile(fileName string, length int64, sourceId string) (*response.AppendFile, error) {
+func (o *Service) createAppendFile(fileName string, length int64, sourceId string) (*response.AppendFileBean, error) {
 
 	err := utils.CheckFileName(fileName)
 	if err != nil {
@@ -77,57 +77,57 @@ func (o *Service) createAppendFile(fileName string, length int64, sourceId strin
 
 	resp := o.ServiceClient.Post(o.createAppendFileURL(fileName, length, sourceId), headers.Header)
 
-	result := response.NewAppendFile()
+	var result *response.AppendFileBean
 	err = utils.RespToBean(resp, result)
 
 	return result, err
 }
 
-//QueryAppendFileWithAccessToken 断点续传: 查询追加文件信息
+//断点续传: 查询追加文件信息
 /***
 字段			类型	必填	描述
 appendFileId	Number	Y	append file id
 ***/
-func (o *Service) QueryAppendFileWithAccessToken(appendFileId int64, token string) (*response.AppendFile, error) {
+func (o *Service) GetAppendFileWithAccessToken(appendFileId int64, token string) (*response.AppendFileBean, error) {
 	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(token)
 
-	resp := o.ServiceClient.Get(o.queryAppendFileURL(appendFileId), headers.Header)
+	resp := o.ServiceClient.Get(o.getAppendFileURL(appendFileId), headers.Header)
 
-	result := response.NewAppendFile()
+	var result *response.AppendFileBean
 	err := utils.RespToBean(resp, result)
 
 	return result, err
 }
 
-//QueryAppendFile same to QueryAppendFileWithAccessToken
+//GetAppendFile same to GetAppendFileWithAccessToken
 /***
 字段			类型	必填	描述
 appendFileId	Number	Y	append file id
 ***/
-func (o *Service) QueryAppendFile(appendFileId int64) (*response.AppendFile, error) {
+func (o *Service) GetAppendFile(appendFileId int64) (*response.AppendFileBean, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
 	}
 
-	return o.QueryAppendFileWithAccessToken(appendFileId, accessToken.Token)
+	return o.GetAppendFileWithAccessToken(appendFileId, accessToken.Token)
 }
 
-//UploadAppendFile 断点续传: 追加上传
+//断点续传: 追加上传
 /***
 字段			类型	必填	描述
 appendFileId	Number	Y	追加文件id
 position		Number	N	追加上传开始位置，默认为0
 ***/
-func (o *Service) UploadAppendFile(file *multipart.FileHeader, appendFileId int64) (*response.AppendFile, error) {
+func (o *Service) UploadAppendFile(file *multipart.FileHeader, appendFileId int64) (*response.AppendFileBean, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
 	}
 
-	var appendFile *response.AppendFile
-	appendFile, err = o.QueryAppendFileWithAccessToken(appendFileId, accessToken.Token)
+	var appendFile *response.AppendFileBean
+	appendFile, err = o.GetAppendFileWithAccessToken(appendFileId, accessToken.Token)
 	if err != nil {
 		return nil, err
 	}
@@ -151,7 +151,7 @@ func (o *Service) UploadAppendFile(file *multipart.FileHeader, appendFileId int6
 
 	resp := o.ServiceClient.Post(o.uploadAppendFileURL(appendFileId, appendFile.Position), headers.Header, buf)
 
-	result := response.NewAppendFile()
+	var result *response.AppendFileBean
 	err = utils.RespToBean(resp, result)
 
 	return result, err

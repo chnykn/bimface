@@ -41,7 +41,7 @@ func (o *Service) GetSupportFile() (*response.SupportFile, error) {
 
 	resp := o.ServiceClient.Get(o.supportFileURL(), headers.Header)
 
-	result := response.NewSupportFile()
+	var result *response.SupportFile
 	err = utils.RespToBean(resp, result)
 
 	if err == nil {

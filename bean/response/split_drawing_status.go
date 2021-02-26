@@ -12,12 +12,3 @@ type SplitDrawingStatus struct {
 	DatabagVersion string `json:"databagVersion"` //数据包id
 	CreateTime     string `json:"createTime"`
 }
-
-//NewSplitDrawingStatus ***
-func NewSplitDrawingStatus() *SplitDrawingStatus { //fileId int64,
-	o := &SplitDrawingStatus{
-		// FileId   fileId,
-		// Name: name,
-	}
-	return o
-}

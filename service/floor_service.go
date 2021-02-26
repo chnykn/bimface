@@ -15,7 +15,6 @@ import (
 )
 
 const (
-	getFloorsURI            string = "/data/v2/files/%d/floors"
 	getIntegrationFloorsURI string = "/data/v2/integrations/%d/floors"
 )
 
@@ -41,45 +40,8 @@ func NewFloorService(serviceClient *utils.ServiceClient, endpoint *config.Endpoi
 
 //---------------------------------------------------------------------
 
-func (o *FloorService) getFloorsURL(fileId int64) string {
-	return fmt.Sprintf(o.Endpoint.APIHost+getFloorsURI, fileId)
-}
-
 func (o *FloorService) getIntegrationFloorsURL(integrationId int64) string {
 	return fmt.Sprintf(o.Endpoint.APIHost+getIntegrationFloorsURI, integrationId)
-}
-
-//-----------------------------------------------------------------------------------
-
-//GetFloorsResp ***
-func (o *FloorService) GetFloorsResp(fileId int64) (*req.Resp, error) {
-	accessToken, err := o.AccessTokenService.Get()
-	if err != nil {
-		return nil, err
-	}
-
-	headers := utils.NewHeaders()
-	headers.AddOAuth2Header(accessToken.Token)
-
-	resp := o.ServiceClient.Get(o.getFloorsURL(fileId), headers.Header)
-	return resp, nil
-}
-
-//GetFloors 获取文件转换的楼层信息
-//http://static.bimface.com/book/restful/articles/api/translate/get-floors.html
-func (o *FloorService) GetFloors(fileId int64) ([]*response.Floor, error) {
-	resp, err := o.GetFloorsResp(fileId)
-	if err != nil {
-		return nil, err
-	}
-
-	result := make([]*response.Floor, 0)
-	err = utils.RespToBean(resp, &result)
-	if err != nil {
-		return nil, err
-	}
-
-	return result, nil
 }
 
 //-----------------------------------------------------------------------------------

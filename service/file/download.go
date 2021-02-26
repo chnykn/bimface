@@ -13,7 +13,9 @@ import (
 )
 
 //获取文件下载地址
-const downloadURI string = "/download/url?fileId=%d" //&fileName=%s  fileName? name?
+const (
+	downloadURI string = "/download/url?fileId=%d" //&fileName=%s  fileName? name?
+)
 
 //---------------------------------------------------------------------
 
@@ -27,7 +29,7 @@ func (o *Service) downloadURL(fileId int64, fileName string) string {
 
 //---------------------------------------------------------------------
 
-//GetDownloadURL 源文件相关: 获取文件下载地址
+//源文件相关: 获取文件下载地址
 /***
 字段	类型	必填	描述
 fileId	Number	Y	文件Id
@@ -50,7 +52,7 @@ func (o *Service) GetDownloadURL(fileId int64, fileName string) (string, error) 
 	return *result, err
 }
 
-//GetDownloadResp 下载文件
+//下载文件
 /***
 字段	类型	必填	描述
 fileId	Number	Y	文件Id

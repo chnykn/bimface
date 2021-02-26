@@ -14,12 +14,3 @@ type UploadStatus struct {
 	FailedReason int64  `json:"failedReason"`
 	Status       string `json:"status"`
 }
-
-//NewUploadStatus ***
-func NewUploadStatus() *UploadStatus { //fileId int64, name string
-	o := &UploadStatus{
-		// FileId:   fileId,
-		// Name: name,
-	}
-	return o
-}

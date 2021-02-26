@@ -23,7 +23,7 @@ func (o *Service) deleteFileURL(fileId int64) string {
 	return fmt.Sprintf(o.Endpoint.FileHost+deleteFileURI, fileId)
 }
 
-//DeleteFile 源文件相关: 删除文件
+//源文件相关: 删除文件
 func (o *Service) DeleteFile(fileId int64) (string, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
