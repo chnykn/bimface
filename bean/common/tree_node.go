@@ -19,7 +19,7 @@ type TreeNode struct {
 func NewTreeNode() *TreeNode {
 	o := &TreeNode{
 		// Type: typ
-		// Id:   id,
+		// FileId:   id,
 		// Name: name,
 		//ElementCount: 0,
 		Items: make([]TreeNode, 0),

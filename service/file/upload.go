@@ -111,7 +111,7 @@ func (o *Service) Upload(uploadRequest *request.UploadRequest) (*response.FileBe
 //------------------------------------------------------------------------------------
 
 //GetFileUploadStatus
-func (o *Service) GetFileUploadStatus(fileId int64) (*response.UploadStatus, error) {
+func (o *Service) GetFileUploadStatus(fileId int64) (*response.FileUploadStatusBean, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
@@ -122,7 +122,7 @@ func (o *Service) GetFileUploadStatus(fileId int64) (*response.UploadStatus, err
 
 	resp := o.ServiceClient.Get(o.getFileUploadStatusURL(fileId), headers.Header)
 
-	var result *response.UploadStatus
+	var result *response.FileUploadStatusBean
 	err = utils.RespToBean(resp, result)
 
 	return result, err

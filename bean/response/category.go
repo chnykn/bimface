@@ -15,5 +15,5 @@ type Category struct {
 
 // ToString get the string
 func (o *Category) ToString() string {
-	return fmt.Sprintf("CategoryBean [Id=%s, Name=%s, Families=%v]", o.Id, o.Name, o.Families)
+	return fmt.Sprintf("CategoryBean [FileId=%s, Name=%s, Families=%v]", o.Id, o.Name, o.Families)
 }

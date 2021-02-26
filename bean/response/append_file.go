@@ -5,11 +5,11 @@
 package response
 
 type AppendFileBean struct {
-	Id         int64  `json:"appendFileId"`
-	Name       string `json:"name"`
-	Length     int64  `json:"length"`
-	Position   int64  `json:"position"`
-	Status     string `json:"status"`
-	CreateTime string `json:"createTime"`
-	File       FileBean
+	AppendFileId int64  `json:"appendFileId"`
+	Name         string `json:"name"`
+	Length       int64  `json:"length"`
+	Position     int64  `json:"position"`
+	Status       string `json:"status"`
+	CreateTime   string `json:"createTime"`
+	File         FileBean
 }

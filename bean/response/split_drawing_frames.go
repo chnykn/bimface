@@ -7,14 +7,14 @@ package response
 import "github.com/chnykn/bimface/bean/common"
 
 type SplitDrawingFrame struct {
-	Id          int64               `json:"Id"`
+	Id          int64               `json:"FileId"`
 	Name        string              `json:"name"`
 	Number      string              `json:"number"`
 	BoundingBox *common.BoundingBox `json:"boundingBox"`
 }
 
 type SplitDrawingFrames struct {
-	Id     int64                `json:"Id"`
+	Id     int64                `json:"FileId"`
 	Name   string               `json:"name"`
 	Frames []*SplitDrawingFrame `json:"frames"`
 }

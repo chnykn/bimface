@@ -50,6 +50,6 @@ func (o *Element) AddPropertyGroup(group *PropertyGroup) {
 
 // ToString get the string
 func (o *Element) ToString() string {
-	return fmt.Sprintf("Element [Id=%s, Name=%s, GUId=%s, FamilyGUId=%s,BoundingBox=%v, Properties=%v]",
+	return fmt.Sprintf("Element [FileId=%s, Name=%s, GUId=%s, FamilyGUId=%s,BoundingBox=%v, Properties=%v]",
 		o.Id, o.Name, o.GUId, o.FamilyGUId, o.BoundingBox, o.Properties)
 }
