@@ -1,0 +1,8 @@
+*.log
+*.exe
+*.rar
+*.local
+*.identcache
+*.dsk
+/go.sum
+/.idea/

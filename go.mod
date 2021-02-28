@@ -1,4 +1,4 @@
-module github.com/chnykn/bimface
+module github.com/chnykn/bimface/v2
 
 go 1.16
 
