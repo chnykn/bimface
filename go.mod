@@ -1,5 +1,5 @@
-module github.com/chnykn/bimface
+module bimface
 
-go 1.13
+go 1.16
 
 require github.com/imroc/req v0.3.0

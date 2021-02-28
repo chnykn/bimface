@@ -1,4 +1,4 @@
-// Copyright 2019 chnykn@gmail.com All rights reserved.
+// Copyright 2019-2021 chnykn@gmail.com All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -44,7 +44,7 @@ func (o *AccessTokenService) accessTokenURL() string {
 }
 
 //Get ***
-func (o *AccessTokenService) Get() (*response.AccessToken, error) {
+func (o *AccessTokenService) Get() (*response.AccessTokenBean, error) {
 	accessToken := o.AccessTokenStorage.Get()
 	var err error
 
@@ -58,12 +58,12 @@ func (o *AccessTokenService) Get() (*response.AccessToken, error) {
 }
 
 //Grant ***
-func (o *AccessTokenService) Grant() (*response.AccessToken, error) {
+func (o *AccessTokenService) Grant() (*response.AccessTokenBean, error) {
 	headers := utils.NewHeaders()
 	headers.AddBasicAuthHeader(o.Credential.AppKey, o.Credential.AppSecret)
 	resp := o.ServiceClient.Post(o.accessTokenURL(), headers.Header)
 
-	var result *response.AccessToken
+	var result *response.AccessTokenBean
 	err := utils.RespToBean(resp, result)
 
 	return result, err

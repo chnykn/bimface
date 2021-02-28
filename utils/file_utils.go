@@ -1,4 +1,4 @@
-// Copyright 2019 chnykn@gmail.com All rights reserved.
+// Copyright 2019-2021 chnykn@gmail.com All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -35,20 +35,20 @@ func getSuffix(fileName string) string {
 //CheckFileName ***
 func CheckFileName(fileName string) error {
 	if fileName == "" {
-		return fmt.Errorf("file name must not be empty")
+		return fmt.Errorf("sourcefile name must not be empty")
 	}
 
 	if len(fileName) > 256 {
-		return fmt.Errorf("file name too long, no more than 256 characters")
+		return fmt.Errorf("sourcefile name too long, no more than 256 characters")
 	}
 
 	suffix := getSuffix(fileName)
 	if suffix == "" {
-		return fmt.Errorf("file name has no suffix")
+		return fmt.Errorf("sourcefile name has no suffix")
 	}
 
 	if containsIllegalChar(fileName) {
-		return fmt.Errorf("file name contains illegal character")
+		return fmt.Errorf("sourcefile name contains illegal character")
 	}
 
 	return nil
@@ -60,7 +60,7 @@ func CheckFileType(allSupportedType []string, fileName string) error {
 
 	for _, typ := range allSupportedType {
 		if suffix == strings.ToLower(typ) {
-			return fmt.Errorf("file type not supported")
+			return fmt.Errorf("sourcefile type not supported")
 		}
 	}
 

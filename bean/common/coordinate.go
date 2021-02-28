@@ -1,4 +1,4 @@
-// Copyright 2019 chnykn@gmail.com All rights reserved.
+// Copyright 2019-2021 chnykn@gmail.com All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -6,14 +6,12 @@ package common
 
 import "fmt"
 
-//Coordinate ***
 type Coordinate struct {
 	X float64 `json:"x"`
 	Y float64 `json:"y"`
 	Z float64 `json:"z"`
 }
 
-//NewCoordinate ***
 func NewCoordinate(x, y, z float64) *Coordinate {
 	o := &Coordinate{
 		X: x,

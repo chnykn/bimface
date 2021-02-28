@@ -4,25 +4,24 @@
 
 package request
 
-//DatabagRequest ***
-type DatabagRequest struct {
+//DataBagRequest ***
+type DataBagRequest struct {
 	FileId         *int64 `json:"fileId,omitempty"` // FileId IntegrateId CompareId 三者只能有一个填写
 	IntegrateId    *int64 `json:"integrateId,omitempty"`
 	CompareId      *int64 `json:"compareId,omitempty"`
 	Callback       string `json:"callback,omitempty"`
-	DatabagVersion string `json:"databagVersion,omitempty"`
+	DataBagVersion string `json:"databagVersion,omitempty"`
 }
 
-//NewDatabagRequest ***
-func NewDatabagRequest() *DatabagRequest {
+func NewDataBagRequest() *DataBagRequest {
 	//fileId string, integrateId string, compareId string,	callback string, databagVersion string
 
-	o := &DatabagRequest{
+	o := &DataBagRequest{
 		// FileId:         fileId,
 		// IntegrateId:    integrateId,
 		// CompareId:      compareId,
 		// Callback:       callback,
-		// DatabagVersion: databagVersion,
+		// DataBagVersion: databagVersion,
 	}
 
 	return o

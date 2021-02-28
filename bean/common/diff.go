@@ -4,12 +4,7 @@
 
 package common
 
-type BoundingBox struct {
-	Min *Coordinate `json:"min"`
-	Max *Coordinate `json:"max"`
-}
-
-func NewBoundingBox() *BoundingBox {
-	o := &BoundingBox{}
-	return o
+type Diff struct {
+	Prev int64 `json:"prev"`
+	Next int64 `json:"next"`
 }

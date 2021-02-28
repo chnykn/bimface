@@ -1,4 +1,4 @@
-// Copyright 2019 chnykn@gmail.com All rights reserved.
+// Copyright 2019-2021 chnykn@gmail.com All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -10,12 +10,10 @@ import (
 	"github.com/chnykn/bimface/bean/response"
 )
 
-//AccessTokenStorage ***
 type AccessTokenStorage struct {
-	accessToken *response.AccessToken
+	accessToken *response.AccessTokenBean
 }
 
-//NewAccessTokenStorage ***
 func NewAccessTokenStorage() *AccessTokenStorage {
 	o := &AccessTokenStorage{
 		accessToken: nil,
@@ -23,13 +21,11 @@ func NewAccessTokenStorage() *AccessTokenStorage {
 	return o
 }
 
-//Put ***
-func (o *AccessTokenStorage) Put(accessToken *response.AccessToken) {
+func (o *AccessTokenStorage) Put(accessToken *response.AccessTokenBean) {
 	o.accessToken = accessToken
 }
 
-//Get ***
-func (o *AccessTokenStorage) Get() *response.AccessToken {
+func (o *AccessTokenStorage) Get() *response.AccessTokenBean {
 
 	if o.accessToken == nil {
 		return nil
@@ -42,7 +38,6 @@ func (o *AccessTokenStorage) Get() *response.AccessToken {
 	return o.accessToken
 }
 
-//MaybeExpire ***
 func maybeExpire(expireTime string) bool {
 	expire, err := time.ParseInLocation("2006-01-02 15:04:05", expireTime, time.Local)
 	if err == nil {

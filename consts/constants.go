@@ -1,4 +1,4 @@
-// Copyright 2019 chnykn@gmail.com All rights reserved.
+// Copyright 2019-2021 chnykn@gmail.com All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -14,7 +14,7 @@ const (
 	APIHost string = "https://api.bimface.com"
 
 	//FileHost ***
-	FileHost string = "https://file.bimface.com"
+	FileHost string = "https://sourcefile.bimface.com"
 
 	//StreamMime ***
 	StreamMime string = "application/octet-stream"
