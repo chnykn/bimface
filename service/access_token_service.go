@@ -5,9 +5,9 @@
 package service
 
 import (
-	"github.com/chnykn/bimface/bean/response"
-	"github.com/chnykn/bimface/config"
-	"github.com/chnykn/bimface/utils"
+	"github.com/chnykn/bimface/v2/bean/response"
+	"github.com/chnykn/bimface/v2/config"
+	"github.com/chnykn/bimface/v2/utils"
 )
 
 //获取AccessToken

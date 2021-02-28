@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/chnykn/bimface/bean"
+	"github.com/chnykn/bimface/v2/bean"
 
 	"github.com/imroc/req"
 )

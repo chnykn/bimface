@@ -7,8 +7,8 @@ package comparison
 import (
 	"strconv"
 
-	"github.com/chnykn/bimface/bean"
-	"github.com/chnykn/bimface/utils"
+	"github.com/chnykn/bimface/v2/bean"
+	"github.com/chnykn/bimface/v2/utils"
 )
 
 //删除模型对比

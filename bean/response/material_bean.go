@@ -1,6 +1,6 @@
 package response
 
-import "github.com/chnykn/bimface/bean/common"
+import "github.com/chnykn/bimface/v2/bean/common"
 
 type MaterialInfo struct {
 	Id         string                `json:"id"`

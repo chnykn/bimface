@@ -4,7 +4,7 @@
 
 package request
 
-import "github.com/chnykn/bimface/bean/common"
+import "github.com/chnykn/bimface/v2/bean/common"
 
 type IntegrateSource struct {
 	FileId   int64 `json:"fileId"` //必填

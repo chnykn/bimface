@@ -5,9 +5,9 @@
 package integration
 
 import (
-	"github.com/chnykn/bimface/bean/request"
-	"github.com/chnykn/bimface/bean/response"
-	"github.com/chnykn/bimface/utils"
+	"github.com/chnykn/bimface/v2/bean/request"
+	"github.com/chnykn/bimface/v2/bean/response"
+	"github.com/chnykn/bimface/v2/utils"
 	"fmt"
 
 	"github.com/imroc/req"

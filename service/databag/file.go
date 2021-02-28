@@ -5,8 +5,8 @@
 package databag
 
 import (
-	"github.com/chnykn/bimface/bean/request"
-	"github.com/chnykn/bimface/bean/response"
+	"github.com/chnykn/bimface/v2/bean/request"
+	"github.com/chnykn/bimface/v2/bean/response"
 )
 
 func (o *Service) FileDataBag(fileId int64, callback string) (*response.DataBagBean, error) {

@@ -4,7 +4,7 @@
 
 package response
 
-import "github.com/chnykn/bimface/bean/common"
+import "github.com/chnykn/bimface/v2/bean/common"
 
 type FileIntegrateDetailBean struct {
 	IntegrateId int64  `json:"integrateId"`

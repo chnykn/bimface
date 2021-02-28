@@ -5,16 +5,16 @@
 package bimface
 
 import (
-	"github.com/chnykn/bimface/config"
-	"github.com/chnykn/bimface/consts"
-	"github.com/chnykn/bimface/service"
-	"github.com/chnykn/bimface/service/comparison"
-	"github.com/chnykn/bimface/service/databag"
-	"github.com/chnykn/bimface/service/integration"
-	"github.com/chnykn/bimface/service/modelfile"
-	"github.com/chnykn/bimface/service/sharelink"
-	"github.com/chnykn/bimface/service/sourcefile"
-	"github.com/chnykn/bimface/utils"
+	"github.com/chnykn/bimface/v2/config"
+	"github.com/chnykn/bimface/v2/consts"
+	"github.com/chnykn/bimface/v2/service"
+	"github.com/chnykn/bimface/v2/service/comparison"
+	"github.com/chnykn/bimface/v2/service/databag"
+	"github.com/chnykn/bimface/v2/service/integration"
+	"github.com/chnykn/bimface/v2/service/modelfile"
+	"github.com/chnykn/bimface/v2/service/sharelink"
+	"github.com/chnykn/bimface/v2/service/sourcefile"
+	"github.com/chnykn/bimface/v2/utils"
 )
 
 // Client for binface SDK

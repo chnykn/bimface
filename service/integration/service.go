@@ -5,9 +5,9 @@
 package integration
 
 import (
-	"github.com/chnykn/bimface/config"
-	"github.com/chnykn/bimface/service"
-	"github.com/chnykn/bimface/utils"
+	"github.com/chnykn/bimface/v2/config"
+	"github.com/chnykn/bimface/v2/service"
+	"github.com/chnykn/bimface/v2/utils"
 )
 
 //Service ***

@@ -7,7 +7,7 @@ package config
 import (
 	"time"
 
-	"github.com/chnykn/bimface/bean/response"
+	"github.com/chnykn/bimface/v2/bean/response"
 )
 
 type AccessTokenStorage struct {

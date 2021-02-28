@@ -7,7 +7,7 @@
 
 package response
 
-import "github.com/chnykn/bimface/bean/common"
+import "github.com/chnykn/bimface/v2/bean/common"
 
 type ModelCompareBean struct {
 	CompareId int64 `json:"compareId"`

@@ -8,9 +8,9 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/chnykn/bimface/bean"
-	"github.com/chnykn/bimface/bean/response"
-	"github.com/chnykn/bimface/utils"
+	"github.com/chnykn/bimface/v2/bean"
+	"github.com/chnykn/bimface/v2/bean/response"
+	"github.com/chnykn/bimface/v2/utils"
 )
 
 func (o *Service) deleteShareLinkURI(isFile bool, objectId int64) string {

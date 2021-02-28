@@ -9,7 +9,7 @@ import (
 
 	"github.com/imroc/req"
 
-	"github.com/chnykn/bimface/utils"
+	"github.com/chnykn/bimface/v2/utils"
 )
 
 //获取文件下载地址

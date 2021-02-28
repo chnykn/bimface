@@ -9,9 +9,9 @@ import (
 
 	"github.com/imroc/req"
 
-	"github.com/chnykn/bimface/bean/request"
-	"github.com/chnykn/bimface/bean/response"
-	"github.com/chnykn/bimface/utils"
+	"github.com/chnykn/bimface/v2/bean/request"
+	"github.com/chnykn/bimface/v2/bean/response"
+	"github.com/chnykn/bimface/v2/utils"
 )
 
 const (

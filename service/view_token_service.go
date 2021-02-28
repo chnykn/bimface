@@ -9,8 +9,8 @@ package service
 import (
 	"fmt"
 
-	"github.com/chnykn/bimface/config"
-	"github.com/chnykn/bimface/utils"
+	"github.com/chnykn/bimface/v2/config"
+	"github.com/chnykn/bimface/v2/utils"
 )
 
 const (
