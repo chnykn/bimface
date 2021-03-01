@@ -70,7 +70,7 @@ func (o *Service) MakeDataBag(dataBagRequest *request.DataBagRequest) (*response
 
 	resp := o.ServiceClient.Put(url, headers.Header)
 
-	var result *response.DataBagBean
+	result := new(response.DataBagBean)
 	err = utils.RespToBean(resp, result)
 
 	return result, err
@@ -109,7 +109,7 @@ func (o *Service) GetStatus(dataBagRequest *request.DataBagRequest) ([]*response
 
 	resp := o.ServiceClient.Get(url, headers.Header)
 
-	var result []*response.DataBagBean
+	result := make([]*response.DataBagBean, 0)
 	err = utils.RespToBean(resp, &result)
 	if err != nil {
 		return nil, err

@@ -49,7 +49,7 @@ func (o *Service) GetFloors(integrateId int64, includeArea, includeRoom bool) ([
 
 	resp := o.ServiceClient.Get(o.floorsURL(integrateId, includeArea, includeRoom), headers.Header)
 
-	var result []*response.FloorBean
+	result := make([]*response.FloorBean, 0)
 	err = utils.RespToBean(resp, &result)
 	if err != nil {
 		return nil, err

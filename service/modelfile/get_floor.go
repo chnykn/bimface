@@ -54,7 +54,7 @@ func (o *Service) GetFloors(fileId int64) ([]*response.FloorBean, error) {
 
 	resp := o.ServiceClient.Get(o.floorsURL(fileId), headers.Header)
 
-	var result []*response.FloorBean
+	result := make([]*response.FloorBean, 0)
 	err = utils.RespToBean(resp, &result)
 	if err != nil {
 		return nil, err
@@ -76,7 +76,7 @@ func (o *Service) GetFilesFloors(fileIds []int64) (*response.FloorsBean, error) 
 
 	resp := o.ServiceClient.Get(o.floorsMappingsURL(fileIds), headers.Header)
 
-	var result *response.FloorsBean
+	result := new(response.FloorsBean)
 	err = utils.RespToBean(resp, result)
 	if err != nil {
 		return nil, err

@@ -51,7 +51,7 @@ func (o *Service) doUploadByURL(uploadRequest *request.FileUploadRequest, token 
 	resp := o.ServiceClient.Put(o.uploadByURL(uploadRequest.Name, uploadRequest.URL,
 		uploadRequest.SourceId), headers.Header)
 
-	var result *response.FileBean
+	result := new(response.FileBean)
 	err := utils.RespToBean(resp, result)
 
 	return result, err
@@ -79,7 +79,7 @@ func (o *Service) doUploadBody(uploadRequest *request.FileUploadRequest, token s
 	resp := o.ServiceClient.Put(o.uploadURL(uploadRequest.Name, uploadRequest.SourceId),
 		headers.Header, uploadRequest.Buffer)
 
-	var result *response.FileBean
+	result := new(response.FileBean)
 	err := utils.RespToBean(resp, result)
 
 	return result, err
@@ -122,7 +122,7 @@ func (o *Service) GetUploadStatus(fileId int64) (*response.FileUploadStatusBean,
 
 	resp := o.ServiceClient.Get(o.getFileUploadStatusURL(fileId), headers.Header)
 
-	var result *response.FileUploadStatusBean
+	result := new(response.FileUploadStatusBean)
 	err = utils.RespToBean(resp, result)
 
 	return result, err

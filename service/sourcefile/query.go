@@ -40,7 +40,7 @@ func (o *Service) GetMeta(fileId int64) (*response.FileBean, error) {
 
 	resp := o.ServiceClient.Get(o.fileMetaURL(fileId), headers.Header)
 
-	var result *response.FileBean
+	result := new(response.FileBean)
 	err = utils.RespToBean(resp, result)
 
 	return result, err
@@ -59,7 +59,7 @@ func (o *Service) GetList() ([]*response.FileBean, error) {
 
 	resp := o.ServiceClient.Get(o.fileListURL(), headers.Header)
 
-	var result []*response.FileBean //:= make([]*response.FileBean, 0)
+	result := make([]*response.FileBean, 0)
 	err = utils.RespToBean(resp, &result)
 
 	return result, err

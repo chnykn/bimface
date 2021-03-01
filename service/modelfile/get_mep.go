@@ -5,9 +5,10 @@
 package modelfile
 
 import (
+	"fmt"
+
 	"github.com/chnykn/bimface/v2/bean/response"
 	"github.com/chnykn/bimface/v2/utils"
-	"fmt"
 )
 
 const (
@@ -36,7 +37,7 @@ func (o *Service) GetMEPSystem(fileId int64) (*response.MEPSysBean, error) {
 
 	resp := o.ServiceClient.Get(o.mepSystemURL(fileId), headers.Header)
 
-	var result *response.MEPSysBean
+	result := new(response.MEPSysBean)
 	err = utils.RespToBean(resp, result)
 	if err != nil {
 		return nil, err

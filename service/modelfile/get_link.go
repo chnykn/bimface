@@ -37,7 +37,7 @@ func (o *Service) GetLinks(fileId int64) ([]*response.LinkBean, error) {
 
 	resp := o.ServiceClient.Get(o.linksURL(fileId), headers.Header)
 
-	var result []*response.LinkBean
+	result := make([]*response.LinkBean, 0)
 	err = utils.RespToBean(resp, &result)
 	if err != nil {
 		return nil, err

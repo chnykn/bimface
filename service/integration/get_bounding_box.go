@@ -48,7 +48,7 @@ func (o *Service) GetBoundingBoxes(integrateId int64, fileIdWithEleIdList []stri
 		resp = o.ServiceClient.Get(o.boundingBoxesURL(integrateId), headers.Header)
 	}
 
-	var result []*response.ElementBoundingBoxBean
+	result := make([]*response.ElementBoundingBoxBean, 0)
 	err = utils.RespToBean(resp, &result)
 
 	return result, err

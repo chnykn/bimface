@@ -49,7 +49,7 @@ func (o *Service) Translate(transRequest *request.FileTranslateRequest) (*respon
 	body := req.BodyJSON(transRequest)
 	resp := o.ServiceClient.Put(o.translateURL(), body, headers.Header)
 
-	var result *response.FileTranslateBean
+	result := new(response.FileTranslateBean)
 	err = utils.RespToBean(resp, result)
 
 	return result, err
@@ -69,7 +69,7 @@ func (o *Service) GetStatus(fileId int64) (*response.FileTranslateBean, error) {
 
 	resp := o.ServiceClient.Get(o.getTranslateURL(fileId), headers.Header)
 
-	var result *response.FileTranslateBean
+	result := new(response.FileTranslateBean)
 	err = utils.RespToBean(resp, result)
 
 	return result, err
@@ -95,7 +95,7 @@ func (o *Service) GetDetails(queryRequest *request.TranslateQueryRequest) (*resp
 		resp = o.ServiceClient.Post(o.translateDetailsURL(), headers.Header)
 	}
 
-	var result *response.FileTranslateDetailBeanPageList
+	result := new(response.FileTranslateDetailBeanPageList)
 	err = utils.RespToBean(resp, result)
 
 	return result, err

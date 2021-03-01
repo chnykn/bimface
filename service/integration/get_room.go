@@ -36,7 +36,7 @@ func (o *Service) GetRoom(integrateId int64, roomId string) (*response.RoomBean,
 
 	resp := o.ServiceClient.Get(o.getRoomURL(integrateId, roomId), headers.Header)
 
-	var result *response.RoomBean
+	result := new(response.RoomBean)
 	err = utils.RespToBean(resp, result)
 
 	return result, err

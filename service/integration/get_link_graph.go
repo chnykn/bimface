@@ -1,9 +1,10 @@
 package integration
 
 import (
+	"fmt"
+
 	"github.com/chnykn/bimface/v2/bean/response"
 	"github.com/chnykn/bimface/v2/utils"
-	"fmt"
 )
 
 const (
@@ -27,7 +28,7 @@ func (o *Service) GetLinkGraphs(integrateId int64, includeDrawingSheet bool) ([]
 
 	resp := o.ServiceClient.Get(o.integrationFilesURL(integrateId, includeDrawingSheet), headers.Header)
 
-	var result []*response.LinkGraphNodeBean
+	result := make([]*response.LinkGraphNodeBean, 0)
 	err = utils.RespToBean(resp, &result)
 
 	return result, err

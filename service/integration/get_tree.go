@@ -82,7 +82,7 @@ func (o *Service) GetElementTree(integrateId int64, treeType string, hierarchies
 	body := req.BodyJSON(treeRequest)
 	resp := o.ServiceClient.Post(o.treeURL(integrateId, treeType, hierarchies), body, headers.Header)
 
-	var result []*response.ElementNodeBean
+	result := make([]*response.ElementNodeBean, 0)
 	err = utils.RespToBean(resp, &result)
 
 	return result, err

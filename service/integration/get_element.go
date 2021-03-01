@@ -5,12 +5,13 @@
 package integration
 
 import (
-	"github.com/chnykn/bimface/v2/bean/request"
-	"github.com/chnykn/bimface/v2/bean/response"
-	"github.com/chnykn/bimface/v2/utils"
 	"fmt"
 
 	"github.com/imroc/req"
+
+	"github.com/chnykn/bimface/v2/bean/request"
+	"github.com/chnykn/bimface/v2/bean/response"
+	"github.com/chnykn/bimface/v2/utils"
 )
 
 const (
@@ -134,7 +135,7 @@ func (o *Service) GetElementProperties(integrateId int64, elementId string, incl
 
 	resp := o.ServiceClient.Get(o.elementPropertiesURL(integrateId, elementId, includeOverrides), headers.Header)
 
-	var result *response.PropertyBean
+	result := new(response.PropertyBean)
 	err = utils.RespToBean(resp, result)
 
 	return result, err
@@ -152,7 +153,7 @@ func (o *Service) GetElementFileProperties(integrateId int64, fileId int64, elem
 
 	resp := o.ServiceClient.Get(o.elementFilePropertiesURL(integrateId, fileId, elementId, includeOverrides), headers.Header)
 
-	var result *response.PropertyBean
+	result := new(response.PropertyBean)
 	err = utils.RespToBean(resp, result)
 
 	return result, err
@@ -171,7 +172,7 @@ func (o *Service) GetElementCommonProperties(integrateId int64, elementIdsReques
 	body := req.BodyJSON(elementIdsRequest)
 	resp := o.ServiceClient.Post(o.elementCommonPropertiesURL(integrateId, includeOverrides), body, headers.Header)
 
-	var result *response.PropertyBean
+	result := new(response.PropertyBean)
 	err = utils.RespToBean(resp, result)
 
 	return result, err

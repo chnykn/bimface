@@ -1,9 +1,9 @@
 package comparison
 
 import (
+	"fmt"
 	"github.com/chnykn/bimface/v2/bean/response"
 	"github.com/chnykn/bimface/v2/utils"
-	"fmt"
 	"strconv"
 )
 
@@ -85,7 +85,7 @@ func (o *Service) GetModelCompareDiff(compareId int64, family, elementName strin
 	url := o.modelCompareDiffURL(compareId, family, elementName, page, pageSize)
 	resp := o.ServiceClient.Get(url, headers.Header)
 
-	var result *response.ModelCompareDiffsBean
+	result := new(response.ModelCompareDiffsBean)
 	err = utils.RespToBean(resp, result)
 
 	return result, err
@@ -106,7 +106,7 @@ func (o *Service) GetDrawingCompareDiff(compareId int64, layer string,
 	url := o.drawingCompareDiffURL(compareId, layer, page, pageSize)
 	resp := o.ServiceClient.Get(url, headers.Header)
 
-	var result *response.DrawingCompareDiffsBean
+	result := new(response.DrawingCompareDiffsBean)
 	err = utils.RespToBean(resp, result)
 
 	return result, err

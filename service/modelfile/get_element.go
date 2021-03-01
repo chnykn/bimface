@@ -143,7 +143,7 @@ func (o *Service) GetElementProperties(fileId int64, elementId string, includeOv
 
 	resp := o.ServiceClient.Get(o.elementPropertiesURL(fileId, elementId, includeOverrides), headers.Header)
 
-	var result *response.PropertyBean
+	result := new(response.PropertyBean)
 	err = utils.RespToBean(resp, result)
 
 	return result, err
@@ -161,7 +161,7 @@ func (o *Service) GetElementCommonProperties(fileId int64, elementIds []string, 
 
 	resp := o.ServiceClient.Get(o.elementCommonPropertiesURL(fileId, elementIds, includeOverrides), headers.Header)
 
-	var result *response.PropertyBean
+	result := new(response.PropertyBean)
 	err = utils.RespToBean(resp, result)
 
 	return result, err
@@ -180,7 +180,7 @@ func (o *Service) GetElementsProperties(fileId int64, filterRequest *request.Pro
 	body := req.BodyJSON(filterRequest)
 	resp := o.ServiceClient.Post(o.elementsPropertiesURL(fileId, includeOverrides), body, headers.Header)
 
-	var result []*response.PropertyBean
+	result := make([]*response.PropertyBean, 0)
 	err = utils.RespToBean(resp, &result)
 
 	return result, err

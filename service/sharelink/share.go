@@ -54,7 +54,7 @@ func (o *Service) doMakeShare(isFile bool, objectId int64, activeHours int, expi
 	url := o.makeShareLinkURL(isFile, objectId, activeHours, expireDate, needPassword)
 	resp := o.ServiceClient.Post(url, headers.Header)
 
-	var result *response.ShareLinkBean
+	result := new(response.ShareLinkBean)
 	err = utils.RespToBean(resp, result)
 
 	return result, err

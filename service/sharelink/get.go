@@ -57,7 +57,7 @@ func (o *Service) doGetShareLink(isFile bool, objectId int64) (*response.ShareLi
 
 	resp := o.ServiceClient.Get(o.getShareLinkURL(isFile, objectId), headers.Header)
 
-	var result *response.ShareLinkBean
+	result := new(response.ShareLinkBean)
 	err = utils.RespToBean(resp, result)
 
 	return result, err
@@ -87,7 +87,7 @@ func (o *Service) GetShareLinks(pageNo int, pageSize int) (*response.ShareLinkBe
 
 	resp := o.ServiceClient.Get(o.getShareLinksURL(pageNo, pageSize), headers.Header)
 
-	var result *response.ShareLinkBeanPageList
+	result := new(response.ShareLinkBeanPageList)
 	err = utils.RespToBean(resp, result)
 
 	return result, err

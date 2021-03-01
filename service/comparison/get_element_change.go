@@ -26,7 +26,7 @@ func (o *Service) GetElementChange(compareId int64, previousFileId int64, previo
 	url := fmt.Sprintf(o.Endpoint.APIHost+elementChangeURI, compareId, previousFileId, previousElementId, followingFileId, followingElementId)
 	resp := o.ServiceClient.Get(url, headers.Header)
 
-	var result *response.ModelCompareChangeBean
+	result := new(response.ModelCompareChangeBean)
 	err = utils.RespToBean(resp, result)
 
 	return result, err

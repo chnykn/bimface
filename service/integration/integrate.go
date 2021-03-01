@@ -59,7 +59,7 @@ func (o *Service) Integrate(integrateRequest *request.FileIntegrateRequest) (*re
 	body := req.BodyJSON(integrateRequest)
 	resp := o.ServiceClient.Put(o.integrateURL(), headers.Header, body)
 
-	var result *response.FileIntegrateBean
+	result := new(response.FileIntegrateBean)
 	err = utils.RespToBean(resp, result)
 
 	return result, err
@@ -77,7 +77,7 @@ func (o *Service) GetStatus(integrateId int64) (*response.FileIntegrateBean, err
 
 	resp := o.ServiceClient.Get(o.integrateWithIdURL(integrateId), headers.Header)
 
-	var result *response.FileIntegrateBean
+	result := new(response.FileIntegrateBean)
 	err = utils.RespToBean(resp, result)
 
 	return result, err
@@ -126,7 +126,7 @@ func (o *Service) GetDetails(queryRequest *request.IntegrateQueryRequest) (*resp
 		resp = o.ServiceClient.Post(o.integrateDetailsURL(), headers.Header)
 	}
 
-	var result *response.FileIntegrateDetailBeanPageList
+	result := new(response.FileIntegrateDetailBeanPageList)
 	err = utils.RespToBean(resp, result)
 
 	return result, err

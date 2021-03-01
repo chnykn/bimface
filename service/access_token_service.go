@@ -63,7 +63,7 @@ func (o *AccessTokenService) Grant() (*response.AccessTokenBean, error) {
 	headers.AddBasicAuthHeader(o.Credential.AppKey, o.Credential.AppSecret)
 	resp := o.ServiceClient.Post(o.accessTokenURL(), headers.Header)
 
-	var result *response.AccessTokenBean
+	result := new(response.AccessTokenBean)
 	err := utils.RespToBean(resp, result)
 
 	return result, err

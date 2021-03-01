@@ -39,7 +39,7 @@ func (o *Service) Bake(integrateId int64, config map[string]string) (*response.D
 
 	resp := o.ServiceClient.Put(o.bakeURL(integrateId), headers.Header, req.BodyJSON(body))
 
-	var result *response.DataBagBean
+	result := new(response.DataBagBean)
 	err = utils.RespToBean(resp, result)
 
 	return result, err
@@ -68,7 +68,7 @@ func (o *Service) GetBakeDataBag(integrateId int64) ([]*response.DataBagBean, er
 
 	resp := o.ServiceClient.Get(o.bakeURL(integrateId), headers.Header)
 
-	var result []*response.DataBagBean
+	result := make([]*response.DataBagBean, 0)
 	err = utils.RespToBean(resp, &result)
 
 	return result, err

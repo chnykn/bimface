@@ -94,7 +94,7 @@ func (o *Service) DeleteShareLinks(sourceIds []int64) (*response.BatchDeleteResu
 
 	//--------------
 
-	var result *response.BatchDeleteResultBean
+	result := new(response.BatchDeleteResultBean)
 	err = utils.RespToBean(resp, result)
 
 	return result, err

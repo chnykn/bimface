@@ -84,7 +84,7 @@ func (o *Service) GetElementTree(fileId int64, treeType string, treeRequest *req
 		resp = o.ServiceClient.Post(o.treeURL(fileId, treeType), headers.Header)
 	}
 
-	var result []*response.ElementNodeBean
+	result := make([]*response.ElementNodeBean, 0)
 	err = utils.RespToBean(resp, &result)
 
 	return result, err

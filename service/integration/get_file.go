@@ -36,7 +36,7 @@ func (o *Service) GetFiles(integrateId int64, includeDrawingSheet bool) ([]*resp
 
 	resp := o.ServiceClient.Get(o.integrationFilesURL(integrateId, includeDrawingSheet), headers.Header)
 
-	var result []*response.IntegrateFileBean
+	result := make([]*response.IntegrateFileBean, 0)
 	err = utils.RespToBean(resp, &result)
 
 	return result, err

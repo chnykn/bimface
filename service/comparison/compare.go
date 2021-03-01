@@ -33,7 +33,7 @@ func (o *Service) Compare(compareRequest *request.CompareRequest) (*response.Mod
 	body := req.BodyJSON(compareRequest)
 	resp := o.ServiceClient.Post(url, headers.Header, body)
 
-	var result *response.ModelCompareBean
+	result := new(response.ModelCompareBean)
 	err = utils.RespToBean(resp, result)
 
 	return result, err
@@ -52,7 +52,7 @@ func (o *Service) GetStatus(compareId int64) (*response.ModelCompareBean, error)
 	url := o.Endpoint.APIHost + compareURI + "?compareId=" + strconv.FormatInt(compareId, 10)
 	resp := o.ServiceClient.Get(url, headers.Header)
 
-	var result *response.ModelCompareBean
+	result := new(response.ModelCompareBean)
 	err = utils.RespToBean(resp, result)
 
 	return result, err

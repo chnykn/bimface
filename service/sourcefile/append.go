@@ -77,7 +77,7 @@ func (o *Service) createAppendFile(fileName string, length int64, sourceId strin
 
 	resp := o.ServiceClient.Post(o.createAppendFileURL(fileName, length, sourceId), headers.Header)
 
-	var result *response.AppendFileBean
+	result := new(response.AppendFileBean)
 	err = utils.RespToBean(resp, result)
 
 	return result, err
@@ -94,7 +94,7 @@ func (o *Service) GetAppendFileWithAccessToken(appendFileId int64, token string)
 
 	resp := o.ServiceClient.Get(o.getAppendFileURL(appendFileId), headers.Header)
 
-	var result *response.AppendFileBean
+	result := new(response.AppendFileBean)
 	err := utils.RespToBean(resp, result)
 
 	return result, err
@@ -151,7 +151,7 @@ func (o *Service) UploadAppendFile(file *multipart.FileHeader, appendFileId int6
 
 	resp := o.ServiceClient.Post(o.uploadAppendFileURL(appendFileId, appendFile.Position), headers.Header, buf)
 
-	var result *response.AppendFileBean
+	result := new(response.AppendFileBean)
 	err = utils.RespToBean(resp, result)
 
 	return result, err

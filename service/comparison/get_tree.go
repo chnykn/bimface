@@ -25,7 +25,7 @@ func (o *Service) GetTree(compareId int64) (*common.Tree, error) {
 	url := fmt.Sprintf(o.Endpoint.APIHost+compareTreeURI, compareId)
 	resp := o.ServiceClient.Get(url, headers.Header)
 
-	var result *common.Tree
+	result := new(common.Tree)
 	err = utils.RespToBean(resp, result)
 
 	return result, err

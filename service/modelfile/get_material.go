@@ -12,7 +12,6 @@ import (
 )
 
 const (
-
 	//获取构件材质列表 GET https://api.bimface.com/data/v2/files/{fileId}/elements/{elementId}/materials
 	elementMaterialsURI string = "/data/v2/files/%d/elements/%s/materials"
 )
@@ -33,7 +32,7 @@ func (o *Service) GetElementMaterials(fileId int64, elementId string) ([]*respon
 
 	resp := o.ServiceClient.Get(o.elementMaterialsURL(fileId, elementId), headers.Header)
 
-	var result []*response.MaterialBean
+	result := make([]*response.MaterialBean, 0)
 	err = utils.RespToBean(resp, &result)
 
 	return result, err

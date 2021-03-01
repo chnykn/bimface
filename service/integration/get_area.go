@@ -43,7 +43,7 @@ func (o *Service) GetArea(integrateId int64, areaId string) (*response.AreaBean,
 
 	resp := o.ServiceClient.Get(o.getAreaURL(integrateId, areaId), headers.Header)
 
-	var result *response.AreaBean
+	result := new(response.AreaBean)
 	err = utils.RespToBean(resp, result)
 
 	return result, err
@@ -61,7 +61,7 @@ func (o *Service) GetAreas(integrateId int64) ([]*response.AreaBean, error) {
 
 	resp := o.ServiceClient.Get(o.getAreasURL(integrateId), headers.Header)
 
-	var result []*response.AreaBean
+	result := make([]*response.AreaBean, 0)
 	err = utils.RespToBean(resp, &result)
 
 	return result, err
