@@ -35,20 +35,20 @@ func getSuffix(fileName string) string {
 //CheckFileName ***
 func CheckFileName(fileName string) error {
 	if fileName == "" {
-		return fmt.Errorf("sourcefile name must not be empty")
+		return fmt.Errorf("file name must not be empty")
 	}
 
 	if len(fileName) > 256 {
-		return fmt.Errorf("sourcefile name too long, no more than 256 characters")
+		return fmt.Errorf("file name too long, no more than 256 characters")
 	}
 
 	suffix := getSuffix(fileName)
 	if suffix == "" {
-		return fmt.Errorf("sourcefile name has no suffix")
+		return fmt.Errorf("file name has no suffix")
 	}
 
 	if containsIllegalChar(fileName) {
-		return fmt.Errorf("sourcefile name contains illegal character")
+		return fmt.Errorf("file name contains illegal character")
 	}
 
 	return nil

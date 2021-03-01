@@ -14,7 +14,7 @@ const (
 	APIHost string = "https://api.bimface.com"
 
 	//FileHost ***
-	FileHost string = "https://sourcefile.bimface.com"
+	FileHost string = "https://file.bimface.com"
 
 	//StreamMime ***
 	StreamMime string = "application/octet-stream"
