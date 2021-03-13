@@ -17,7 +17,9 @@ import (
 	"github.com/chnykn/bimface/v2/utils"
 )
 
-// Client for binface SDK
+//TODO: 模型信息和构件属性查询、构件空间关系计算、导出数据包相关、烘焙相关、rfa构件数据
+
+// Client for bimface SDK
 type Client struct {
 	credential    *config.Credential
 	endpoint      *config.Endpoint
