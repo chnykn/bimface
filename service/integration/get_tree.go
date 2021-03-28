@@ -44,7 +44,7 @@ const (
 https://api.bimface.com/data/v2/integrations/1211286711525184/tree
 https://api.bimface.com/data/v2/integrations/1211286711525184/tree?treeType=floor
 https://api.bimface.com/data/v2/integrations/1211286711525184/tree?treeType=specialty
-https://api.bimface.com/data/v2/integrations/1211286711525184/tree?treeType=customized&desiredHierarchy=floor%2Cspecialty%2Ccategory%2Cfamily%2CfamilyType
+https://api.bimface.com/data/v2/integrations/1211286711525184/tree?treeType=customized&desiredHierarchy=specialty%2Ccategory%2Cfamily%2CfamilyType
 */
 
 //---------------------------------------------------------------------
