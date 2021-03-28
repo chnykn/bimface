@@ -12,7 +12,7 @@ type TreeNode struct {
 	ActualName   string      `json:"actualName"`
 	Data         interface{} `json:"data,omitempty"`
 	ElementCount int64       `json:"elementCount"`
-	Items        []TreeNode
+	Items        []*TreeNode
 }
 
 //NewTreeNode ***
@@ -22,7 +22,7 @@ func NewTreeNode() *TreeNode {
 		// FileId:   id,
 		// Name: name,
 		//ElementCount: 0,
-		Items: make([]TreeNode, 0),
+		Items: make([]*TreeNode, 0),
 	}
 	return o
 }
