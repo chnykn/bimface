@@ -22,9 +22,10 @@ const (
 
 /* https://static.bimface.com/restful-apidoc/dist/modelIntegration.html#_gettreeusingpost_1
 
-集成模型默认楼层分类树(v2.0), treeType接受两个值：floor, specialty和customized, 默认为floor.
-
-当treeType为"customized"时
+集成模型默认楼层分类树(v2.0), treeType接受三个值：floor, specialty和customized, 默认为floor.
+  floor     : floor, specialty, category, family, familyType
+  specialty : specialty, floor, category, family, familyType
+  customized:
     desiredHierarchy表示了筛选树的层次,
     可选值有building,systemType,specialty,floor,category,family,familyType，
     如:desiredHierarchy=specialty,systemtype
@@ -58,7 +59,7 @@ func (o *Service) treeURL(integrateId int64, treeType string, hierarchies []stri
 	} else if treeType == "customized" {
 		result = result + "?treeType=customized"
 		if len(hierarchies) > 0 {
-			result = result + "&" + strings.Join(hierarchies, "%2C")
+			result = result + "&desiredHierarchy=" + strings.Join(hierarchies, "%2C")
 		}
 	}
 
