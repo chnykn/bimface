@@ -69,7 +69,7 @@ func (o *Service) treeURL(integrateId int64, treeType string, hierarchies []stri
 //---------------------------------------------------------------------
 
 //获取构件分类树
-func (o *Service) GetElementTree(integrateId int64, treeType string, hierarchies []string, treeRequest *request.IntegrationTreeOptionalRequest) ([]*response.ElementNodeBean, error) {
+func (o *Service) GetElementTree(integrateId int64, treeType string, hierarchies []string, treeRequest *request.IntegrationTreeOptionalRequest) (*response.ElementNodeTree, error) {
 	accessToken, err := o.AccessTokenService.Get()
 	if err != nil {
 		return nil, err
@@ -83,8 +83,8 @@ func (o *Service) GetElementTree(integrateId int64, treeType string, hierarchies
 	body := req.BodyJSON(treeRequest)
 	resp := o.ServiceClient.Post(o.treeURL(integrateId, treeType, hierarchies), body, headers.Header)
 
-	result := make([]*response.ElementNodeBean, 0)
-	err = utils.RespToBean(resp, &result)
+	result := new(response.ElementNodeTree)
+	err = utils.RespToBean(resp, result)
 
 	return result, err
 }
