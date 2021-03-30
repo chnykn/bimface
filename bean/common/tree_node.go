@@ -13,6 +13,16 @@ type TreeNode struct {
 	Data         interface{} `json:"data,omitempty"`
 	ElementCount int64       `json:"elementCount"`
 	Items        []*TreeNode
+
+	// 为兼容离线数据包中 data\tree.json 文件内 familyType 节点下element列表
+	FileId     string `json:"fileId"`
+	ElementIds string `json:"elementIds"`
+
+	//---- 额外增加，其他用途 -----
+
+	Parent   *TreeNode `json:"-"`
+	DataId   string    `json:"-"`
+	DataTree string    `json:"-"`
 }
 
 //NewTreeNode ***
