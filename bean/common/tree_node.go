@@ -15,8 +15,8 @@ type TreeNode struct {
 	Items        []*TreeNode
 
 	// 为兼容离线数据包中 data\tree.json 文件内 familyType 节点下element列表
-	FileId     string `json:"fileId"`
-	ElementIds string `json:"elementIds"`
+	FileId     string   `json:"fileId"`
+	ElementIds []string `json:"elementIds"`
 
 	//---- 额外增加，其他用途 -----
 
