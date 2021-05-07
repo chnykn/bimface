@@ -7,6 +7,8 @@ package databag
 import (
 	"fmt"
 
+	"github.com/imroc/req"
+
 	"github.com/chnykn/bimface/v2/bean/request"
 	"github.com/chnykn/bimface/v2/bean/response"
 	"github.com/chnykn/bimface/v2/utils"
@@ -46,7 +48,7 @@ integrateId	Number	Y	通过集成模型Id创建离线数据包时必填
 compareId	Number	Y	通过模型对比Id创建离线数据包时必填
 callback	String	N	回调url
 ***/
-func (o *Service) MakeDataBag(dataBagRequest *request.DataBagRequest) (*response.DataBagBean, error) {
+func (o *Service) MakeDataBag(dataBagRequest *request.DataBagRequest, keepModelDB bool) (*response.DataBagBean, error) {
 
 	var url string
 	if dataBagRequest.FileId != nil {
@@ -68,7 +70,15 @@ func (o *Service) MakeDataBag(dataBagRequest *request.DataBagRequest) (*response
 	headers := utils.NewHeaders()
 	headers.AddOAuth2Header(accessToken.Token)
 
-	resp := o.ServiceClient.Put(url, headers.Header)
+	var reqBody *request.DataBagDerivativeRequest
+	if keepModelDB {
+		reqBody = request.NewDataBagDerivativeRequest()
+		reqBody.Config["keepModel"] = "true"
+		reqBody.Config["keepDB"] = "true"
+	}
+	body := req.BodyJSON(reqBody)
+
+	resp := o.ServiceClient.Put(url, headers.Header, body)
 
 	result := new(response.DataBagBean)
 	err = utils.RespToBean(resp, result)
@@ -93,7 +103,7 @@ func (o *Service) GetStatus(dataBagRequest *request.DataBagRequest) ([]*response
 	} else if dataBagRequest.IntegrateId != nil {
 		url = o.dataBagURL("integrations", *dataBagRequest.IntegrateId, "")
 	} else if dataBagRequest.CompareId != nil {
-		url = o.dataBagURL("comparisions", *dataBagRequest.IntegrateId, "")
+		url = o.dataBagURL("comparisions", *dataBagRequest.CompareId, "")
 	}
 	if url == "" {
 		return nil, fmt.Errorf("url is null @ DataBagService.GetDataBagStatus")
@@ -137,7 +147,7 @@ func (o *Service) GetDownloadURL(dataBagRequest *request.DataBagRequest) (string
 	} else if dataBagRequest.IntegrateId != nil {
 		url = o.downloadDataBagURL("integrateId", *dataBagRequest.IntegrateId, dataBagRequest.DataBagVersion)
 	} else if dataBagRequest.CompareId != nil {
-		url = o.downloadDataBagURL("comapreId", *dataBagRequest.CompareId, dataBagRequest.DataBagVersion)
+		url = o.downloadDataBagURL("compareId", *dataBagRequest.CompareId, dataBagRequest.DataBagVersion)
 	}
 	if url == "" {
 		return "", fmt.Errorf("url is null @ DataBagService.GetDataBagDownloadURL")

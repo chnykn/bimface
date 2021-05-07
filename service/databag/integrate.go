@@ -9,11 +9,11 @@ import (
 	"github.com/chnykn/bimface/v2/bean/response"
 )
 
-func (o *Service) IntegrateDataBag(integrateId int64, callback string) (*response.DataBagBean, error) {
+func (o *Service) IntegrateDataBag(integrateId int64, callback string, keepModelDB bool) (*response.DataBagBean, error) {
 	dataBagRequest := request.NewDataBagRequest()
 	dataBagRequest.IntegrateId = &integrateId
 	dataBagRequest.Callback = callback
-	return o.MakeDataBag(dataBagRequest)
+	return o.MakeDataBag(dataBagRequest, keepModelDB)
 }
 
 func (o *Service) GetIntegrateStatus(integrateId int64) ([]*response.DataBagBean, error) {

@@ -19,10 +19,8 @@ type TreeNode struct {
 	ElementIds []string `json:"elementIds"`
 
 	//---- 额外增加，其他用途 -----
-
-	Parent   *TreeNode `json:"-"`
-	DataId   string    `json:"-"`
-	DataTree string    `json:"-"`
+	Parent *TreeNode   `json:"-"`
+	ExData interface{} `json:"-"`
 }
 
 //NewTreeNode ***

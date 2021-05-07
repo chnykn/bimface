@@ -9,11 +9,11 @@ import (
 	"github.com/chnykn/bimface/v2/bean/response"
 )
 
-func (o *Service) FileDataBag(fileId int64, callback string) (*response.DataBagBean, error) {
+func (o *Service) FileDataBag(fileId int64, callback string, keepModelDB bool) (*response.DataBagBean, error) {
 	dataBagRequest := request.NewDataBagRequest()
 	dataBagRequest.FileId = &fileId
 	dataBagRequest.Callback = callback
-	return o.MakeDataBag(dataBagRequest)
+	return o.MakeDataBag(dataBagRequest, keepModelDB)
 }
 
 func (o *Service) GetFileStatus(fileId int64) ([]*response.DataBagBean, error) {
