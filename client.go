@@ -8,6 +8,7 @@ import (
 	"github.com/chnykn/bimface/v2/config"
 	"github.com/chnykn/bimface/v2/consts"
 	"github.com/chnykn/bimface/v2/service"
+	"github.com/chnykn/bimface/v2/service/bake"
 	"github.com/chnykn/bimface/v2/service/comparison"
 	"github.com/chnykn/bimface/v2/service/databag"
 	"github.com/chnykn/bimface/v2/service/integration"
@@ -34,6 +35,7 @@ type Client struct {
 	ShareLinkService   *sharelink.Service
 	ComparisonService  *comparison.Service
 	DataBagService     *databag.Service
+	BakeService        *bake.Service
 }
 
 // NewClient create an bimface client.
@@ -56,6 +58,7 @@ func NewClient(appKey string, appSecret string, endpoint *config.Endpoint) *Clie
 	o.ShareLinkService = sharelink.NewService(o.serviceClient, o.endpoint, o.AccessTokenService)
 	o.ComparisonService = comparison.NewService(o.serviceClient, o.endpoint, o.AccessTokenService)
 	o.DataBagService = databag.NewService(o.serviceClient, o.endpoint, o.AccessTokenService)
+	o.BakeService = bake.NewService(o.serviceClient, o.endpoint, o.AccessTokenService)
 
 	return o
 }
