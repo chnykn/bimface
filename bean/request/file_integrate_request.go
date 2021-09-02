@@ -7,13 +7,13 @@ package request
 import "github.com/chnykn/bimface/v2/bean/common"
 
 type IntegrateSource struct {
-	FileId   int64 `json:"fileId"` //必填
-	FileName int64 `json:"fileName"`
+	FileId   int64  `json:"fileId"` //必填
+	FileName string `json:"fileName,omitempty"`
 
-	Building  string `json:"building"`
-	DatabagId string `json:"databagId"`
+	Building  string `json:"building,omitempty"`
+	DatabagId string `json:"databagId,omitempty"`
 
-	Specialty     string  `json:"specialty"`
+	Specialty     string  `json:"specialty,omitempty"`
 	SpecialtySort float64 `json:"specialtySort,omitempty"`
 
 	Floor     string  `json:"floor,omitempty"`
