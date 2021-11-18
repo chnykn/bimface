@@ -1,8 +1,6 @@
 *.log
 *.exe
 *.rar
-*.local
-*.identcache
-*.dsk
+/github.token
 /go.sum
 /.idea/
