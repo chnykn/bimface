@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	deleteFileURI string = "/sourcefile?fileId=%d"
+	deleteFileURI string = "/file?fileId=%d"
 )
 
 //---------------------------------------------------------------------

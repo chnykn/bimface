@@ -60,7 +60,7 @@ func CheckFileType(allSupportedType []string, fileName string) error {
 
 	for _, typ := range allSupportedType {
 		if suffix == strings.ToLower(typ) {
-			return fmt.Errorf("sourcefile type not supported")
+			return fmt.Errorf("file type not supported")
 		}
 	}
 
