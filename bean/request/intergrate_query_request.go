@@ -6,7 +6,8 @@
 package request
 
 type IntegrateQueryRequest struct {
-	AppKey string `json:"appKey,omitempty"` //应用的appKey 可选
+	AppKey    string `json:"appKey,omitempty"` //应用的appKey 可选
+	ProjectId int64  `json:"projectId,omitempty"`
 
 	FileName      string `json:"fileName,omitempty"` //单模型的名称 可选
 	SourceId      string `json:"sourceId,omitempty"`
