@@ -5,7 +5,6 @@
 package abstract
 
 import (
-	"bytes"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
@@ -57,9 +56,10 @@ func (o *Service) grantToken() (*authToken, error) {
 		return nil
 	})
 
-	buff := bytes.NewBuffer(nil)
+	//buff := bytes.NewBuffer(nil)
+	var buff []byte //也可以直接使用 *[]byte ，必须是指针
 
-	_, err := httpClnt.Post(o.Endpoint.APIHost+authTokenURI, httpkit.NewRespBody(buff))
+	_, err := httpClnt.Post(o.Endpoint.APIHost+authTokenURI, httpkit.NewRespBody(&buff))
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +67,8 @@ func (o *Service) grantToken() (*authToken, error) {
 	//----------
 
 	resp := new(tokenResp)
-	err = json.Unmarshal(buff.Bytes(), resp)
+	//err = json.Unmarshal(buff.Bytes(), resp)
+	err = json.Unmarshal(buff, resp)
 	if err != nil {
 		return nil, err
 	}
