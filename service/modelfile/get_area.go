@@ -1,4 +1,4 @@
-// Copyright 2019-2021 chnykn@gmail.com All rights reserved.
+// Copyright 2019-2023 chnykn@gmail.com All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -7,8 +7,7 @@ package modelfile
 import (
 	"fmt"
 
-	"github.com/chnykn/bimface/v2/bean/response"
-	"github.com/chnykn/bimface/v2/utils"
+	"github.com/chnykn/bimface/v3/bean/response"
 )
 
 const (
@@ -31,38 +30,18 @@ func (o *Service) getAreasURL(fileId int64) string {
 
 //------------------------------------------------------------------------------------
 
-//获取单个面积分区信息
+// 获取单个面积分区信息
 func (o *Service) GetArea(fileId int64, areaId string) (*response.AreaBean, error) {
-	accessToken, err := o.AccessTokenService.Get()
-	if err != nil {
-		return nil, err
-	}
-
-	headers := utils.NewHeaders()
-	headers.AddOAuth2Header(accessToken.Token)
-
-	resp := o.ServiceClient.Get(o.getAreaURL(fileId, areaId), headers.Header)
-
 	result := new(response.AreaBean)
-	err = utils.RespToBean(resp, result)
+	err := o.GET(o.getAreaURL(fileId, areaId), result)
 
 	return result, err
 }
 
-//获取楼层对应面积分区列表
+// 获取楼层对应面积分区列表
 func (o *Service) GetAreas(fileId int64) ([]*response.AreaBean, error) {
-	accessToken, err := o.AccessTokenService.Get()
-	if err != nil {
-		return nil, err
-	}
-
-	headers := utils.NewHeaders()
-	headers.AddOAuth2Header(accessToken.Token)
-
-	resp := o.ServiceClient.Get(o.getAreasURL(fileId), headers.Header)
-
 	result := make([]*response.AreaBean, 0)
-	err = utils.RespToBean(resp, &result)
+	err := o.GET(o.getAreasURL(fileId), &result)
 
 	return result, err
 }

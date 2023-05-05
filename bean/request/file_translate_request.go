@@ -1,4 +1,4 @@
-// Copyright 2019-2021 chnykn@gmail.com All rights reserved.
+// Copyright 2019-2023 chnykn@gmail.com All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -10,7 +10,7 @@ type TranslateSource struct {
 	RootName   string `json:"rootName,omitempty"`   //如果是压缩文件，必须指定压缩包中哪一个是主文件
 }
 
-//NewTranslateSource ***
+// NewTranslateSource ***
 func NewTranslateSource(fileId int64) *TranslateSource {
 	o := &TranslateSource{
 		FileId:     fileId,

@@ -1,4 +1,4 @@
-// Copyright 2019-2021 chnykn@gmail.com All rights reserved.
+// Copyright 2019-2023 chnykn@gmail.com All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -8,11 +8,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/imroc/req"
-
-	"github.com/chnykn/bimface/v2/bean/request"
-	"github.com/chnykn/bimface/v2/bean/response"
-	"github.com/chnykn/bimface/v2/utils"
+	"github.com/chnykn/bimface/v3/bean/request"
+	"github.com/chnykn/bimface/v3/bean/response"
+	"github.com/chnykn/httpkit"
 )
 
 const (
@@ -64,28 +62,21 @@ func (o *Service) treeURL(fileId int64, treeType string) string {
 
 //---------------------------------------------------------------------
 
-//获取构件分类树
-func (o *Service) GetElementTree(fileId int64, treeType string, treeRequest *request.FileTreeRequest) ([]*response.ElementNodeBean, error) {
-	accessToken, err := o.AccessTokenService.Get()
-	if err != nil {
-		return nil, err
-	}
+// 获取构件分类树
+func (o *Service) GetElementTree(fileId int64, treeType string,
+	treeRequest *request.FileTreeRequest) ([]*response.ElementNodeBean, error) {
 
-	headers := utils.NewHeaders()
-	headers.AddOAuth2Header(accessToken.Token)
-
-	treeType = strings.ToLower(treeType)
-
-	var resp *req.Resp
-	if (treeType == "customized") && (treeRequest != nil) {
-		body := req.BodyJSON(treeRequest)
-		resp = o.ServiceClient.Post(o.treeURL(fileId, treeType), body, headers.Header)
-	} else {
-		resp = o.ServiceClient.Post(o.treeURL(fileId, treeType), headers.Header)
-	}
+	var err error
 
 	result := make([]*response.ElementNodeBean, 0)
-	err = utils.RespToBean(resp, &result)
+	treeType = strings.ToLower(treeType)
+
+	if (treeType == "customized") && (treeRequest != nil) {
+		body := httpkit.JsonReqBody(treeRequest)
+		err = o.POST(o.treeURL(fileId, treeType), result, body)
+	} else {
+		err = o.POST(o.treeURL(fileId, treeType), result)
+	}
 
 	return result, err
 }

@@ -1,6 +1,24 @@
-*.log
+# Binaries for programs and plugins
 *.exe
+*.dll
+*.so
+
+# Logs
+logs
+*.log
+*.log*
+
+# Golang
+go.sum
+*.test
+vendor/
+
+# IDE files
+.idea
+*.suo
+*.sln
+
+# Other files
+/backup/
+*.zip
 *.rar
-/github.token
-/go.sum
-/.idea/

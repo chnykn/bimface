@@ -1,8 +1,4 @@
-// Copyright 2019-2021 chnykn@gmail.com All rights reserved.
-// Use of this source code is governed by a BSD-style
-// license that can be found in the LICENSE file.
-
-// Copyright 2019-2021 chnykn@gmail.com All rights reserved.
+// Copyright 2019-2023 chnykn@gmail.com All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -11,12 +7,9 @@ package integration
 import (
 	"fmt"
 
-	"github.com/imroc/req"
-
-	"github.com/chnykn/bimface/v2/bean"
-	"github.com/chnykn/bimface/v2/bean/request"
-	"github.com/chnykn/bimface/v2/bean/response"
-	"github.com/chnykn/bimface/v2/utils"
+	"github.com/chnykn/bimface/v3/bean/request"
+	"github.com/chnykn/bimface/v3/bean/response"
+	"github.com/chnykn/httpkit"
 )
 
 const (
@@ -48,86 +41,43 @@ func (o *Service) integrateDetailsURL() string {
 //---------------------------------------------------------------------
 
 func (o *Service) Integrate(integrateRequest *request.FileIntegrateRequest) (*response.FileIntegrateBean, error) {
-	accessToken, err := o.AccessTokenService.Get()
-	if err != nil {
-		return nil, err
-	}
-
-	headers := utils.NewHeaders()
-	headers.AddOAuth2Header(accessToken.Token)
-
-	body := req.BodyJSON(integrateRequest)
-	resp := o.ServiceClient.Put(o.integrateURL(), headers.Header, body)
-
 	result := new(response.FileIntegrateBean)
-	err = utils.RespToBean(resp, result)
+
+	body := httpkit.JsonReqBody(integrateRequest)
+	err := o.PUT(o.integrateURL(), result, body)
 
 	return result, err
 }
 
-//获取转换状态
+// 获取转换状态
 func (o *Service) GetStatus(integrateId int64) (*response.FileIntegrateBean, error) {
-	accessToken, err := o.AccessTokenService.Get()
-	if err != nil {
-		return nil, err
-	}
-
-	headers := utils.NewHeaders()
-	headers.AddOAuth2Header(accessToken.Token)
-
-	resp := o.ServiceClient.Get(o.integrateWithIdURL(integrateId), headers.Header)
-
 	result := new(response.FileIntegrateBean)
-	err = utils.RespToBean(resp, result)
+	err := o.GET(o.integrateWithIdURL(integrateId), result)
 
 	return result, err
 }
 
-//获取转换状态
-func (o *Service) Delete(integrateId int64) (string, error) {
-	accessToken, err := o.AccessTokenService.Get()
-	if err != nil {
-		return "", err
-	}
+// 获取转换状态
+func (o *Service) Delete(integrateId int64) error {
+	err := o.DELETE(o.integrateWithIdURL(integrateId), nil)
 
-	headers := utils.NewHeaders()
-	headers.AddOAuth2Header(accessToken.Token)
-
-	resp := o.ServiceClient.Delete(o.integrateWithIdURL(integrateId), headers.Header)
-
-	var result *bean.RespResult
-	result, err = utils.RespToResult(resp)
-
-	var ret string
-	if result != nil {
-		ret = result.Code
-	}
-
-	return ret, nil
+	return err
 }
 
 //---------------------------------------------------------------------
 
-//批量查询集成模型状态详情
+// 批量查询集成模型状态详情
 func (o *Service) GetDetails(queryRequest *request.IntegrateQueryRequest) (*response.FileIntegrateDetailBeanPageList, error) {
-	accessToken, err := o.AccessTokenService.Get()
-	if err != nil {
-		return nil, err
-	}
 
-	headers := utils.NewHeaders()
-	headers.AddOAuth2Header(accessToken.Token)
+	var err error
+	var result = new(response.FileIntegrateDetailBeanPageList)
 
-	var resp *req.Resp
 	if queryRequest != nil {
-		body := req.BodyJSON(queryRequest)
-		resp = o.ServiceClient.Post(o.integrateDetailsURL(), body, headers.Header)
+		body := httpkit.JsonReqBody(queryRequest)
+		err = o.POST(o.integrateDetailsURL(), result, body)
 	} else {
-		resp = o.ServiceClient.Post(o.integrateDetailsURL(), headers.Header)
+		err = o.POST(o.integrateDetailsURL(), result)
 	}
-
-	result := new(response.FileIntegrateDetailBeanPageList)
-	err = utils.RespToBean(resp, result)
 
 	return result, err
 }

@@ -1,4 +1,4 @@
-// Copyright 2019-2021 chnykn@gmail.com All rights reserved.
+// Copyright 2019-2023 chnykn@gmail.com All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -7,8 +7,7 @@ package integration
 import (
 	"fmt"
 
-	"github.com/chnykn/bimface/v2/bean/response"
-	"github.com/chnykn/bimface/v2/utils"
+	"github.com/chnykn/bimface/v3/bean/response"
 )
 
 const (
@@ -24,20 +23,10 @@ func (o *Service) getRoomURL(integrateId int64, roomId string) string {
 
 //------------------------------------------------------------------------------------
 
-//获取单个房间信息
+// 获取单个房间信息
 func (o *Service) GetRoom(integrateId int64, roomId string) (*response.RoomBean, error) {
-	accessToken, err := o.AccessTokenService.Get()
-	if err != nil {
-		return nil, err
-	}
-
-	headers := utils.NewHeaders()
-	headers.AddOAuth2Header(accessToken.Token)
-
-	resp := o.ServiceClient.Get(o.getRoomURL(integrateId, roomId), headers.Header)
-
 	result := new(response.RoomBean)
-	err = utils.RespToBean(resp, result)
+	err := o.GET(o.getRoomURL(integrateId, roomId), result)
 
 	return result, err
 }

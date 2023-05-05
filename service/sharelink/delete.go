@@ -1,4 +1,4 @@
-// Copyright 2019-2021 chnykn@gmail.com All rights reserved.
+// Copyright 2019-2023 chnykn@gmail.com All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -8,9 +8,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/chnykn/bimface/v2/bean"
-	"github.com/chnykn/bimface/v2/bean/response"
-	"github.com/chnykn/bimface/v2/utils"
+	"github.com/chnykn/bimface/v3/bean/response"
 )
 
 func (o *Service) deleteShareLinkURI(isFile bool, objectId int64) string {
@@ -27,36 +25,20 @@ func (o *Service) deleteShareLinkURI(isFile bool, objectId int64) string {
 
 //----------------------------------------------
 
-func (o *Service) doDeleteShareLink(isFile bool, objectId int64) (string, error) {
-	accessToken, err := o.AccessTokenService.Get()
-	if err != nil {
-		return "", err
-	}
-
-	headers := utils.NewHeaders()
-	headers.AddOAuth2Header(accessToken.Token)
-
+func (o *Service) doDeleteShareLink(isFile bool, objectId int64) error {
 	url := o.deleteShareLinkURI(isFile, objectId)
-	resp := o.ServiceClient.Delete(url, headers.Header)
+	err := o.DELETE(url, nil)
 
-	var result *bean.RespResult
-	result, err = utils.RespToResult(resp)
-
-	var ret string
-	if result != nil {
-		ret = result.Code
-	}
-
-	return ret, nil
+	return err
 }
 
-//取消模型文件的分享链接
-func (o *Service) DeleteFileShareLink(fileId int64) (string, error) {
+// 取消模型文件的分享链接
+func (o *Service) DeleteFileShareLink(fileId int64) error {
 	return o.doDeleteShareLink(true, fileId)
 }
 
-//取消模型集成的分享链接
-func (o *Service) DeleteIntegrateShareLink(integrateId int64) (string, error) {
+// 取消模型集成的分享链接
+func (o *Service) DeleteIntegrateShareLink(integrateId int64) error {
 	return o.doDeleteShareLink(false, integrateId)
 }
 
@@ -66,14 +48,6 @@ func (o *Service) DeleteShareLinks(sourceIds []int64) (*response.BatchDeleteResu
 	if len(sourceIds) <= 0 {
 		return nil, fmt.Errorf("sourceIds is null")
 	}
-
-	accessToken, err := o.AccessTokenService.Get()
-	if err != nil {
-		return nil, err
-	}
-
-	headers := utils.NewHeaders()
-	headers.AddOAuth2Header(accessToken.Token)
 
 	//--------------
 
@@ -87,15 +61,10 @@ func (o *Service) DeleteShareLinks(sourceIds []int64) (*response.BatchDeleteResu
 			sids = sids + "%2C"
 		}
 	}
-	sids = sids
-
 	url = url + sids
-	resp := o.ServiceClient.Delete(url, headers.Header)
-
-	//--------------
 
 	result := new(response.BatchDeleteResultBean)
-	err = utils.RespToBean(resp, result)
+	err := o.DELETE(url, result)
 
 	return result, err
 }

@@ -1,4 +1,4 @@
-// Copyright 2019-2021 chnykn@gmail.com All rights reserved.
+// Copyright 2019-2023 chnykn@gmail.com All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -7,10 +7,8 @@ package integration
 import (
 	"fmt"
 
-	"github.com/imroc/req"
-
-	"github.com/chnykn/bimface/v2/bean/response"
-	"github.com/chnykn/bimface/v2/utils"
+	"github.com/chnykn/bimface/v3/bean/response"
+	"github.com/chnykn/httpkit"
 )
 
 const (
@@ -32,24 +30,16 @@ func (o *Service) boundingBoxesURL(integrateId int64) string {
 ]
 */
 func (o *Service) GetBoundingBoxes(integrateId int64, fileIdWithEleIdList []string) ([]*response.ElementBoundingBoxBean, error) {
-	accessToken, err := o.AccessTokenService.Get()
-	if err != nil {
-		return nil, err
-	}
 
-	headers := utils.NewHeaders()
-	headers.AddOAuth2Header(accessToken.Token)
+	var err error
+	var result = make([]*response.ElementBoundingBoxBean, 0)
 
-	var resp *req.Resp
 	if len(fileIdWithEleIdList) > 0 {
-		body := req.BodyJSON(fileIdWithEleIdList)
-		resp = o.ServiceClient.Get(o.boundingBoxesURL(integrateId), body, headers.Header)
+		body := httpkit.JsonReqBody(fileIdWithEleIdList)
+		err = o.GET(o.boundingBoxesURL(integrateId), result, body)
 	} else {
-		resp = o.ServiceClient.Get(o.boundingBoxesURL(integrateId), headers.Header)
+		err = o.GET(o.boundingBoxesURL(integrateId), result)
 	}
-
-	result := make([]*response.ElementBoundingBoxBean, 0)
-	err = utils.RespToBean(resp, &result)
 
 	return result, err
 }

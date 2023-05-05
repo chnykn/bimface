@@ -1,10 +1,14 @@
+// Copyright 2019-2023 chnykn@gmail.com All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
 package comparison
 
 import (
 	"fmt"
-	"github.com/chnykn/bimface/v2/bean/response"
-	"github.com/chnykn/bimface/v2/utils"
 	"strconv"
+
+	"github.com/chnykn/bimface/v3/bean/response"
 )
 
 const (
@@ -70,44 +74,26 @@ func (o *Service) drawingCompareDiffURL(compareId int64, layer string, page, pag
 
 //------------------------------------------------------------------------------------
 
-//分页获取模型对比结果  compareId必填，其他选填
+// 分页获取模型对比结果  compareId必填，其他选填
 func (o *Service) GetModelCompareDiff(compareId int64, family, elementName string,
 	page, pageSize int) (*response.ModelCompareDiffsBean, error) {
 
-	accessToken, err := o.AccessTokenService.Get()
-	if err != nil {
-		return nil, err
-	}
-
-	headers := utils.NewHeaders()
-	headers.AddOAuth2Header(accessToken.Token)
+	result := new(response.ModelCompareDiffsBean)
 
 	url := o.modelCompareDiffURL(compareId, family, elementName, page, pageSize)
-	resp := o.ServiceClient.Get(url, headers.Header)
-
-	result := new(response.ModelCompareDiffsBean)
-	err = utils.RespToBean(resp, result)
+	err := o.GET(url, result)
 
 	return result, err
 }
 
-//分页获取图纸对比结果  compareId必填，其他选填
+// 分页获取图纸对比结果  compareId必填，其他选填
 func (o *Service) GetDrawingCompareDiff(compareId int64, layer string,
 	page, pageSize int) (*response.DrawingCompareDiffsBean, error) {
 
-	accessToken, err := o.AccessTokenService.Get()
-	if err != nil {
-		return nil, err
-	}
-
-	headers := utils.NewHeaders()
-	headers.AddOAuth2Header(accessToken.Token)
+	result := new(response.DrawingCompareDiffsBean)
 
 	url := o.drawingCompareDiffURL(compareId, layer, page, pageSize)
-	resp := o.ServiceClient.Get(url, headers.Header)
-
-	result := new(response.DrawingCompareDiffsBean)
-	err = utils.RespToBean(resp, result)
+	err := o.GET(url, result)
 
 	return result, err
 }

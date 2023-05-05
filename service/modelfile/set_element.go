@@ -1,13 +1,14 @@
+// Copyright 2019-2023 chnykn@gmail.com All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
 package modelfile
 
 import (
 	"fmt"
 
-	"github.com/imroc/req"
-
-	"github.com/chnykn/bimface/v2/bean"
-	"github.com/chnykn/bimface/v2/bean/common"
-	"github.com/chnykn/bimface/v2/utils"
+	"github.com/chnykn/bimface/v3/bean/common"
+	"github.com/chnykn/httpkit"
 )
 
 const (
@@ -24,44 +25,31 @@ func (o *Service) elementModifyPropertiesURL(fileId int64, elementId string) str
 	return fmt.Sprintf(o.Endpoint.APIHost+elementModifyPropertiesURI, fileId, elementId)
 }
 
-func (o *Service) modifyElementProperties(fileId int64, elementId string, properties []*common.PropertyGroup, isDelete bool) (string, error) {
+func (o *Service) modifyElementProperties(fileId int64, elementId string,
+	properties []*common.PropertyGroup, isDelete bool) error {
+
 	if len(properties) <= 0 {
-		return "", fmt.Errorf("properties is nil")
+		return fmt.Errorf("properties is nil")
 	}
 
-	accessToken, err := o.AccessTokenService.Get()
-	if err != nil {
-		return "", err
-	}
+	var err error
+	var body = httpkit.JsonReqBody(properties)
 
-	headers := utils.NewHeaders()
-	headers.AddOAuth2Header(accessToken.Token)
-
-	body := req.BodyJSON(properties)
-	var resp *req.Resp
 	if isDelete {
-		resp = o.ServiceClient.Delete(o.elementModifyPropertiesURL(fileId, elementId), body, headers.Header)
+		err = o.DELETE(o.elementModifyPropertiesURL(fileId, elementId), nil, body)
 	} else {
-		resp = o.ServiceClient.Put(o.elementModifyPropertiesURL(fileId, elementId), body, headers.Header)
+		err = o.PUT(o.elementModifyPropertiesURL(fileId, elementId), nil, body)
 	}
 
-	var result *bean.RespResult
-	result, err = utils.RespToResult(resp)
-
-	var ret string
-	if result != nil {
-		ret = result.Code
-	}
-
-	return ret, nil
+	return err
 }
 
-//修改单模型指定构件的属性
-func (o *Service) SetElementProperties(fileId int64, elementId string, properties []*common.PropertyGroup) (string, error) {
+// 修改单模型指定构件的属性
+func (o *Service) SetElementProperties(fileId int64, elementId string, properties []*common.PropertyGroup) error {
 	return o.modifyElementProperties(fileId, elementId, properties, false)
 }
 
-//删除单模型指定构件的属性
-func (o *Service) DeleteElementProperties(fileId int64, elementId string, properties []*common.PropertyGroup) (string, error) {
+// 删除单模型指定构件的属性
+func (o *Service) DeleteElementProperties(fileId int64, elementId string, properties []*common.PropertyGroup) error {
 	return o.modifyElementProperties(fileId, elementId, properties, true)
 }

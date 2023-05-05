@@ -7,7 +7,7 @@ package response
 import (
 	"fmt"
 
-	"github.com/chnykn/bimface/v2/bean/common"
+	"github.com/chnykn/bimface/v3/bean/common"
 )
 
 type ShareLinkBean struct {

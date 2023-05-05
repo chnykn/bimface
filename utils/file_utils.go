@@ -1,4 +1,4 @@
-// Copyright 2019-2021 chnykn@gmail.com All rights reserved.
+// Copyright 2019-2023 chnykn@gmail.com All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -32,7 +32,7 @@ func getSuffix(fileName string) string {
 	return suffix
 }
 
-//CheckFileName ***
+// CheckFileName ***
 func CheckFileName(fileName string) error {
 	if fileName == "" {
 		return fmt.Errorf("file name must not be empty")
@@ -54,7 +54,7 @@ func CheckFileName(fileName string) error {
 	return nil
 }
 
-//CheckFileType ***
+// CheckFileType ***
 func CheckFileType(allSupportedType []string, fileName string) error {
 	suffix := strings.ToLower(getSuffix(fileName))
 

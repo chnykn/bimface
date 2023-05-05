@@ -1,31 +1,29 @@
-// Copyright 2019-2021 chnykn@gmail.com All rights reserved.
+// Copyright 2019-2023 chnykn@gmail.com All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
 package bean
 
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
 
-const (
-	//CodeSuccess ***
-	CodeSuccess = "success"
-	//DateFormat ***
-	DateFormat = "yyyy-MM-dd HH:mm:ss" //2006-01-02 15:04:05
+	"github.com/chnykn/bimface/v3/consts"
 )
 
-//RespResult ***
+// RespResult ***
 type RespResult struct {
-	Code    string `json:"code"` // = "success"
-	Message string `json:"message"`
-	//Data    interface{} //Data is bean.response.Xxx
+	Code    string          `json:"code"` // = "success"
+	Message string          `json:"message,omitempty"`
+	Data    json.RawMessage `json:"data,omitempty"` //Data is bean.response.Xxx
 }
 
 // NewRespResult ***
-func NewRespResult(data interface{}) *RespResult {
+func NewRespResult() *RespResult {
 	o := &RespResult{
-		Code:    CodeSuccess,
+		Code:    consts.SUCCESS,
 		Message: "",
-		//Data:    data,
+		Data:    nil,
 	}
 
 	return o

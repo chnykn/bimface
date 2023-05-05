@@ -1,4 +1,4 @@
-// Copyright 2019-2021 chnykn@gmail.com All rights reserved.
+// Copyright 2019-2023 chnykn@gmail.com All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -8,11 +8,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/imroc/req"
-
-	"github.com/chnykn/bimface/v2/bean/request"
-	"github.com/chnykn/bimface/v2/bean/response"
-	"github.com/chnykn/bimface/v2/utils"
+	"github.com/chnykn/bimface/v3/bean/request"
+	"github.com/chnykn/bimface/v3/bean/response"
+	"github.com/chnykn/httpkit"
 )
 
 const (
@@ -68,23 +66,15 @@ func (o *Service) treeURL(integrateId int64, treeType string, hierarchies []stri
 
 //---------------------------------------------------------------------
 
-//获取构件分类树
-func (o *Service) GetElementTree(integrateId int64, treeType string, hierarchies []string, treeRequest *request.IntegrationTreeOptionalRequest) (*response.ElementNodeTree, error) {
-	accessToken, err := o.AccessTokenService.Get()
-	if err != nil {
-		return nil, err
-	}
-
-	headers := utils.NewHeaders()
-	headers.AddOAuth2Header(accessToken.Token)
+// 获取构件分类树
+func (o *Service) GetElementTree(integrateId int64, treeType string, hierarchies []string,
+	treeRequest *request.IntegrationTreeOptionalRequest) (*response.ElementNodeTree, error) {
 
 	treeType = strings.ToLower(treeType)
-
-	body := req.BodyJSON(treeRequest)
-	resp := o.ServiceClient.Post(o.treeURL(integrateId, treeType, hierarchies), body, headers.Header)
-
 	result := new(response.ElementNodeTree)
-	err = utils.RespToBean(resp, result)
+
+	body := httpkit.JsonReqBody(treeRequest)
+	err := o.POST(o.treeURL(integrateId, treeType, hierarchies), result, body)
 
 	return result, err
 }

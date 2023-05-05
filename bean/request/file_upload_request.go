@@ -1,4 +1,4 @@
-// Copyright 2019-2021 chnykn@gmail.com All rights reserved.
+// Copyright 2019-2023 chnykn@gmail.com All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 //
@@ -14,7 +14,7 @@ type FileUploadRequest struct {
 	SourceId string `json:"sourceId,omitempty"`
 }
 
-//IsByURL ***
+// IsByURL ***
 func (o *FileUploadRequest) IsByURL() bool {
 	return (o.URL != "")
 }

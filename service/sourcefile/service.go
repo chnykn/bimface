@@ -1,35 +1,24 @@
-// Copyright 2019-2021 chnykn@gmail.com All rights reserved.
+// Copyright 2019-2023 chnykn@gmail.com All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
 package sourcefile
 
 import (
-	"github.com/chnykn/bimface/v2/bean/response"
-	"github.com/chnykn/bimface/v2/config"
-	"github.com/chnykn/bimface/v2/service"
-	"github.com/chnykn/bimface/v2/utils"
+	"github.com/chnykn/bimface/v3/bean/response"
+	"github.com/chnykn/bimface/v3/service/abstract"
 )
 
-//Service ***
+// Service ***
 type Service struct {
-	service.AbstractService //base class
-	AccessTokenService      *service.AccessTokenService
-
-	supportFile *response.FileSupportBean
+	*abstract.Service //base class
+	supportFile       *response.FileSupportBean
 }
 
-//NewService ***
-func NewService(serviceClient *utils.ServiceClient, endpoint *config.Endpoint,
-	accessTokenService *service.AccessTokenService) *Service {
-	o := &Service{
-		AbstractService: service.AbstractService{
-			Endpoint:      endpoint,
-			ServiceClient: serviceClient, //utils.NewServiceClient(),
-		},
-		AccessTokenService: accessTokenService,
-		supportFile:        nil,
+// NewService ***
+func NewService(absService *abstract.Service) *Service {
+	return &Service{
+		Service:     absService,
+		supportFile: nil,
 	}
-
-	return o
 }

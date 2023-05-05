@@ -1,4 +1,4 @@
-// Copyright 2019-2021 chnykn@gmail.com All rights reserved.
+// Copyright 2019-2023 chnykn@gmail.com All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -7,11 +7,10 @@ package databag
 import (
 	"fmt"
 
-	"github.com/imroc/req"
-
-	"github.com/chnykn/bimface/v2/bean/request"
-	"github.com/chnykn/bimface/v2/bean/response"
-	"github.com/chnykn/bimface/v2/utils"
+	"github.com/chnykn/bimface/v3/bean/request"
+	"github.com/chnykn/bimface/v3/bean/response"
+	"github.com/chnykn/bimface/v3/utils"
+	"github.com/chnykn/httpkit"
 )
 
 const (
@@ -19,7 +18,7 @@ const (
 	downloadDataBagURI string = "/data/databag/downloadUrl?%s=%d&type=offline" //&databagVersion=%s
 )
 
-//---------------------------------------------------------------------
+// ---------------------------------------------------------------------
 // kind must in [files, integrations, comparisions]
 func (o *Service) dataBagURL(kind string, objectId int64, callback string) string {
 	result := fmt.Sprintf(o.Endpoint.APIHost+dataBagURI, kind, objectId)
@@ -29,7 +28,7 @@ func (o *Service) dataBagURL(kind string, objectId int64, callback string) strin
 	return result
 }
 
-//dataBagVersion : 数据包版本，如果只有一个，则下载唯一的数据包，如果多个，则必须指定数据包版本
+// dataBagVersion : 数据包版本，如果只有一个，则下载唯一的数据包，如果多个，则必须指定数据包版本
 func (o *Service) downloadDataBagURL(kind string, objectId int64, dataBagVersion string) string {
 	result := fmt.Sprintf(o.Endpoint.APIHost+downloadDataBagURI, kind, objectId)
 	if dataBagVersion != "" {
@@ -62,27 +61,17 @@ func (o *Service) MakeDataBag(dataBagRequest *request.DataBagRequest, keepModelD
 		return nil, fmt.Errorf("url is null @ DataBagService.MakeDataBag")
 	}
 
-	accessToken, err := o.AccessTokenService.Get()
-	if err != nil {
-		return nil, err
-	}
-
-	headers := utils.NewHeaders()
-	headers.AddOAuth2Header(accessToken.Token)
-
 	var reqBody *request.DataBagDerivativeRequest
 	if keepModelDB {
 		reqBody = request.NewDataBagDerivativeRequest()
 		reqBody.Config["keepModel"] = "true"
 		reqBody.Config["keepDB"] = "true"
 	}
-	body := req.BodyJSON(reqBody)
 
-	resp := o.ServiceClient.Put(url, headers.Header, body)
-
+	body := httpkit.JsonReqBody(reqBody)
 	result := new(response.DataBagBean)
-	err = utils.RespToBean(resp, result)
 
+	err := o.PUT(url, result, body)
 	return result, err
 }
 
@@ -109,23 +98,10 @@ func (o *Service) GetStatus(dataBagRequest *request.DataBagRequest) ([]*response
 		return nil, fmt.Errorf("url is null @ DataBagService.GetDataBagStatus")
 	}
 
-	accessToken, err := o.AccessTokenService.Get()
-	if err != nil {
-		return nil, err
-	}
-
-	headers := utils.NewHeaders()
-	headers.AddOAuth2Header(accessToken.Token)
-
-	resp := o.ServiceClient.Get(url, headers.Header)
-
 	result := make([]*response.DataBagBean, 0)
-	err = utils.RespToBean(resp, &result)
-	if err != nil {
-		return nil, err
-	}
+	err := o.GET(url, &result)
 
-	return result, nil
+	return result, err
 }
 
 //-------------------------------------------------------------------------------
@@ -153,22 +129,8 @@ func (o *Service) GetDownloadURL(dataBagRequest *request.DataBagRequest) (string
 		return "", fmt.Errorf("url is null @ DataBagService.GetDataBagDownloadURL")
 	}
 
-	accessToken, err := o.AccessTokenService.Get()
-	if err != nil {
-		return "", err
-	}
-
-	headers := utils.NewHeaders()
-	headers.AddOAuth2Header(accessToken.Token)
-
-	resp := o.ServiceClient.Get(url, headers.Header)
-
 	result := new(string)
-	err = utils.RespToBean(resp, result)
+	err := o.GET(url, result)
 
-	if err != nil {
-		return "", err
-	}
-
-	return *result, nil
+	return *result, err
 }

@@ -1,4 +1,4 @@
-// Copyright 2019-2021 chnykn@gmail.com All rights reserved.
+// Copyright 2019-2023 chnykn@gmail.com All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -7,8 +7,7 @@ package integration
 import (
 	"fmt"
 
-	"github.com/chnykn/bimface/v2/bean/response"
-	"github.com/chnykn/bimface/v2/utils"
+	"github.com/chnykn/bimface/v3/bean/response"
 )
 
 const (
@@ -36,24 +35,10 @@ func (o *Service) floorsURL(integrateId int64, includeArea, includeRoom bool) st
 
 //---------------------------------------------------------------------
 
-//获取单模型的楼层信息
+// 获取单模型的楼层信息
 func (o *Service) GetFloors(integrateId int64, includeArea, includeRoom bool) ([]*response.FloorBean, error) {
-
-	accessToken, err := o.AccessTokenService.Get()
-	if err != nil {
-		return nil, err
-	}
-
-	headers := utils.NewHeaders()
-	headers.AddOAuth2Header(accessToken.Token)
-
-	resp := o.ServiceClient.Get(o.floorsURL(integrateId, includeArea, includeRoom), headers.Header)
-
 	result := make([]*response.FloorBean, 0)
-	err = utils.RespToBean(resp, &result)
-	if err != nil {
-		return nil, err
-	}
+	err := o.GET(o.floorsURL(integrateId, includeArea, includeRoom), result)
 
-	return result, nil
+	return result, err
 }

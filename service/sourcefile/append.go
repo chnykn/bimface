@@ -1,4 +1,4 @@
-// Copyright 2019-2021 chnykn@gmail.com All rights reserved.
+// Copyright 2019-2023 chnykn@gmail.com All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -10,8 +10,9 @@ import (
 	"fmt"
 	"mime/multipart"
 
-	"github.com/chnykn/bimface/v2/bean/response"
-	"github.com/chnykn/bimface/v2/utils"
+	"github.com/chnykn/bimface/v3/bean/response"
+	"github.com/chnykn/bimface/v3/utils"
+	"github.com/chnykn/httpkit"
 )
 
 const (
@@ -55,12 +56,6 @@ func (o *Service) createAppendFile(fileName string, length int64, sourceId strin
 		return nil, err
 	}
 
-	var accessToken *response.AccessTokenBean
-	accessToken, err = o.AccessTokenService.Get()
-	if err != nil {
-		return nil, err
-	}
-
 	var supportFile *response.FileSupportBean
 	supportFile, err = o.GetSupportFile()
 	if err != nil {
@@ -72,46 +67,21 @@ func (o *Service) createAppendFile(fileName string, length int64, sourceId strin
 		return nil, err
 	}
 
-	headers := utils.NewHeaders()
-	headers.AddOAuth2Header(accessToken.Token)
-
-	resp := o.ServiceClient.Post(o.createAppendFileURL(fileName, length, sourceId), headers.Header)
-
 	result := new(response.AppendFileBean)
-	err = utils.RespToBean(resp, result)
+	err = o.POST(o.createAppendFileURL(fileName, length, sourceId), result)
 
 	return result, err
 }
 
-//断点续传: 查询追加文件信息
-/***
-字段			类型	必填	描述
-appendFileId	Number	Y	append sourcefile id
-***/
-func (o *Service) GetAppendFileWithAccessToken(appendFileId int64, token string) (*response.AppendFileBean, error) {
-	headers := utils.NewHeaders()
-	headers.AddOAuth2Header(token)
-
-	resp := o.ServiceClient.Get(o.getAppendFileURL(appendFileId), headers.Header)
-
-	result := new(response.AppendFileBean)
-	err := utils.RespToBean(resp, result)
-
-	return result, err
-}
-
-//GetAppendFile same to GetAppendFileWithAccessToken
+//GetAppendFile same to GetAppendFile
 /***
 字段			类型	必填	描述
 appendFileId	Number	Y	append sourcefile id
 ***/
 func (o *Service) GetAppendFile(appendFileId int64) (*response.AppendFileBean, error) {
-	accessToken, err := o.AccessTokenService.Get()
-	if err != nil {
-		return nil, err
-	}
-
-	return o.GetAppendFileWithAccessToken(appendFileId, accessToken.Token)
+	result := new(response.AppendFileBean)
+	err := o.GET(o.getAppendFileURL(appendFileId), result)
+	return result, err
 }
 
 //断点续传: 追加上传
@@ -121,13 +91,8 @@ appendFileId	Number	Y	追加文件id
 position		Number	N	追加上传开始位置，默认为0
 ***/
 func (o *Service) UploadAppendFile(file *multipart.FileHeader, appendFileId int64) (*response.AppendFileBean, error) {
-	accessToken, err := o.AccessTokenService.Get()
-	if err != nil {
-		return nil, err
-	}
 
-	var appendFile *response.AppendFileBean
-	appendFile, err = o.GetAppendFileWithAccessToken(appendFileId, accessToken.Token)
+	appendFile, err := o.GetAppendFile(appendFileId)
 	if err != nil {
 		return nil, err
 	}
@@ -141,18 +106,15 @@ func (o *Service) UploadAppendFile(file *multipart.FileHeader, appendFileId int6
 	defer data.Close()
 
 	len1 := file.Size - appendFile.Position
-	buf := make([]byte, len1)
-	_, _ = data.ReadAt(buf, appendFile.Position)
+	fileBytes := make([]byte, len1)
+	_, _ = data.ReadAt(fileBytes, appendFile.Position)
 
 	//------------------------------
 
-	headers := utils.NewHeaders()
-	headers.AddOAuth2Header(accessToken.Token)
-
-	resp := o.ServiceClient.Post(o.uploadAppendFileURL(appendFileId, appendFile.Position), headers.Header, buf)
-
 	result := new(response.AppendFileBean)
-	err = utils.RespToBean(resp, result)
+	err = o.POST(o.uploadAppendFileURL(appendFileId, appendFile.Position),
+		result,
+		httpkit.BytesReqBody(fileBytes))
 
 	return result, err
 }

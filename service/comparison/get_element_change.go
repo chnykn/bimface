@@ -1,10 +1,13 @@
+// Copyright 2019-2023 chnykn@gmail.com All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
 package comparison
 
 import (
 	"fmt"
 
-	"github.com/chnykn/bimface/v2/bean/response"
-	"github.com/chnykn/bimface/v2/utils"
+	"github.com/chnykn/bimface/v3/bean/response"
 )
 
 const (
@@ -15,19 +18,10 @@ const (
 func (o *Service) GetElementChange(compareId int64, previousFileId int64, previousElementId string,
 	followingFileId int64, followingElementId string) (*response.ModelCompareChangeBean, error) {
 
-	accessToken, err := o.AccessTokenService.Get()
-	if err != nil {
-		return nil, err
-	}
-
-	headers := utils.NewHeaders()
-	headers.AddOAuth2Header(accessToken.Token)
+	result := new(response.ModelCompareChangeBean)
 
 	url := fmt.Sprintf(o.Endpoint.APIHost+elementChangeURI, compareId, previousFileId, previousElementId, followingFileId, followingElementId)
-	resp := o.ServiceClient.Get(url, headers.Header)
-
-	result := new(response.ModelCompareChangeBean)
-	err = utils.RespToBean(resp, result)
+	err := o.GET(url, result)
 
 	return result, err
 }

@@ -1,4 +1,4 @@
-// Copyright 2019-2021 chnykn@gmail.com All rights reserved.
+// Copyright 2019-2023 chnykn@gmail.com All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -8,11 +8,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/imroc/req"
-
-	"github.com/chnykn/bimface/v2/bean/request"
-	"github.com/chnykn/bimface/v2/bean/response"
-	"github.com/chnykn/bimface/v2/utils"
+	"github.com/chnykn/bimface/v3/bean/request"
+	"github.com/chnykn/bimface/v3/bean/response"
+	"github.com/chnykn/httpkit"
 )
 
 const (
@@ -71,27 +69,13 @@ func (o *Service) elementsPropertiesURL(fileId int64, includeOverrides bool) str
 
 //-----------------------------------------------------------------------------------
 
-//查询满足条件的构件ID列表
-//必填参数: fileId  params相关参数，详见 http://static.bimface.com/restful-apidoc/dist/translateSingleModel.html#_getelementidsusingget
-func (o *Service) GetElementIdsWithParams(fileId int64, params req.QueryParam) ([]string, error) {
-
-	accessToken, err := o.AccessTokenService.Get()
-	if err != nil {
-		return nil, err
-	}
-
-	headers := utils.NewHeaders()
-	headers.AddOAuth2Header(accessToken.Token)
-
-	resp := o.ServiceClient.Get(o.elementIdsURL(fileId), params, headers.Header)
-
+// 查询满足条件的构件ID列表
+// 必填参数: fileId  params相关参数，详见 http://static.bimface.com/restful-apidoc/dist/translateSingleModel.html#_getelementidsusingget
+func (o *Service) GetElementIdsWithParams(fileId int64, params map[string]string) ([]string, error) {
 	result := make([]string, 0)
-	err = utils.RespToBean(resp, &result)
-	if err != nil {
-		return nil, err
-	}
+	err := o.GET(o.elementIdsURL(fileId), &result, httpkit.NewReqQuery(params))
 
-	return result, nil
+	return result, err
 }
 
 //查询满足条件的构件ID列表
@@ -109,7 +93,7 @@ familyType	String	N	族类型
 func (o *Service) GetElementIds(fileId int64, floor, specialty, categoryId,
 	family, familyType string) ([]string, error) {
 
-	params := make(req.QueryParam)
+	params := make(map[string]string)
 	if floor != "" {
 		params["floor"] = floor
 	}
@@ -131,57 +115,28 @@ func (o *Service) GetElementIds(fileId int64, floor, specialty, categoryId,
 
 //------------------------------------------------------------------------------------
 
-//获取构件属性
+// 获取构件属性
 func (o *Service) GetElementProperties(fileId int64, elementId string, includeOverrides bool) (*response.PropertyBean, error) {
-	accessToken, err := o.AccessTokenService.Get()
-	if err != nil {
-		return nil, err
-	}
-
-	headers := utils.NewHeaders()
-	headers.AddOAuth2Header(accessToken.Token)
-
-	resp := o.ServiceClient.Get(o.elementPropertiesURL(fileId, elementId, includeOverrides), headers.Header)
-
 	result := new(response.PropertyBean)
-	err = utils.RespToBean(resp, result)
+	err := o.GET(o.elementPropertiesURL(fileId, elementId, includeOverrides), result)
 
 	return result, err
 }
 
-//获取多个构件的共同属性
+// 获取多个构件的共同属性
 func (o *Service) GetElementCommonProperties(fileId int64, elementIds []string, includeOverrides bool) (*response.PropertyBean, error) {
-	accessToken, err := o.AccessTokenService.Get()
-	if err != nil {
-		return nil, err
-	}
-
-	headers := utils.NewHeaders()
-	headers.AddOAuth2Header(accessToken.Token)
-
-	resp := o.ServiceClient.Get(o.elementCommonPropertiesURL(fileId, elementIds, includeOverrides), headers.Header)
-
 	result := new(response.PropertyBean)
-	err = utils.RespToBean(resp, result)
+	err := o.GET(o.elementCommonPropertiesURL(fileId, elementIds, includeOverrides), result)
 
 	return result, err
 }
 
-//批量获取构件属性
+// 批量获取构件属性
 func (o *Service) GetElementsProperties(fileId int64, filterRequest *request.PropertyFilterRequest, includeOverrides bool) ([]*response.PropertyBean, error) {
-	accessToken, err := o.AccessTokenService.Get()
-	if err != nil {
-		return nil, err
-	}
-
-	headers := utils.NewHeaders()
-	headers.AddOAuth2Header(accessToken.Token)
-
-	body := req.BodyJSON(filterRequest)
-	resp := o.ServiceClient.Post(o.elementsPropertiesURL(fileId, includeOverrides), body, headers.Header)
-
 	result := make([]*response.PropertyBean, 0)
-	err = utils.RespToBean(resp, &result)
+
+	body := httpkit.JsonReqBody(filterRequest)
+	err := o.POST(o.elementsPropertiesURL(fileId, includeOverrides), &result, body)
 
 	return result, err
 }

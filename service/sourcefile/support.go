@@ -1,19 +1,24 @@
-// Copyright 2019-2021 chnykn@gmail.com All rights reserved.
+// Copyright 2019-2023 chnykn@gmail.com All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
 package sourcefile
 
 import (
-	"github.com/chnykn/bimface/v2/bean/response"
-	"github.com/chnykn/bimface/v2/utils"
+	"github.com/chnykn/bimface/v3/bean/response"
 )
 
 const supportFileURI = "/support"
 
 var defSupportFile = &response.FileSupportBean{
-	Length: 13,
-	Types:  []string{"rvt", "rfa", "dwg", "dxf", "skp", "ifc", "dgn", "obj", "stl", "3ds", "dae", "ply", "igms"},
+	Length: 50,
+	Types: []string{
+		"3dm", "3ds", "3dxml", "asm", "catpart", "catproduct", "dae", "dgn", "dwf", "dwfx",
+		"dwg", "dxf", "fbx", "gbg", "gbq", "gcl", "gdq", "ggj", "gjg", "gmp",
+		"gpb", "gpv", "gqi", "gsc", "gsh", "gtb", "gtj", "gzb", "iam", "ifc",
+		"igms", "ipt", "jt", "nwc", "nwd", "obj", "osgb", "ply", "prt", "rfa",
+		"rte", "rvm", "rvt", "shp", "skp", "sldasm", "sldprt", "step", "stl", "stp",
+	},
 }
 
 //---------------------------------------------------------------------
@@ -22,7 +27,7 @@ func (o *Service) supportFileURL() string {
 	return o.Endpoint.FileHost + supportFileURI
 }
 
-//GetSupportFile ***
+// GetSupportFile ***
 func (o *Service) GetSupportFile() (*response.FileSupportBean, error) {
 
 	if o.supportFile != nil {
@@ -31,18 +36,8 @@ func (o *Service) GetSupportFile() (*response.FileSupportBean, error) {
 
 	//---------------------
 
-	accessToken, err := o.AccessTokenService.Get()
-	if err != nil {
-		return nil, err
-	}
-
-	headers := utils.NewHeaders()
-	headers.AddOAuth2Header(accessToken.Token)
-
-	resp := o.ServiceClient.Get(o.supportFileURL(), headers.Header)
-
 	result := new(response.FileSupportBean)
-	err = utils.RespToBean(resp, result)
+	err := o.GET(o.supportFileURL(), result)
 
 	if err == nil {
 		o.supportFile = result

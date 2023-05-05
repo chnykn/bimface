@@ -1,10 +1,10 @@
-// Copyright 2019-2021 chnykn@gmail.com All rights reserved.
+// Copyright 2019-2023 chnykn@gmail.com All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
 package common
 
-//TreeNode ***
+// TreeNode ***
 type TreeNode struct {
 	Id           string      `json:"id"`
 	Type         string      `json:"type"`
@@ -23,7 +23,7 @@ type TreeNode struct {
 	ExData interface{} `json:"-"`
 }
 
-//NewTreeNode ***
+// NewTreeNode ***
 func NewTreeNode() *TreeNode {
 	o := &TreeNode{
 		// Type: typ
