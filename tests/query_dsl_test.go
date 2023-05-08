@@ -11,20 +11,20 @@ import (
 
 func TestQueryDSL(t *testing.T) {
 
-	dsl := request.QueryDSLRequest{
+	dsl := request.QueryRequest{
 		TargetType: "file",
 		TargetIds:  []string{"1124890692330272"},
-		Query: request.BoolOp{
+		Query: request.Condition{
 			Contain: map[string]any{"floor": "B01", "familyType": "标准"},
 			Match:   map[string]any{"family": "family1"},
-			BoolAnd: []request.BoolOp{
+			BoolAnd: []request.Condition{
 				{Match: map[string]any{"categoryId": "id111"}},
 				{Match: map[string]any{"boundingBox.min.x": 167899.9999999998}},
 			},
-			BoolOr: []request.BoolOp{
+			BoolOr: []request.Condition{
 				{Match: map[string]any{"productID": "KDKE-B-9947-#kL5"}},
 				{
-					BoolAnd: []request.BoolOp{
+					BoolAnd: []request.Condition{
 						{Match: map[string]any{"productID": "JODL-X-1937-#pV7"}},
 						{Match: map[string]any{"price": 30}},
 					},
