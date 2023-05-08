@@ -15,15 +15,10 @@ import (
 )
 
 const (
-	fileInfoURI string = "/files/%d"
 	fileListURI string = "/files"
 )
 
 //---------------------------------------------------------------------
-
-func (o *Service) fileMetaURL(fileId int64) string {
-	return fmt.Sprintf(o.Endpoint.FileHost+fileInfoURI, fileId)
-}
 
 // offset   : 查询结果偏移，从查询结果的第offset条开始返回数据
 // rows     : 查询结果数, 默认为100， 最大500
@@ -53,14 +48,6 @@ func (o *Service) fileListURL(offset, rows int, status string, startTime, endTim
 	params = strings.TrimLeft(params, "&")
 
 	return result + "?" + params
-}
-
-// 获取文件信息
-func (o *Service) GetInfo(fileId int64) (*response.FileBean, error) {
-	result := new(response.FileBean)
-	err := o.GET(o.fileMetaURL(fileId), result)
-
-	return result, err
 }
 
 // 获取文件信息列表 GET https://file.bimface.com/files
