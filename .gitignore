@@ -10,7 +10,6 @@ logs
 
 # Golang
 go.sum
-*_test.go
 vendor/
 
 # IDE files
