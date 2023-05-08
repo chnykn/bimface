@@ -20,5 +20,6 @@ vendor/
 
 # Other files
 /backup/
+/tests/conf.go
 *.zip
 *.rar

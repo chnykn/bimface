@@ -57,7 +57,7 @@ func (o *Service) grantToken() (*authToken, error) {
 	})
 
 	//buff := bytes.NewBuffer(nil)
-	var buff []byte //也可以直接使用 *[]byte ，必须是指针
+	var buff []byte //也可以直接使用[]byte，必须是指针
 
 	_, err := httpClnt.Post(o.Endpoint.APIHost+authTokenURI, httpkit.NewRespBody(&buff))
 	if err != nil {
