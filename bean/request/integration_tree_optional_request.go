@@ -13,10 +13,10 @@ type TreeNodeSort struct {
 }
 
 type IntegrationTreeOptionalRequest struct {
-	CustomizedNodeKeys   map[string]string           `json:"customizedNodeKeys,omitempty"`
-	FileIdElementIds     []*FileIdHashWithElementIds `json:"fileIdElementIds,omitempty"`
-	Sorts                []*TreeNodeSort             `json:"Sorts,omitempty"`
-	SortedNamesHierarchy [][]string                  `json:"sortedNamesHierarchy,omitempty"`
+	CustomizedNodeKeys   map[string]string       `json:"customizedNodeKeys,omitempty"`
+	FileIdElementIds     []*FileIdWithElementIds `json:"fileIdElementIds,omitempty"`
+	Sorts                []*TreeNodeSort         `json:"Sorts,omitempty"`
+	SortedNamesHierarchy [][]string              `json:"sortedNamesHierarchy,omitempty"`
 }
 
 func NewIntegrationTreeOptionalRequest() *IntegrationTreeOptionalRequest {

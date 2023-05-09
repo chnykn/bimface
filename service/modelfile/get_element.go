@@ -42,14 +42,7 @@ func (o *Service) elementPropertiesURL(fileId int64, elementId string, includeOv
 }
 
 func (o *Service) elementCommonPropertiesURL(fileId int64, elementIds []string, includeOverrides bool) string {
-	elemIds := ""
-	if len(elementIds) > 0 {
-		for _, s := range elementIds {
-			elemIds = elemIds + s + ","
-		}
-		elemIds = strings.TrimRight(elemIds, ",")
-	}
-
+	elemIds := strings.Join(elementIds, ",")
 	result := fmt.Sprintf(o.Endpoint.APIHost+elementCommonPropertiesURI, fileId, elemIds)
 
 	if includeOverrides {

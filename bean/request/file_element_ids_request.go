@@ -4,9 +4,9 @@
 
 package request
 
-type FileIdHashWithElementIds struct {
-	FileIdHash string   `json:"fileIdHash"`
+type FileIdWithElementIds struct {
+	FileId     string   `json:"fileIdHash"`
 	ElementIds []string `json:"elementIds"`
 }
 
-type FileElementIdsRequest []*FileIdHashWithElementIds
+type FileElementIdsRequest []*FileIdWithElementIds

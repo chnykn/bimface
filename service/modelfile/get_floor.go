@@ -6,10 +6,9 @@ package modelfile
 
 import (
 	"fmt"
+	"github.com/chnykn/bimface/v3/bean/response"
 	"strconv"
 	"strings"
-
-	"github.com/chnykn/bimface/v3/bean/response"
 )
 
 const (
@@ -27,15 +26,13 @@ func (o *Service) floorsURL(fileId int64) string {
 }
 
 func (o *Service) floorsMappingsURL(fileIds []int64) string {
-	fileIDs := ""
-	if len(fileIds) > 0 {
-		for _, id := range fileIds {
-			fileIDs = fileIDs + strconv.FormatInt(id, 10) + ","
-		}
-		fileIDs = strings.TrimRight(fileIDs, ",")
+	fileStrIds := make([]string, len(fileIds))
+	for i := range fileIds {
+		fileStrIds[i] = strconv.FormatInt(fileIds[i], 10)
 	}
 
-	return fmt.Sprintf(o.Endpoint.APIHost+floorsMappingsURI, fileIDs)
+	fileIdsStr := strings.Join(fileStrIds, ",")
+	return fmt.Sprintf(o.Endpoint.APIHost+floorsMappingsURI, fileIdsStr)
 }
 
 //---------------------------------------------------------------------

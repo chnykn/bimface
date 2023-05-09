@@ -3,7 +3,6 @@ package tests
 import (
 	"encoding/json"
 	"fmt"
-
 	"testing"
 
 	"github.com/chnykn/bimface/v3/bean/request"
@@ -14,7 +13,7 @@ func TestQueryDSL(t *testing.T) {
 	dsl := request.QueryDSLRequest{
 		TargetType: "file",
 		TargetIds:  []string{"1124890692330272"},
-		Query: request.DSLCondition{
+		Query: &request.DSLCondition{
 			Contain: map[string]any{"floor": "B01", "familyType": "标准"},
 			Match:   map[string]any{"family": "family1"},
 			BoolAnd: []request.DSLCondition{
