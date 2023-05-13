@@ -12,7 +12,7 @@ type TreeNode struct {
 	ActualName   string      `json:"actualName"`
 	Data         interface{} `json:"data,omitempty"`
 	ElementCount int64       `json:"elementCount"`
-	Items        []*TreeNode
+	Items        []*TreeNode `json:"items"`
 
 	// 为兼容离线数据包中 data\tree.json 文件内 familyType 节点下element列表
 	FileId     string   `json:"fileId"`

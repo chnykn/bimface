@@ -66,7 +66,16 @@ func (o *Service) treeURL(integrateId int64, treeType string, hierarchies []stri
 
 //---------------------------------------------------------------------
 
-// 获取构件分类树
+/* 获取构件分类树
+treeType 可选三个值：floor（楼层）, specialty（专业）和customized（自定义）。
+hierarchies 表示了筛选树的层次，当treeType为"customized"时才生效, 如：desiredHierarchy=specialty,systemtype。
+treeRequest 中的
+  - fileIdElementIds		由文件ID及构件ID构成对象组成的列表
+  - sortedNamesHierarchy	排序名称层级
+  - sorts					分类树节点排列数组
+  - customizedNodeKeys		自定义节点属性
+*/
+
 func (o *Service) GetElementTree(integrateId int64, treeType string, hierarchies []string,
 	treeRequest *request.IntegrationTreeOptionalRequest) (*response.ElementNodeTree, error) {
 

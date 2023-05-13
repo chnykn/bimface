@@ -54,7 +54,7 @@ func (o *Service) treeURL(fileId int64, treeType string) string {
 	result := fmt.Sprintf(o.Endpoint.APIHost+treeURI, fileId)
 
 	if treeType == "customized" {
-		result = result + "treeType=customized"
+		result = result + "&treeType=customized"
 	}
 
 	return result
@@ -62,7 +62,17 @@ func (o *Service) treeURL(fileId int64, treeType string) string {
 
 //---------------------------------------------------------------------
 
-// 获取构件分类树
+/*
+treeType接受两个值：default和customized, 默认为default.
+v参数用来区别treeType为default时返回树的格式, customized总是返回格式2.0的构件树.
+
+当treeType为"customized"时, treeRequest参数中的
+  - desiredHierarchy表示了筛选树的层次,
+    可选值有building,systemType,specialty,floor,category,family,familyType，
+    如:desiredHierarchy=specialty,systemtype
+  - customizedNodeKeys: 用来指定筛选树每个维度用id或者是name作为唯一标识, 如"floor":"id"
+*/
+
 func (o *Service) GetElementTree(fileId int64, treeType string,
 	treeRequest *request.FileTreeRequest) ([]*response.ElementNodeBean, error) {
 
