@@ -2,10 +2,10 @@ package tests
 
 import (
 	"fmt"
-	"github.com/chnykn/bimface/v3/bean/request"
 	"testing"
 
 	"github.com/chnykn/bimface/v3"
+	"github.com/chnykn/bimface/v3/bean/request"
 	"github.com/chnykn/bimface/v3/config"
 	"github.com/chnykn/bimface/v3/consts"
 )
@@ -21,7 +21,7 @@ func getElemTree(catalog *bimface.Catalog) {
 	fmt.Println(elemTree)
 }
 
-func queryEleme(catalog *bimface.Catalog) {
+func queryElemeIds(catalog *bimface.Catalog) {
 	query := &request.DSLCondition{
 		Match: map[string]any{"familyType": "JZ-砌块墙-300mm"},
 		//Contain: map[string]any{"floor": "B01", "familyType": "标准"},
@@ -54,5 +54,5 @@ func TestGetIntgrTree(t *testing.T) {
 		config.NewEndpoint(consts.APIHost, consts.FileHost))
 
 	//getElemTree(catalog)
-	queryEleme(catalog)
+	queryElemeIds(catalog)
 }
