@@ -8,11 +8,7 @@ import (
 	"testing"
 )
 
-func TestGetIntgrTree(t *testing.T) {
-	//fill in your own appKey, appSecret
-	catalog := bimface.NewCatalog(appKey, appSecret,
-		config.NewEndpoint(consts.APIHost, consts.FileHost))
-
+func testElemTree(catalog *bimface.Catalog) {
 	elemTree, err := catalog.IntegrationService.GetElementTree(integrateId, "specialty", nil, nil)
 
 	if err != nil {
@@ -21,4 +17,12 @@ func TestGetIntgrTree(t *testing.T) {
 
 	saveToJsonFile(elemTree, "e:/intgr-spec-tree.json")
 	fmt.Println(elemTree)
+}
+
+func TestGetIntgrTree(t *testing.T) {
+	//fill in your own appKey, appSecret
+	catalog := bimface.NewCatalog(appKey, appSecret,
+		config.NewEndpoint(consts.APIHost, consts.FileHost))
+
+	testElemTree(catalog)
 }
