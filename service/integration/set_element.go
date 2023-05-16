@@ -5,12 +5,11 @@
 package integration
 
 import (
-	"fmt"
-
 	"github.com/chnykn/bimface/v3/bean/common"
-	"github.com/chnykn/httpkit"
+	"github.com/chnykn/bimface/v3/service/comm"
 )
 
+/*
 const (
 	//修改单模型指定构件的属性
 	//PUT https://api.bimface.com/data/v2/integrations/{integrateId}/files/{fileIdHash}/elements/{elementId}/properties
@@ -43,15 +42,21 @@ func (o *Service) modifyElementProperties(integrateId int64, fileId int64, eleme
 
 	return err
 }
+*/
 
-// 修改单模型指定构件的属性
+func (o *Service) modifyElementProperties(integrateId int64, fileId int64, elementId string,
+	properties []*common.PropertyGroup, isDelete bool) error {
+	return comm.ModifyElementProperties(o.Service, integrateId, fileId, elementId, properties, isDelete)
+}
+
+// 修改集成模型指定构件的属性
 func (o *Service) SetElementProperties(integrateId int64, fileId int64, elementId string,
 	properties []*common.PropertyGroup) error {
 
 	return o.modifyElementProperties(integrateId, fileId, elementId, properties, false)
 }
 
-// 删除单模型指定构件的属性
+// 删除集成模型指定构件的属性
 func (o *Service) DeleteElementProperties(integrateId int64, fileId int64, elementId string,
 	properties []*common.PropertyGroup) error {
 

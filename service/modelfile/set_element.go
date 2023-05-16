@@ -5,12 +5,11 @@
 package modelfile
 
 import (
-	"fmt"
-
 	"github.com/chnykn/bimface/v3/bean/common"
-	"github.com/chnykn/httpkit"
+	"github.com/chnykn/bimface/v3/service/comm"
 )
 
+/*
 const (
 	//修改单模型指定构件的属性
 	//PUT https://api.bimface.com/data/v2/files/{fileId}/elements/{elementId}/properties
@@ -42,6 +41,12 @@ func (o *Service) modifyElementProperties(fileId int64, elementId string,
 	}
 
 	return err
+}
+*/
+
+func (o *Service) modifyElementProperties(fileId int64, elementId string,
+	properties []*common.PropertyGroup, isDelete bool) error {
+	return comm.ModifyElementProperties(o.Service, 0, fileId, elementId, properties, isDelete)
 }
 
 // 修改单模型指定构件的属性

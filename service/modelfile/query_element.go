@@ -47,6 +47,8 @@ func (o *Service) QueryElementIds(query *request.DSLCondition, fileIds []int64, 
 }
 */
 
-func (o *Service) QueryElementIds(fileIds []int64, query *request.DSLCondition, includeOverrides bool) (*response.ElementIdsBean, error) {
+func (o *Service) QueryElementIds(fileIds []int64, query *request.DSLCondition,
+	includeOverrides bool) (*response.ElementIdsArrayBean, error) {
+
 	return comm.QueryElementIds(o.Service, "file", fileIds, query, includeOverrides)
 }
