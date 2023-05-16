@@ -1,14 +1,12 @@
 package modelfile
 
 import (
-	"fmt"
-	"strconv"
-
 	"github.com/chnykn/bimface/v3/bean/request"
 	"github.com/chnykn/bimface/v3/bean/response"
-	"github.com/chnykn/httpkit"
+	"github.com/chnykn/bimface/v3/service/comm"
 )
 
+/*
 const (
 	// 查询符合条件的构件ID列表
 	// https://bimface.com/docs/model-data-service/v1/api-reference/getElementsUsingPOST_2.html
@@ -46,4 +44,9 @@ func (o *Service) QueryElementIds(query *request.DSLCondition, fileIds []int64, 
 	err := o.POST(o.queryElementIdsURL(includeOverrides), &result, body)
 
 	return result, err
+}
+*/
+
+func (o *Service) QueryElementIds(fileIds []int64, query *request.DSLCondition, includeOverrides bool) (*response.ElementIdsBean, error) {
+	return comm.QueryElementIds(o.Service, "file", fileIds, query, includeOverrides)
 }
