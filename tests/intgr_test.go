@@ -2,10 +2,11 @@ package tests
 
 import (
 	"fmt"
+	"testing"
+
 	"github.com/chnykn/bimface/v3"
 	"github.com/chnykn/bimface/v3/config"
 	"github.com/chnykn/bimface/v3/consts"
-	"testing"
 )
 
 func testElemTree(catalog *bimface.Catalog) {
