@@ -7,4 +7,4 @@ type ElementIds struct {
 
 type ElementIdsBean ElementIds
 
-type ElementIdsArrayBean []ElementIds
+type ElementIdsArrayBean []*ElementIds

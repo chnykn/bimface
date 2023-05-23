@@ -36,7 +36,7 @@ includeOverrides				是否根据修改后的属性值查询，默认为false	boo
 */
 
 func QueryElementIds(service *abstract.Service, targetType string, targetIds []int64,
-	query *request.DSLCondition, includeOverrides bool) (*response.ElementIdsArrayBean, error) {
+	query *request.DSLCondition, includeOverrides bool) (response.ElementIdsArrayBean, error) {
 
 	targetStrIds := make([]string, len(targetIds))
 	for i := 0; i < len(targetIds); i++ {
@@ -56,5 +56,5 @@ func QueryElementIds(service *abstract.Service, targetType string, targetIds []i
 	body := httpkit.JsonReqBody(dsl)
 	err := service.POST(queryElementIdsURL(service, includeOverrides), &result, body)
 
-	return &result, err
+	return result, err
 }
