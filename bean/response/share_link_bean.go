@@ -14,7 +14,7 @@ type ShareLinkBean struct {
 	URL        string `json:"url"`
 	ExpireTime string `json:"expireTime"`
 	Password   string `json:"password"`
-	SourceId   string `json:"sourceId"`
+	SourceId   int64  `json:"sourceId"`
 	SourceName string `json:"sourceName"`
 	SourceType string `json:"sourceType"`
 	AppKey     string `json:"appKey"`
